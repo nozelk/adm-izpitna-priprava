@@ -121,8 +121,8 @@ for (const key of collections) {
 
 assert(data.topics.length === 13, `Pričakovanih je 13 tem, najdenih ${data.topics.length}.`);
 assert(data.exercises.length === 0, `Theory-only stran ne sme vsebovati vaj; najdenih ${data.exercises.length}.`);
-assert(data.questions.length >= 175,
-  `Celovita teorijska zbirka mora imeti najmanj 175 odprtih vprašanj; najdenih ${data.questions.length}.`);
+assert(data.questions.length >= 185,
+  `Celovita teorijska zbirka mora imeti najmanj 185 odprtih vprašanj; najdenih ${data.questions.length}.`);
 assert(data.sources.length === expectedSources.size,
   `Pričakovanih je natanko ${expectedSources.size} dovoljenih virov, najdenih ${data.sources.length}.`);
 

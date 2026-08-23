@@ -488,8 +488,19 @@
           label: "Opozorilo",
           title: "Petersenov graf in omejitve pogojev",
           html: H`
-            <p>Petersenov graf je povezan, 3-regularen, brez artikulacijskih vozlišč in zadošča komponentnemu potrebnemu pogoju \(c(G-S)\le|S|\), vendar ni Hamiltonov. Ima pa Hamiltonove poti.</p>
-            <p>To pokaže dve stvari: regularnost in dobra povezanost ne zagotavljata Hamiltonovega cikla; komponentni pogoj je potreben, ne zadosten. Pri konkretnem grafu moramo cikel konstruirati ali uporabiti močnejši argument.</p>`
+            <p>Petersenov graf \(P_{5,2}\) zapišimo z zunanjimi vozlišči \(u_i\), notranjimi \(v_i\) in indeksi v \(\mathbb Z_5\). Povezave so</p>
+            <div class="formula-panel">\[
+              u_iu_{i+1},\qquad u_iv_i,\qquad v_iv_{i+2}.
+            \]</div>
+            <p>Povezavam \(u_iv_i\) pravimo <strong>prečke</strong>. Dokažimo, da Hamiltonov cikel ne obstaja. Vsak cikel prečka rez med množicama \(\{u_i\}\) in \(\{v_i\}\) sodo mnogokrat. Ker mora obiskati oba dela, bi uporabil natanko 2 ali 4 od petih prečk.</p>
+            <p><strong>Primer 2 prečk.</strong> Naj bosta uporabljeni \(u_iv_i\) in \(u_jv_j\). Zunanji del cikla mora biti pot skozi vseh pet zunanjih vozlišč. Dobimo jo z izbrisom ene povezave iz zunanjega petcikla, zato sta njeni krajišči sosednji in \(j-i\equiv\pm1\pmod5\). Notranje povezave prav tako tvorijo petcikel, le v vrstnem redu s korakom 2. Njegova Hamiltonova pot bi zahtevala \(j-i\equiv\pm2\pmod5\). Oboje hkrati ni mogoče.</p>
+            <p><strong>Primer 4 prečk.</strong> Po rotacijski simetriji naj manjka \(u_0v_0\). Ker \(u_0\) v ciklu nima prečke, sta prisiljeni povezavi \(u_4u_0,u_0u_1\). Zato sta izključeni \(u_1u_2,u_3u_4\), prisiljena pa je \(u_2u_3\). Enako pri notranjem vozlišču \(v_0\) dobimo prisiljene povezave \(v_2v_0,v_0v_3,v_4v_1\). Skupaj s štirimi uporabljenimi prečkami nastaneta dva ločena petcikla</p>
+            <div class="formula-panel">\[
+              u_0u_1v_1v_4u_4u_0,\qquad
+              u_2u_3v_3v_0v_2u_2,
+            \]</div>
+            <p>ne en cikel skozi vseh deset vozlišč. Oba možna primera sta nemogoča, zato Petersenov graf ni Hamiltonov.</p>
+            <p>Kljub temu je povezan, 3-regularen, brez artikulacijskih vozlišč in za vsako neprazno \(S\) zadošča pogoju \(c(G-S)\le|S|\). Ima tudi Hamiltonove poti. Zato niti regularnost niti dobra povezanost ne zagotavljata Hamiltonovega cikla; komponentni pogoj pa je potreben, vendar ne zadosten.</p>`
         },
         {
           id: "eh-dodajanje-povezave",
@@ -1094,6 +1105,52 @@ povezav. Ta pogoj je nujen, ne pa zadosten: izbrisani robovi morajo hkrati preki
       answer: H`Komplement \(\overline G\) ima isto množico vozlišč, različni vozlišči pa sta v njem sosednji natanko tedaj, ko v \(G\) nista. Kromatično število je najmanjše število barv v pravilnem barvanju vozlišč. Naj bo \(a=\chi(G)\) in \(b=\chi(\overline G)\). Barvni razred v \(G\) je neodvisna množica v \(G\), barvni razred v \(\overline G\) pa je klika v \(G\). Presek enega razreda prvega in enega razreda drugega barvanja zato vsebuje največ eno vozlišče: dve različni vozlišči v preseku bi morali biti v \(G\) hkrati nesosednji in sosednji. Obstaja \(ab\) parov barvnih razredov in vsako od \(n\) vozlišč pripada natanko enemu paru, zato \(n\le ab=\chi(G)\chi(\overline G)\). Posledično je \(\max\{\chi(G),\chi(\overline G)\}\ge\lceil\sqrt n\rceil\), sicer bi bil produkt manjši od \(n\). Za \(G=K_n\) je \(\chi(G)=n\), \(\chi(\overline G)=1\), zato velja enakost; enako po zamenjavi vlog za prazen graf. Cikel \(C_5\) je izomorfen svojemu komplementu in ima kromatično število 3, zato je produkt \(9>5\). Primer pokaže, da spodnja meja ni vedno dosežena.`,
       hint: H`Presek barvnega razreda v \(G\) in barvnega razreda v komplementu ne more vsebovati dveh vozlišč.`,
       rubric: ["obe definiciji", "dokaz s pari barvnih razredov", "izpeljana korenska meja", "ostra primera in C5"], tags: ["komplement", "kromatično število", "produktna meja", "dokaz"]
+    },
+    {
+      id: "gr-o58", topic: "grafi-osnove", difficulty: 2,
+      source: "ADM-Grafi.pdf, §11.1; uporabnikov artefakt »ADM — teorija za izpit«, vprašanje 63",
+      prompt: H`Definiraj polni graf \(K_n\) in na dva vsebinsko različna načina dokaži, da ima natanko \(\frac{n(n-1)}2=\binom n2\) povezav: prvič s štetjem dvoelementnih podmnožic, drugič z lemo o rokovanju. Pojasni, kaj pri vsakem dokazu štejemo, in preveri robna primera \(K_1\) in \(K_2\).`,
+      answer: H`Polni enostavni graf \(K_n\) ima \(n\) vozlišč in povezavo med vsakim parom različnih vozlišč.
+      <p><strong>Prvi dokaz — izbor krajišč.</strong> Povezava enostavnega neusmerjenega grafa je neurejeni par oziroma dvoelementna podmnožica množice vozlišč. Zato je povezav toliko kot izbir dveh vozlišč izmed \(n\):</p>
+      \[
+      |E(K_n)|=\binom n2=\frac{n(n-1)}2.
+      \]
+      <p>Tu vsako povezavo preštejemo neposredno natanko enkrat.</p>
+      <p><strong>Drugi dokaz — incidence.</strong> Vsako vozlišče v \(K_n\) je sosednje preostalim \(n-1\) vozliščem, zato je \(\deg v=n-1\). Lema o rokovanju da</p>
+      \[
+      2|E(K_n)|=\sum_{v\in V}\deg v=n(n-1),
+      \]
+      <p>od koder spet sledi \(|E(K_n)|=n(n-1)/2\). Tu smo najprej prešteli incidence: vsaka povezava nastopi pri obeh krajiščih, zato delimo z 2.</p>
+      <p>Za \(K_1\) obe formuli dasta 0 povezav. Za \(K_2\) dasta 1 povezavo, kar je edini par njegovih vozlišč. Dokaza uporabljata različni perspektivi — izbor objekta in dvojno štetje incidenc — zato sta oba uporabna tudi v drugih nalogah.</p>`,
+      hint: H`Pri prvem dokazu je povezava 2-elementna množica; pri drugem ima vsako vozlišče stopnjo \(n-1\).`,
+      rubric: ["definicija polnega grafa", "dokaz z dvoelementnimi podmnožicami", "dokaz z rokovanjem in razlaga faktorja 2", "oba robna primera in primerjava metod"],
+      tags: ["polni graf", "dvojno štetje", "lema o rokovanju", "binomski koeficient"]
+    },
+    {
+      id: "gr-o59", topic: "euler-hamilton", difficulty: 3,
+      source: "ADM-Grafi.pdf, §13.2; uporabnikov artefakt »ADM — teorija za izpit«, vprašanje 73",
+      prompt: H`Standardni Petersenov graf \(P_{5,2}\) označi z zunanjimi vozlišči \(u_i\), notranjimi \(v_i\) in prečkami \(u_iv_i\), kjer so indeksi modulo 5. Dokaži, da graf ni Hamiltonov: najprej utemelji, zakaj bi Hamiltonov cikel uporabil natanko 2 ali 4 prečke, nato izčrpno izloči oba primera. Nazadnje pojasni, kaj ta graf pove o komponentnem pogoju za Hamiltonovost.`,
+      answer: H`Povezave so \(u_iu_{i+1}\), \(u_iv_i\) in \(v_iv_{i+2}\), indeksi pa so v \(\mathbb Z_5\). Vsak cikel prečka rez med zunanjimi in notranjimi vozlišči sodo mnogokrat: vsak vstop v drugi del zahteva tudi izstop. Hamiltonov cikel mora obiskati oba dela, zato ne uporabi 0 prečk; ker jih je skupaj 5, ostaneta možnosti 2 in 4.
+      <p><strong>Dve prečki.</strong> Naj bosta uporabljeni prečki z indeksoma \(i,j\). Na zunanjih vozliščih ostane pot skozi vseh pet vozlišč. Ker jo dobimo iz zunanjega petcikla z izbrisom ene povezave, sta njeni krajišči sosednji:</p>
+      \[
+      j-i\equiv\pm1\pmod5.
+      \]
+      <p>Notranje povezave tvorijo petcikel s korakom 2. Tudi tam bi morala biti \(v_i,v_j\) krajišči poti skozi vseh pet notranjih vozlišč, zato</p>
+      \[
+      j-i\equiv\pm2\pmod5.
+      \]
+      <p>Noben neničelni ostanek modulo 5 ni hkrati v množicah \(\{\pm1\}\) in \(\{\pm2\}\), zato je ta primer nemogoč.</p>
+      <p><strong>Štiri prečke.</strong> Zaradi rotacijske simetrije smemo privzeti, da manjka \(u_0v_0\). Ker mora imeti \(u_0\) na ciklu stopnjo 2, sta vključeni \(u_4u_0,u_0u_1\). Vozlišči \(u_1,u_4\) že uporabita še svoji prečki, zato sta \(u_1u_2,u_3u_4\) izključeni in je prisiljena \(u_2u_3\). Analogno pri notranjem \(v_0\) dobimo \(v_2v_0,v_0v_3\), nato pa je prisiljena še \(v_4v_1\). Skupaj s prečkami \(u_iv_i\) za \(i=1,2,3,4\) dobimo dva disjunktna cikla</p>
+      \[
+      u_0u_1v_1v_4u_4u_0
+      \quad\text{in}\quad
+      u_2u_3v_3v_0v_2u_2,
+      \]
+      <p>ne enega cikla skozi vseh deset vozlišč. Tudi ta primer odpove, zato Petersenov graf ni Hamiltonov.</p>
+      <p>Petersenov graf kljub temu za vsako neprazno \(S\subseteq V\) izpolni \(c(G-S)\le|S|\). Je torej protiprimer zadostnosti: pogoj je potreben in njegova kršitev ovrže Hamiltonovost, njegova izpolnitev pa Hamiltonovega cikla ne zagotovi.</p>`,
+      hint: H`Cikel prečka vsak rez sodo mnogokrat. Pri štirih prečkah brez škode za splošnost izpusti \(u_0v_0\) in nato pri vsakem vozlišču prisili stopnjo 2.`,
+      rubric: ["pravilna definicija in paritetni argument za prečke", "popolna izločitev dveh prečk", "popolna izločitev štirih prečk z dvema 5-cikloma", "pravilen sklep o potrebnem in nezadostnem komponentnem pogoju"],
+      tags: ["Petersen", "Hamiltonov cikel", "analiza primerov", "potrebni pogoj"]
     },
   ];
 

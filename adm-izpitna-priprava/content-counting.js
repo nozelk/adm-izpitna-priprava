@@ -181,6 +181,24 @@
             </div>`
         },
         {
+          id: "prastevilski-binomski-koeficienti",
+          kind: "theorem",
+          label: "Praštevilskost + Evklidova lema",
+          title: "Zakaj praštevilo deli notranje binomske koeficiente",
+          html: H`
+            <p><strong>Izrek.</strong> Če je \(p\) praštevilo in \(1\le r\le p-1\), potem</p>
+            <div class="formula-panel">\[p\mid\binom pr.\]</div>
+            <p><strong>Dokaz.</strong> Iz faktorske formule dobimo celoštevilsko identiteto</p>
+            <div class="formula-panel">\[\binom pr\,r!(p-r)!=p!.\]</div>
+            <p>Desno stran deli \(p\), zato \(p\mid\binom pr\,r!(p-r)!\). Vsi faktorji v \(r!\) in \((p-r)!\) so med 1 in \(p-1\). Ker je \(p\) praštevilo, nobenega ne deli, zato</p>
+            <div class="formula-panel">\[\gcd\!\bigl(p,r!(p-r)!\bigr)=1.\]</div>
+            <p>Po Evklidovi lemi iz \(p\mid ab\) in \(\gcd(p,b)=1\) sledi \(p\mid a\); z \(a=\binom pr\) dobimo trditev.</p>
+            <p><strong>Posledica.</strong> Po binomskem izreku za celi števili \(a,b\) velja</p>
+            <div class="formula-panel">\[(a+b)^p\equiv a^p+b^p\pmod p,\]</div>
+            <p>saj so vsi vmesni koeficienti \(\binom pr\), \(1\le r\le p-1\), deljivi s \(p\).</p>
+            <p><strong>Zakaj pogojev ne smemo izpustiti?</strong> Na robovih je \(\binom p0=\binom pp=1\), zato \(p\) teh koeficientov ne deli. Praštevilskost je bistvena: pri sestavljenem \(4\) je \(\binom42=6\), vendar \(4\nmid6\).</p>`
+        },
+        {
           id: "potencna-mnozica-in-enakost",
           kind: "proof",
           label: "Posledici",
@@ -594,7 +612,36 @@ V obeh družinah so štiri. Zveza ne govori o \(n=0\), saj prazna razčlenitev n
 \[\binom kr r!S(n,r)=k^{\underline r}S(n,r),\qquad r\le n.\]
 Pri \(n\) nerazločljivih predmetih po izbiri škatel njihove pozitivne zasedenosti rešujejo \(x_1+\cdots+x_r=n\), zato je za \(n,r\ge1\)
 \[\binom kr\binom{n-1}{r-1}\]
-porazdelitev. Za \(n=4,k=3,r=2\) je razločljivih porazdelitev \(\binom32\,2!S(4,2)=42\), nerazločljivih pa \(\binom32\binom31=9\). Če je \(n>0\) in \(r=0\), je v obeh modelih rezultat 0, ker bi morali vsi predmeti ležati v neprazni škatli. Če je \(n=r=0\), obstaja za vsak \(k\ge0\) natanko ena prazna porazdelitev: vse škatle so prazne. Formula \(r!S(n,r)\) ni primerna za nerazločljive predmete, ker Stirlingovi bloki vsebujejo razločljive elemente.`,hint:"Najprej izberi neprazne škatle, nato za vsak model določi pravi objekt zasedenosti.",rubric:["izbira r škatel","surjekcijski model za razločljive predmete","pozitivne zasedenosti za nerazločljive predmete","isti primer, rob r=0 in ločitev formul"],difficulty:3,source:"ADM-Kombinatorika.pdf"}
+porazdelitev. Za \(n=4,k=3,r=2\) je razločljivih porazdelitev \(\binom32\,2!S(4,2)=42\), nerazločljivih pa \(\binom32\binom31=9\). Če je \(n>0\) in \(r=0\), je v obeh modelih rezultat 0, ker bi morali vsi predmeti ležati v neprazni škatli. Če je \(n=r=0\), obstaja za vsak \(k\ge0\) natanko ena prazna porazdelitev: vse škatle so prazne. Formula \(r!S(n,r)\) ni primerna za nerazločljive predmete, ker Stirlingovi bloki vsebujejo razločljive elemente.`,hint:"Najprej izberi neprazne škatle, nato za vsak model določi pravi objekt zasedenosti.",rubric:["izbira r škatel","surjekcijski model za razločljive predmete","pozitivne zasedenosti za nerazločljive predmete","isti primer, rob r=0 in ločitev formul"],difficulty:3,source:"ADM-Kombinatorika.pdf"},
+    {
+      id: "cc-o40",
+      topic: "izbori-binomi",
+      prompt: H`Naj bo \(p\) praštevilo in \(0<r<p\). Dokaži, da \(p\mid\binom pr\). Natančno označi mesto, kjer uporabiš praštevilskost in Evklidovo lemo; nato obravnavaj robova \(r=0,p\), dodaj sestavljeni protiprimer ter izpelji kongruenco \((a+b)^p\equiv a^p+b^p\pmod p\).`,
+      answer: H`Ker je
+      \[
+      \binom pr\,r!(p-r)!=p!,
+      \]
+      praštevilo \(p\) deli produkt na levi. Pogoja \(0<r<p\) pomenita, da so vsi faktorji \(r!\) in \((p-r)!\) strogo manjši od \(p\). Praštevilo \(p\) zato ne deli nobenega izmed njih in
+      \[
+      \gcd\!\bigl(p,r!(p-r)!\bigr)=1.
+      \]
+      Evklidova lema zdaj iz
+      \[
+      p\mid\binom pr\,r!(p-r)!
+      \]
+      da \(p\mid\binom pr\). Praštevilskost smo uporabili pri dokazovanju te tujosti; nato uporabimo tuji-faktorski zapis Evklidove leme.
+      <p>Robova sta izključena, ker je \(\binom p0=\binom pp=1\), česar \(p>1\) ne deli. Če zgornje število ni praštevilo, trditev lahko odpove: \(\binom42=6\) in \(4\nmid6\).</p>
+      <p>Po binomskem izreku</p>
+      \[
+      (a+b)^p=a^p+\sum_{r=1}^{p-1}\binom pr a^{p-r}b^r+b^p.
+      \]
+      <p>Vsak člen srednje vsote je deljiv s \(p\), zato za vsa \(a,b\in\mathbb Z\) velja \((a+b)^p\equiv a^p+b^p\pmod p\).</p>`,
+      hint: H`Ne poskušaj »krajšati« fakultet po modulu. Najprej uporabi celoštevilsko identiteto in dokaži tujost drugega faktorja s \(p\).`,
+      rubric: ["faktorska identiteta in deljivost produkta", "utemeljena tujost ter izrecna Evklidova lema", "oba robova in sestavljeni protiprimer", "izpeljava kongruence iz binomskega izreka"],
+      difficulty: 3,
+      source: "ADM-Kombinatorika.pdf; uporabnikov artefakt »ADM — teorija za izpit«, vprašanje 84",
+      tags: ["binomski koeficient", "praštevilo", "Evklidova lema", "dokaz"]
+    }
   );
 
   const exercises = [];
