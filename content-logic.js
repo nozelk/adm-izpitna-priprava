@@ -236,9 +236,10 @@
         }
       ],
       checklist: [
-        "Znam vseh pet glavnih resničnostnih tabel.",
+        "Znam formalno definirati izjavo, izraz, določilo in vseh pet glavnih veznikov.",
+        "Znam vseh pet glavnih resničnostnih tabel in ločim vključujoči od izključujočega ali.",
         "Znam našteti vsa določila brez izpuščanja.",
-        "Znam uporabiti De Morganova zakona in odpraviti implikacijo.",
+        "Znam navesti osnovne enakovrednosti, jih uporabiti z imenom zakona in odpraviti implikacijo.",
         "Znam zgraditi DNO in KNO.",
         "Znam navesti sedem pravil sklepanja.",
         "Pri neveljavnem sklepu znam dati pravo vrednotenje."
@@ -268,22 +269,26 @@
           id: "pr-predikat",
           kind: "definition",
           label: "Osnove",
-          title: "Predikat, mestnost in izjavna formula",
-          html: `<p><strong>Predikat</strong> je simbol za lastnost ali relacijo. Zapis \\(P(x)\\) je enomesten, \\(R(x,y)\\) dvomesten, \\(T(x,y,z)\\) tromesten. Število argumentov je njegova <em>mestnost</em>.</p>
-          <p>Formula z nedoločeno spremenljivko še nima nujno logične vrednosti. Izjava postane šele, ko vse proste spremenljivke nadomestimo s konkretnimi objekti ali jih vežemo s kvantifikatorji.</p>`
+          title: "Jezik, term, predikat in atomska formula",
+          html: H`<p><strong>Jezik predikatnega računa</strong> določi spremenljivke, morebitne konstante in funkcijske simbole, predikatske simbole z določeno mestnostjo ter logične veznike in kvantifikatorja. <strong>Term</strong> poimenuje objekt: spremenljivka in konstanta sta terma, iz termov pa s \(k\)-mestnim funkcijskim simbolom \(f\) dobimo term \(f(t_1,\ldots,t_k)\).</p>
+          <p><strong>Predikat</strong> je simbol za lastnost ali relacijo. \(P\) je enomesten, \(R\) dvomesten in \(T\) tromesten predikatski simbol, če sprejmejo po en, dva oziroma tri argumente. <strong>Atomska formula</strong> je najenostavnejša formula, na primer \(P(t)\), \(R(t_1,t_2)\) ali \(t_1=t_2\); iz atomskih formul gradimo sestavljene formule z vezniki in kvantifikatorjema.</p>
+          <p><strong>Primer.</strong> V jeziku s konstanto \(0\), funkcijo \(s\) in dvomestnim predikatom \(<\) je \(s(s(0))\) term, \(x<s(0)\) atomska formula, \(\forall x\,(x<s(0)\lor x=s(0))\) pa zaprta formula. Sam zapis \(\forall x\) ni formula, \(<(x)\) pa je napačno zgrajen, ker je \(<\) dvomesten.</p>
+          <p>Formula z vsaj eno prosto spremenljivko je <strong>odprta</strong> in njena resničnost je odvisna tudi od prireditve tem spremenljivkam. Formula brez prostih spremenljivk je <strong>zaprta</strong> oziroma stavek; po izbiri interpretacije ima logično vrednost. Pogosta napaka je enačiti predikatni simbol \(P\), ki še nima pomena, z množico objektov, za katere velja: to množico mu šele priredi interpretacija.</p>`
         },
         {
           id: "pr-interpretacija",
           kind: "definition",
           label: "Semantika",
           title: "Kaj vsebuje interpretacija",
-          html: `<p>Interpretacija določi:</p>
+          html: `<p><strong>Struktura oziroma interpretacija</strong> \\(\\mathcal M\\) jeziku priredi matematični pomen:</p>
           <ol>
             <li>neprazno področje pogovora \\(U\\);</li>
-            <li>pomen vsakega predikata in morebitnih konstant;</li>
-            <li>vrednosti prostih spremenljivk oziroma njihovo vezavo.</li>
+            <li>vsakemu konstantnemu simbolu \\(c\\) element \\(c^{\\mathcal M}\\in U\\);</li>
+            <li>vsakemu \\(k\\)-mestnemu funkcijskemu simbolu \\(f\\) funkcijo \\(f^{\\mathcal M}:U^k\\to U\\);</li>
+            <li>vsakemu \\(k\\)-mestnemu predikatskemu simbolu \\(P\\) relacijo \\(P^{\\mathcal M}\\subseteq U^k\\).</li>
           </ol>
-          <p>Ista formula je lahko pri eni interpretaciji resnična in pri drugi napačna. Formula \\(\\forall y\\exists x(x<y)\\) je na \\(\\mathbb R\\) resnična, na \\(\\mathbb N=\\{1,2,\\ldots\\}\\) pa napačna.</p>`
+          <p>Za vrednotenje <em>odprte</em> formule dodatno izberemo <strong>prireditev spremenljivk</strong> \\(s:\\mathrm{Var}\\to U\\). Ta prireditev ni del strukture; kvantifikator spremeni vrednost svoje vezane spremenljivke samo znotraj svojega dosega. Zaprta formula od prireditve prostim spremenljivkam ni odvisna.</p>
+          <p>Ista zaprta formula je lahko pri eni interpretaciji resnična in pri drugi napačna. Formula \\(\\forall y\\exists x(x<y)\\) je na \\(\\mathbb R\\) resnična, na \\(\\mathbb N=\\{1,2,\\ldots\\}\\) pa napačna.</p>`
         },
         {
           id: "pr-proste",
@@ -441,6 +446,7 @@
         }
       ],
       checklist: [
+        "Ločim term, predikatni simbol, atomsko, odprto in zaprto formulo.",
         "Znam določiti proste in vezane spremenljivke.",
         "Znam navesti vse dele interpretacije.",
         "Negacijo potisnem do atomskih formul.",
@@ -474,46 +480,137 @@
         {
           id: "mp-osnove",
           kind: "definition",
-          label: "Temelj",
-          title: "Pripadnost, vsebovanost in enakost",
-          html: `<p>Množica je zbirka objektov. Končno množico lahko podamo z naštevanjem, na primer \\(A=\\{2,3,5,7\\}\\), splošno pa s pogojem \\(\\{x:P(x)\\}\\). Zapis \\(x\\in A\\) pomeni, da je \\(x\\) element množice \\(A\\). Vsebovanost je</p>
-          \\[A\\subseteq B\\iff\\forall x(x\\in A\\Rightarrow x\\in B).\\]
-          <p>Enakost je ekstenzionalna:</p>
-          \\[A=B\\iff\\forall x(x\\in A\\Leftrightarrow x\\in B)\\iff A\\subseteq B\\land B\\subseteq A.\\]
-          <p>Prava podmnožica izpolnjuje \\(A\\subseteq B\\) in \\(A\\ne B\\). <strong>Prazna množica</strong> \\(\\varnothing\\) nima nobenega elementa; zato je podmnožica vsake množice.</p>`
+          label: "Temelj I",
+          title: "Pripadnost, podmnožica, prava podmnožica in enakost",
+          html: H`<p><strong>Množica</strong> je zbirka med seboj razločljivih objektov. Zapis \(x\in A\) pomeni, da je \(x\) <em>element</em> množice \(A\), zapis \(x\notin A\) pa, da ni.</p>
+          <p><strong>Podmnožica.</strong> \(A\) je podmnožica \(B\), če je vsak element \(A\) tudi element \(B\):</p>
+          \[A\subseteq B\iff\forall x\,(x\in A\Rightarrow x\in B).\]
+          <p><strong>Prava podmnožica.</strong> \(A\subsetneq B\) pomeni \(A\subseteq B\) in \(A\ne B\). <strong>Enakost</strong> je ekstenzionalna:</p>
+          \[A=B\iff\forall x\,(x\in A\Leftrightarrow x\in B)
+          \iff A\subseteq B\land B\subseteq A.\]
+          <p><strong>Primer.</strong> Za \(A=\{1,2\}\) in \(B=\{1,2,3\}\) veljajo \(1\in A\), \(A\subsetneq B\), \(A\subseteq A\) in \(A\ne B\).</p>
+          <p><strong>Pogosta napaka.</strong> Pripadnost in vsebovanost nista isti odnos. Pri \(A=\{1,2\}\) je \(1\in A\), medtem ko \(\{1\}\subseteq A\) in \(\{1\}\notin A\). Zapisa \(1\subseteq A\) ne smemo uporabljati kot zamenjavo za \(1\in A\): v elementarnem zapisu števila navadno obravnavamo kot osnovne objekte, v von Neumannovi konstrukciji pa je \(1=\{\varnothing\}\) res množica, zato je zapis formalno smiseln, vendar je za ta \(A\) napačen, ker \(\varnothing\notin A\).</p>`
+        },
+        {
+          id: "mp-prazna-univerzalna",
+          kind: "definition",
+          label: "Temelj II",
+          title: "Prazna in univerzalna množica",
+          html: H`<p><strong>Prazna množica</strong> \(\varnothing\) nima nobenega elementa:</p>
+          \[\forall x\;x\notin\varnothing.\]
+          <p>Ker je implikacija \(x\in\varnothing\Rightarrow x\in A\) vedno resnična, velja \(\varnothing\subseteq A\) za vsako množico \(A\). Prazna množica je enolična.</p>
+          <p><strong>Univerzalna množica</strong> \(U\) je vnaprej izbrana množica vseh objektov, ki jih v danem kontekstu obravnavamo. Vse trenutne množice so njene podmnožice. Če je \(U=\{1,2,3,4\}\) in \(A=\{1,3\}\), sta \(\varnothing\subseteq A\subseteq U\).</p>
+          <p><strong>Pogosti napaki.</strong> \(\varnothing\) in \(\{\varnothing\}\) nista enaki: prva ima 0 elementov, druga ima 1 element, namreč prazno množico. Prav tako univerzalna množica ni absolutna. Množica sodih naravnih števil je lahko univerzum v enem vprašanju, v drugem pa le podmnožica \(\mathbb Z\).</p>`
+        },
+        {
+          id: "mp-disjunktnost",
+          kind: "definition",
+          label: "Temelj III",
+          title: "Disjunktni množici in paroma disjunktna družina",
+          html: H`<p>Množici \(A,B\) sta <strong>disjunktni</strong>, če nimata skupnega elementa:</p>
+          \[A\cap B=\varnothing
+          \iff\neg\exists x\,(x\in A\land x\in B).\]
+          <p><strong>Primer.</strong> Množici \(\{1,3,5\}\) in \(\{2,4\}\) sta disjunktni. Množici \(\{1,2\}\) in \(\{2,3\}\) nista, saj je njun presek \(\{2\}\).</p>
+          <p>Indeksirana družina \((A_i)_{i\in I}\) je <strong>paroma disjunktna</strong>, če za vsaka različna indeksa \(i\ne j\) velja \(A_i\cap A_j=\varnothing\). To ne zahteva, da so členi neprazni ali da njihova unija pokrije univerzum; oba dodatna pogoja potrebujemo pri razbitju.</p>
+          <p><strong>Pogosta napaka.</strong> Različni množici nista nujno disjunktni. \(\{1,2\}\ne\{2,3\}\), vendar imata skupni element 2. Tudi \(A\subseteq B\) ne pomeni disjunktnosti; če je \(A\ne\varnothing\), je \(A\cap B=A\).</p>`
         },
         {
           id: "mp-operacije",
           kind: "definition",
-          label: "Operacije",
-          title: "Unija, presek, razlika in komplement",
-          html: `\\[A\\cup B=\\{x:x\\in A\\lor x\\in B\\},\\qquad
-          A\\cap B=\\{x:x\\in A\\land x\\in B\\}.\\]
-          \\[A\\setminus B=\\{x:x\\in A\\land x\\notin B\\},\\qquad
-          A\\oplus B=A\\triangle B=(A\\setminus B)\\cup(B\\setminus A)=(A\\cup B)\\setminus(A\\cap B).\\]
-          <p>Če je izbrana univerzalna množica \\(U\\), je komplement</p>
-          \\[A^c=U\\setminus A=\\{x\\in U:x\\notin A\\}.\\]
-          <p>Komplement je vedno relativen glede na \\(U\\); brez univerzuma zapis ni popolnoma določen.</p>`
+          label: "Operacija I",
+          title: "Unija množic",
+          html: H`<p><strong>Besedna definicija.</strong> Unija \(A\cup B\) vsebuje vse elemente, ki pripadajo množici \(A\), množici \(B\) ali obema. Beseda »ali« je vključujoča.</p>
+          \[A\cup B=\{x:x\in A\lor x\in B\}.\]
+          <p><strong>Izračunan primer.</strong> Naj bodo \(U=\{1,2,3,4,5\}\), \(A=\{1,2,4\}\) in \(B=\{2,3,4\}\). Tedaj je</p>
+          \[A\cup B=\{1,2,3,4\}.\]
+          <p>Elementa 2 in 4 zapišemo samo enkrat, ker množica ne beleži večkratnosti.</p>
+          <p><strong>Napačna trditev.</strong> »V uniji so elementi, ki ležijo v natanko eni množici.« To opisuje simetrično razliko, ne unije. Protiprimer je \(2\in A\cap B\), vendar kljub temu \(2\in A\cup B\). Tudi formula \(|A\cup B|=|A|+|B|\) velja le za disjunktni končni množici; splošno odštejemo \(|A\cap B|\).</p>`
+        },
+        {
+          id: "mp-presek",
+          kind: "definition",
+          label: "Operacija II",
+          title: "Presek množic",
+          html: H`<p><strong>Besedna definicija.</strong> Presek \(A\cap B\) vsebuje natanko elemente, ki hkrati pripadajo obema množicama.</p>
+          \[A\cap B=\{x:x\in A\land x\in B\}.\]
+          <p><strong>Izračunan primer.</strong> Za \(A=\{1,2,4\}\) in \(B=\{2,3,4\}\) dobimo</p>
+          \[A\cap B=\{2,4\}.\]
+          <p>Množici sta disjunktni natanko tedaj, ko je njun presek prazen.</p>
+          <p><strong>Napačna trditev.</strong> »Če sta \(A\ne B\), je \(A\cap B=\varnothing\).« Protiprimer sta zgornji različni množici, ki imata skupna elementa 2 in 4. Prav tako iz \(A\cap B=A\) ne sledi \(A=B\); sledi le \(A\subseteq B\). Na primer \(\{1\}\cap\{1,2\}=\{1\}\).</p>`
+        },
+        {
+          id: "mp-razlika",
+          kind: "definition",
+          label: "Operacija III",
+          title: "Razlika množic",
+          html: H`<p><strong>Besedna definicija.</strong> Razlika \(A\setminus B\) vsebuje elemente \(A\), ki ne pripadajo \(B\). Vrstni red je bistven.</p>
+          \[A\setminus B=\{x:x\in A\land x\notin B\}=A\cap B^c.\]
+          <p><strong>Izračunan primer.</strong> Za \(A=\{1,2,4\}\) in \(B=\{2,3,4\}\) velja</p>
+          \[A\setminus B=\{1\},\qquad B\setminus A=\{3\}.\]
+          <p><strong>Napačna trditev.</strong> »Razlika je komutativna: \(A\setminus B=B\setminus A\).« Zgornji izračun je protiprimer. Tudi \(A\setminus B\) ni isto kot \(B^c\): prvi izraz mora ostati znotraj \(A\), medtem ko \(B^c\) vsebuje vse elemente univerzuma zunaj \(B\). Pri \(U=\{1,2,3,4,5\}\) je \(B^c=\{1,5\}\), ne \(\{1\}\).</p>`
+        },
+        {
+          id: "mp-komplement",
+          kind: "definition",
+          label: "Operacija IV",
+          title: "Komplement glede na univerzalno množico",
+          html: H`<p><strong>Besedna definicija.</strong> Ko je določen univerzum \(U\) in \(A\subseteq U\), komplement \(A^c\) vsebuje vse elemente univerzuma, ki niso v \(A\).</p>
+          \[A^c=U\setminus A=\{x\in U:x\notin A\}.\]
+          <p><strong>Izračunan primer.</strong> Pri \(U=\{1,2,3,4,5\}\) in \(A=\{1,2,4\}\) je</p>
+          \[A^c=\{3,5\}.\]
+          <p>Vedno veljajo \(A\cup A^c=U\), \(A\cap A^c=\varnothing\), \((A^c)^c=A\), \(U^c=\varnothing\) in \(\varnothing^c=U\).</p>
+          <p><strong>Napačna trditev.</strong> »Komplement množice je določen brez podatka o univerzumu.« Če isto \(A=\{1,2,4\}\) obravnavamo v \(U_1=\{1,2,3,4,5\}\), je komplement \(\{3,5\}\); v \(U_2=\{1,2,3,4,5,6\}\) pa \(\{3,5,6\}\). Zato mora biti univerzum znan.</p>`
+        },
+        {
+          id: "mp-simetricna-razlika",
+          kind: "definition",
+          label: "Operacija V",
+          title: "Simetrična razlika",
+          html: H`<p><strong>Besedna definicija.</strong> Simetrična razlika vsebuje elemente, ki pripadajo natanko eni od množic \(A,B\), ne pa obema.</p>
+          \[A\triangle B=(A\setminus B)\cup(B\setminus A)
+          =(A\cup B)\setminus(A\cap B).\]
+          <p><strong>Izračunan primer.</strong> Za \(A=\{1,2,4\}\) in \(B=\{2,3,4\}\) je</p>
+          \[A\triangle B=\{1,3\}.\]
+          <p>Operacija je komutativna in asociativna, velja \(A\triangle\varnothing=A\) ter \(A\triangle A=\varnothing\).</p>
+          <p><strong>Napačna trditev.</strong> »\(A\triangle B=A\cup B\).« To velja le pri disjunktnih množicah. V našem primeru je \(A\cup B=\{1,2,3,4\}\), simetrična razlika pa izloči skupna elementa 2 in 4. Prav tako simetrična razlika ni isto kot enostranska razlika \(A\setminus B\).</p>`
         },
         {
           id: "mp-zakoni",
           kind: "theorem",
           label: "Algebra množic",
-          title: "Vsi osnovni zakoni iz poglavja 3.2",
-          html: `<div class="formula-grid">
-            <p>\\(A\\cap B=B\\cap A\\), \\(A\\cup B=B\\cup A\\)</p>
-            <p>\\((A\\cap B)\\cap C=A\\cap(B\\cap C)\\)</p>
-            <p>\\((A\\cup B)\\cup C=A\\cup(B\\cup C)\\)</p>
-            <p>\\(A\\cap(B\\cup C)=(A\\cap B)\\cup(A\\cap C)\\)</p>
-            <p>\\(A\\cup(B\\cap C)=(A\\cup B)\\cap(A\\cup C)\\)</p>
-            <p>\\((A\\cap B)^c=A^c\\cup B^c\\)</p>
-            <p>\\((A\\cup B)^c=A^c\\cap B^c\\)</p>
-            <p>\\(A\\cap(A\\cup B)=A\\), \\(A\\cup(A\\cap B)=A\\)</p>
-            <p>\\(A\\cap A=A\\), \\(A\\cup A=A\\)</p>
-            <p>\\(A\\cap\\varnothing=\\varnothing\\), \\(A\\cup\\varnothing=A\\)</p>
+          title: "Ključni zakoni operacij z množicami",
+          html: H`<p><strong>Komutativnost, asociativnost in idempotentnost</strong></p>
+          <div class="formula-grid">
+            <p>\(A\cup B=B\cup A\), \(A\cap B=B\cap A\)</p>
+            <p>\((A\cup B)\cup C=A\cup(B\cup C)\)</p>
+            <p>\((A\cap B)\cap C=A\cap(B\cap C)\)</p>
+            <p>\(A\cup A=A\), \(A\cap A=A\)</p>
           </div>
-          <p>To so komutativnost, asociativnost, obe distributivnosti, De Morganova zakona, absorpciji, idempotentnost in pravili s prazno množico. Najčistejši dokaz je elementni: za poljuben \\(x\\) prevedemo pripadnost v logično formulo in uporabimo istoimensko logično enakovrednost. Na primer</p>
-          \\[x\\in(A\\cap B)^c\\iff\\neg(x\\in A\\land x\\in B)\\iff x\\in A^c\\lor x\\in B^c.\\]`
+          <p><strong>Nevtralni in absorpcijski elementi</strong></p>
+          <div class="formula-grid">
+            <p>\(A\cup\varnothing=A\), \(A\cap U=A\)</p>
+            <p>\(A\cap\varnothing=\varnothing\), \(A\cup U=U\)</p>
+            <p>\(A\cup(A\cap B)=A\)</p>
+            <p>\(A\cap(A\cup B)=A\)</p>
+          </div>
+          <p><strong>Distributivnost</strong></p>
+          \[A\cap(B\cup C)=(A\cap B)\cup(A\cap C),\]
+          \[A\cup(B\cap C)=(A\cup B)\cap(A\cup C).\]
+          <p><strong>Komplement in De Morganova zakona</strong></p>
+          <div class="formula-grid">
+            <p>\(A\cup A^c=U\), \(A\cap A^c=\varnothing\)</p>
+            <p>\((A^c)^c=A\), \(U^c=\varnothing\), \(\varnothing^c=U\)</p>
+            <p>\((A\cup B)^c=A^c\cap B^c\)</p>
+            <p>\((A\cap B)^c=A^c\cup B^c\)</p>
+          </div>
+          <p><strong>Razlika in simetrična razlika</strong></p>
+          \[A\setminus B=A\cap B^c,\qquad
+          A\triangle B=(A\cup B)\setminus(A\cap B).\]
+          <p><strong>Kako zakon dokažemo.</strong> Vzamemo poljuben \(x\), pripadnost obema stranema prevedemo v logični formuli in uporabimo ustrezno logično enakovrednost. Na primer</p>
+          \[x\in(A\cup B)^c
+          \iff\neg(x\in A\lor x\in B)
+          \iff x\in A^c\land x\in B^c.\]
+          <p><strong>Pogosta napaka.</strong> Operacije niso navadna aritmetika. Iz \(A\cup B=A\cup C\) ne smemo »krajšati \(A\)« in sklepati \(B=C\). Protiprimer: \(A=\{1,2\}\), \(B=\{1\}\), \(C=\{2\}\); obe uniji sta \(A\), toda \(B\ne C\).</p>`
         },
         {
           id: "mp-dokaz-enakosti",
@@ -529,11 +626,21 @@
           id: "mp-druzine",
           kind: "definition",
           label: "Indeksirane množice",
-          title: "Unija in presek družine",
-          html: `<p>Za družino \\(\\mathcal D\\) množic:</p>
-          \\[\\bigcup\\mathcal D=\\{x:\\exists A\\in\\mathcal D,\\ x\\in A\\},\\]
-          \\[\\bigcap\\mathcal D=\\{x:\\forall A\\in\\mathcal D,\\ x\\in A\\}.\\]
-          <p>Če je \\(\\mathcal D=\\{A_i:i\\in I\\}\\), pišemo \\(\\bigcup_{i\\in I}A_i\\) in \\(\\bigcap_{i\\in I}A_i\\). Pri uniji iščemo <em>vsaj en</em> indeks, pri preseku mora pogoj veljati za <em>vsak</em> indeks.</p>`
+          title: "Družina množic ter posplošena unija in presek",
+          html: H`<p><strong>Indeksirana družina množic</strong> je zapis \(\mathcal A=(A_i)_{i\in I}\), formalno preslikava \(i\mapsto A_i\), kjer je \(I\) indeksna množica. Vsak indeks \(i\) določa člen \(A_i\), različna indeksa pa lahko določata isto množico. Zato družina ohrani indekse in ponovitve ter nosi več podatkov kot gola množica različnih členov \(\{A_i\mid i\in I\}\).</p>
+          <p><strong>Posplošena unija</strong> vsebuje element, če ta leži v vsaj enem členu družine:</p>
+          \[x\in\bigcup_{i\in I}A_i
+          \iff\exists i\in I\;x\in A_i.\]
+          <p><strong>Posplošeni presek</strong> vsebuje element, če leži v vsakem členu:</p>
+          \[x\in\bigcap_{i\in I}A_i
+          \iff\forall i\in I\;x\in A_i.\]
+          <p><strong>Izračunan primer.</strong> Za \(A_1=\{1,2\}\), \(A_2=\{2,3\}\), \(A_3=\{2,4\}\) je</p>
+          \[\bigcup_{i=1}^3A_i=\{1,2,3,4\},\qquad
+          \bigcap_{i=1}^3A_i=\{2\}.\]
+          <p>Ob fiksnem univerzumu \(U\) uporabljamo robna dogovora \(\bigcup_{i\in\varnothing}A_i=\varnothing\) in \(\bigcap_{i\in\varnothing}A_i=U\). Drugi dogovor je odvisen od znanega univerzuma. Posplošena De Morganova zakona sta</p>
+          \[\left(\bigcup_{i\in I}A_i\right)^c=\bigcap_{i\in I}A_i^c,\qquad
+          \left(\bigcap_{i\in I}A_i\right)^c=\bigcup_{i\in I}A_i^c.\]
+          <p><strong>Pogosta napaka.</strong> Pri uniji ni treba najti enega indeksa, ki deluje za vse elemente; indeks je lahko za vsak element drugačen. Pri preseku pa ni dovolj, da element nastopi v »večini« členov — biti mora v vsakem.</p>`
         },
         {
           id: "mp-intervali",
@@ -559,25 +666,65 @@
         {
           id: "mp-potencna",
           kind: "definition",
-          label: "Konstrukcije",
-          title: "Potenčna množica in kartezični produkt",
-          html: `<p>Potenčna množica vsebuje vse podmnožice:</p>
-          \\[\\mathcal P(A)=\\{B:B\\subseteq A\\}.\\]
-          <p>Če je \\(|A|=n\\), je \\(|\\mathcal P(A)|=2^n\\), ker za vsak element neodvisno izberemo »je v podmnožici« ali »ni«.</p>
-          <p>Kartezični produkt je</p>
-          \\[A\\times B=\\{(a,b):a\\in A,\\ b\\in B\\}.\\]
-          <p>Urejena para sta enaka natanko tedaj, ko sta enaki ustrezni komponenti:</p>
-          \\[(a,b)=(c,d)\\iff a=c\\land b=d.\\]
-          <p>Vrstni red komponent je pomemben; na splošno \\(A\\times B\\ne B\\times A\\). Za končni množici velja \\(|A\\times B|=|A||B|\\). Splošni produkt \\(A_1\\times\\cdots\\times A_n\\) sestavljajo urejene n-terice \\((a_1,\\ldots,a_n)\\) z \\(a_i\\in A_i\\) za vsak i.</p>`
+          label: "Konstrukcija I",
+          title: "Potenčna množica",
+          html: H`<p><strong>Potenčna množica</strong> \(\mathcal P(A)\) je množica vseh podmnožic množice \(A\):</p>
+          \[\mathcal P(A)=\{X:X\subseteq A\}.\]
+          <p><strong>Izračunan primer.</strong> Če je \(A=\{a,b\}\), potem</p>
+          \[\mathcal P(A)=\{\varnothing,\{a\},\{b\},\{a,b\}\}.\]
+          <p>Vedno sta \(\varnothing\in\mathcal P(A)\) in \(A\in\mathcal P(A)\). Če je \(|A|=n\), velja \(|\mathcal P(A)|=2^n\), ker se za vsak element neodvisno odločimo, ali ga vključimo. Posebej \(\mathcal P(\varnothing)=\{\varnothing\}\), zato ima en element.</p>
+          <p><strong>Pogosta napaka.</strong> \(a\in A\) ni isto kot \(a\in\mathcal P(A)\). Iz \(a\in A\) sledi \(\{a\}\subseteq A\) in zato \(\{a\}\in\mathcal P(A)\), ne pa nujno \(a\in\mathcal P(A)\). Elementi potenčne množice so sami množice.</p>`
+        },
+        {
+          id: "mp-kartezicni-produkt",
+          kind: "definition",
+          label: "Konstrukcija II",
+          title: "Urejeni par in kartezični produkt",
+          html: H`<p><strong>Urejeni par</strong> razlikuje prvo in drugo komponento; velja</p>
+          \[(a,b)=(c,d)\iff a=c\land b=d.\]
+          <p><strong>Kartezični produkt</strong> je množica vseh urejenih parov s prvo komponento iz \(A\) in drugo iz \(B\):</p>
+          \[A\times B=\{(a,b):a\in A\land b\in B\}.\]
+          <p><strong>Izračunan primer.</strong> Za \(A=\{1,2\}\) in \(B=\{x,y\}\) je</p>
+          \[A\times B=\{(1,x),(1,y),(2,x),(2,y)\}.\]
+          <p>Za končni množici velja \(|A\times B|=|A||B|\). Če je katerikoli faktor prazen, je produkt prazen. Splošni produkt \(A_1\times\cdots\times A_n\) sestavljajo urejene \(n\)-terice.</p>
+          <p><strong>Pogosta napaka.</strong> Produkt na splošno ni komutativen: \(B\times A\) vsebuje pare \((x,1)\), ne \((1,x)\). Množici imata sicer pri končnih \(A,B\) enako moč, vendar praviloma nista enaki. Prav tako \((a,b)\) ni isto kot neurejena množica \(\{a,b\}\).</p>`
         },
         {
           id: "mp-preslikava",
           kind: "definition",
-          label: "Preslikave",
-          title: "Domena, kodomena in slika",
-          html: `<p>Preslikava \\(f:A\\to B\\) vsakemu \\(a\\in A\\) priredi natanko en element \\(f(a)\\in B\\). \\(A\\) je domena, \\(B\\) kodomena,</p>
-          \\[\\operatorname{Im}f=\\{f(a):a\\in A\\}\\]
-          <p>pa slika. Predslika množice \\(C\\subseteq B\\) je \\(f^{-1}(C)=\\{a\\in A:f(a)\\in C\\}\\); ta zapis ne zahteva, da je \\(f\\) obrnljiva.</p>`
+          label: "Preslikave I",
+          title: "Preslikava, domena, kodomena in graf preslikave",
+          html: H`<p>Preslikava \(f:A\to B\) vsakemu elementu \(a\in A\) priredi <strong>natanko en</strong> element \(f(a)\in B\). \(A\) je domena, \(B\) kodomena. Besedi »vsakemu« in »natanko en« sta oba nujna.</p>
+          <p>Graf preslikave je relacija</p>
+          \[\Gamma_f=\{(a,f(a)):a\in A\}\subseteq A\times B,\]
+          <p>v kateri ima vsak \(a\in A\) natanko en par s prvo komponento \(a\).</p>
+          <p><strong>Primer.</strong> Predpis \(f:\{1,2,3\}\to\{a,b,c\}\), \(f(1)=a,f(2)=a,f(3)=c\), je preslikava; različna vhoda smeta imeti isto sliko. Relacija \(\{(1,a),(1,b),(2,c)\}\) ni graf preslikave iz \(\{1,2\}\), ker ima 1 dve sliki. Relacija \(\{(1,a)\}\) prav tako ni taka preslikava, ker element 2 nima slike.</p>
+          <p><strong>Pogosta napaka.</strong> Formula sama ne določi vedno preslikave, dokler ne navedemo domene in kodomene. Predpis \(x\mapsto1/x\) ni preslikava \(\mathbb R\to\mathbb R\), je pa preslikava \(\mathbb R\setminus\{0\}\to\mathbb R\).</p>`
+        },
+        {
+          id: "mp-slika-predslika",
+          kind: "definition",
+          label: "Preslikave II",
+          title: "Slika preslikave, slika množice in predslika",
+          html: H`<p><strong>Slika preslikave</strong> je množica dejansko doseženih vrednosti:</p>
+          \[\operatorname{Im}f=f[A]=\{f(a):a\in A\}\subseteq B.\]
+          <p>Za \(X\subseteq A\) je slika množice \(X\)</p>
+          \[f[X]=\{f(x):x\in X\},\]
+          <p>za \(Y\subseteq B\) pa je njena predslika</p>
+          \[f^{-1}[Y]=\{x\in A:f(x)\in Y\}.\]
+          <p><strong>Izračunan primer.</strong> Pri \(f(1)=a,f(2)=a,f(3)=c\), \(A=\{1,2,3\}\), \(B=\{a,b,c,d\}\), velja \(\operatorname{Im}f=\{a,c\}\), \(f[\{2,3\}]=\{a,c\}\) in \(f^{-1}[\{a,d\}]=\{1,2\}\).</p>
+          <p><strong>Pogosti napaki.</strong> Slika ni nujno kodomena: tukaj sta \(b,d\in B\), vendar nista dosežena. Zapis \(f^{-1}[Y]\) za predsliko množice ne pomeni, da obstaja inverzna preslikava; predsliko ima vsaka preslikava. Inverzna preslikava obstaja šele pri bijekciji.</p>`
+        },
+        {
+          id: "mp-kompozicija-preslikav",
+          kind: "definition",
+          label: "Preslikave III",
+          title: "Identiteta, kompozicija in inverzna preslikava",
+          html: H`<p>Identična preslikava na \(A\) je \(\operatorname{id}_A(a)=a\). Če sta \(f:A\to B\) in \(g:B\to C\), je njuna kompozicija</p>
+          \[g\circ f:A\to C,\qquad (g\circ f)(a)=g(f(a)).\]
+          <p>Najprej uporabimo \(f\), nato \(g\); vrstni red zapisa je zato nasproten vrstnemu redu izvajanja. Veljata \(\operatorname{id}_B\circ f=f=f\circ\operatorname{id}_A\) in asociativnost \(h\circ(g\circ f)=(h\circ g)\circ f\).</p>
+          <p><strong>Primer.</strong> Za \(f(x)=x+1\) in \(g(x)=x^2\) je \((g\circ f)(x)=(x+1)^2\), medtem ko je \((f\circ g)(x)=x^2+1\); kompozicija praviloma ni komutativna.</p>
+          <p>Preslikava \(f:A\to B\) ima inverz \(f^{-1}:B\to A\), če velja \(f^{-1}\circ f=\operatorname{id}_A\) in \(f\circ f^{-1}=\operatorname{id}_B\). To je mogoče natanko tedaj, ko je \(f\) bijektivna.</p>`
         },
         {
           id: "mp-inj-surj",
@@ -669,12 +816,16 @@
         }
       ],
       checklist: [
-        "Razlikujem \\(\\in\\) in \\(\\subseteq\\).",
+        "Definiram pripadnost, podmnožico, pravo podmnožico, prazno in univerzalno množico ter disjunktnost.",
+        "Razlikujem \\(\\in\\), \\(\\subseteq\\), \\(\\subsetneq\\), \\(\\varnothing\\) in \\(\\{\\varnothing\\}\\).",
         "Enakost množic dokažem v obe smeri.",
-        "Znam oba De Morganova zakona.",
+        "Vsako od operacij \\(\\cup,\\cap,\\setminus,{}^c,\\triangle\\) definiram in izračunam na konkretnem primeru.",
+        "Znam ključne zakone množic, oba De Morganova zakona in elementni način dokaza.",
+        "Pri družini množic pravilno uporabim \\(\\exists\\) za unijo in \\(\\forall\\) za presek.",
         "Intervale z neskončnostjo zapišem pravilno.",
         "Znam našteti potenčno množico in kartezični produkt.",
-        "Injektivnost in surjektivnost preverjam po definiciji."
+        "Pri preslikavi ločim domeno, kodomeno, sliko, sliko podmnožice in predsliko.",
+        "Injektivnost, surjektivnost in obstoj inverza preverjam po definiciji."
       ]
     },
     {
@@ -701,19 +852,27 @@
           id: "ru-relacija",
           kind: "definition",
           label: "Definicija",
-          title: "Relacija kot množica urejenih parov",
-          html: `<p>\\(n\\)-mestna relacija na \\(A\\) je podmnožica \\(A^n\\). Dvomestna relacija je \\(R\\subseteq A\\times A\\); namesto \\((x,y)\\in R\\) pišemo \\(xRy\\).</p>
-          <p>Pri končni množici jo lahko predstavimo z usmerjenim grafom: elementi so vozlišča, lok \\(x\\to y\\) obstaja natanko tedaj, ko \\(xRy\\). Zanka pri \\(x\\) predstavlja \\(xRx\\).</p>`
+          title: "Relacija med množicama in relacija na množici",
+          html: H`<p><strong>Dvomestna relacija iz \(A\) v \(B\)</strong> je poljubna podmnožica kartezičnega produkta \(R\subseteq A\times B\). Zapis \(aRb\) je okrajšava za \((a,b)\in R\). Relacija <strong>na</strong> \(A\) je poseben primer \(R\subseteq A\times A\). Šele pri relaciji na eni množici imajo lastnosti, kot so refleksivnost, simetričnost in tranzitivnost, običajno obliko iz tega poglavja.</p>
+          <p><strong>\(n\)-mestna relacija</strong> med \(A_1,\ldots,A_n\) je podmnožica \(A_1\times\cdots\times A_n\); \(n\)-mestna relacija na \(A\) je podmnožica \(A^n\). Prazna in univerzalna relacija sta zato \(\varnothing\) ter \(A\times B\) oziroma \(A^n\), odvisno od tipa.</p>
+          <p><strong>Primer.</strong> Za \(A=\{1,2\}\), \(B=\{a,b\}\) je \(R=\{(1,a),(2,a)\}\subseteq A\times B\) relacija iz \(A\) v \(B\), ni pa relacija na \(A\). Pri končni relaciji na \(A\) lahko uporabimo usmerjen graf: elementi \(A\) so vozlišča, lok \(x\to y\) obstaja natanko tedaj, ko \(xRy\), zanka pri \(x\) pa predstavlja \(xRx\).</p>
+          <p><strong>Pogosta napaka.</strong> Relacija ni nujno preslikava. V relaciji sme element domene imeti nič, eno ali več povezanih vrednosti; graf preslikave \(A\to B\) pa mora vsakemu \(a\in A\) prirediti natanko en \(b\in B\).</p>`
         },
         {
           id: "ru-domena",
           kind: "definition",
           label: "Osnovni podatki",
           title: "Domena, zaloga vrednosti, inverz in kompozicija",
-          html: `\\[D_R=\\{x:\\exists y\\ xRy\\},\\qquad Z_R=\\{y:\\exists x\\ xRy\\}.\\]
-          <p>Polje relacije je \\(D_R\\cup Z_R\\). Inverzna relacija je določena z \\(xR^{-1}y\\iff yRx\\). Za \\(R,S\\subseteq A^2\\) definiramo</p>
-          \\[x(S\\circ R)z\\iff\\exists y\\,(xRy\\land ySz).\\]
-          <p>V grafu inverz obrne vse puščice, kompozicija pa poveže krajišči usmerjenega sprehoda dolžine 2.</p>`
+          html: H`<p>Za \(R\subseteq A\times B\) sta <strong>domena</strong> in <strong>zaloga vrednosti</strong></p>
+          \[D_R=\{a\in A:\exists b\in B\;aRb\},\qquad
+          Z_R=\{b\in B:\exists a\in A\;aRb\}.\]
+          <p>Polje relacije je \(D_R\cup Z_R\), kadar vse elemente smiselno obravnavamo v skupnem okolju. Vedno velja \(R\subseteq D_R\times Z_R\), vendar enakost praviloma ne: za \(R=\{(1,a),(2,b)\}\) je produkt večji in vsebuje tudi \((1,b)\) in \((2,a)\).</p>
+          <p><strong>Inverzna relacija</strong> obrne vse pare:</p>
+          \[R^{-1}=\{(b,a):(a,b)\in R\}\subseteq B\times A,
+          \qquad bR^{-1}a\iff aRb.\]
+          <p>Če sta \(R\subseteq A\times B\) in \(S\subseteq B\times C\), je njuna <strong>kompozicija</strong></p>
+          \[S\circ R=\{(a,c):\exists b\in B\;(aRb\land bSc)\}\subseteq A\times C.\]
+          <p>Najprej naredimo korak po \(R\), nato po \(S\). Srednja množica oziroma tip povezav mora ustrezati. Inverz ni isto kot komplement: prvi obrne komponente, drugi pa glede na izbrani produkt odstrani pare relacije.</p>`
         },
         {
           id: "ru-lastnosti1",
@@ -1463,10 +1622,10 @@
     {
       id: "oq-ir-01",
       topic: "izjavni-racun",
-      prompt: "Definiraj izjavo, izjavni izraz in določilo. Pojasni razliko med sintakso in semantiko.",
-      answer: "Izjava je smiseln povedni stavek z natanko eno logično vrednostjo 0 ali 1. Izjavni izraz je po induktivnih sintaktičnih pravilih iz konstant, izjavnih spremenljivk in veznikov zgrajena formula. Določilo priredi vsaki nastopajoči spremenljivki vrednost 0 ali 1. Sintaksa pove, kateri nizi so pravilno zgrajeni; semantika določi njihovo vrednost pri posameznem določilu.",
-      hint: "Loči vprašanje »ali je zapis dovoljen?« od vprašanja »ali je resničen?«.",
-      rubric: ["definicija izjave", "induktivna narava izjavnega izraza", "definicija določila", "sintaksa proti semantiki"],
+      prompt: H`Opredeli izjavo, izjavni izraz in določilo, nato pa na lastnih zgledih razmeji sintakso od semantike. Navedi povedni stavek, ki je izjava, zapis, ki ni izjava, ter pravilno in nepravilno zgrajen izraz; pojasni tudi, zakaj resničnost ni lastnost samega zapisa brez določila.`,
+      answer: H`<strong>Izjava</strong> je smiseln povedni stavek z natanko eno logično vrednostjo \(0\) ali \(1\); »\(2+3=5\)« je izjava, vprašanje »Koliko je ura?« in odprta poved »\(x>2\)« brez določenega \(x\) pa nista izjavi. <strong>Izjavni izraz</strong> je formula, zgrajena induktivno iz konstant \(0,1\), izjavnih spremenljivk in veznikov: če sta \(A,B\) izraza, sta na primer \(\neg A\) in \((A\land B)\) izraza. Zapis \(p\land(q\lor r)\) je pravilno zgrajen, \(\land p q\) pa v uporabljeni infiksni sintaksi ni. <strong>Določilo</strong> vsaki nastopajoči izjavni spremenljivki priredi \(0\) ali \(1\); za \(n\) različnih spremenljivk je \(2^n\) določil. Sintaksa odgovarja, ali je zapis po tvorbenih pravilih formula, semantika pa rekurzivno določi njeno vrednost pri izbranem določilu. Isti izraz \(p\Rightarrow q\) je zato pri \(p=1,q=0\) napačen, pri \(p=0,q=0\) pa resničen. Pogosta napaka je sklepati, da pravilno zgrajena formula že zato velja; pravilna zgradba ne zagotavlja tavtološkosti.`,
+      hint: H`Loči tri vprašanja: ali je stavek sploh izjava, ali je simbolni zapis pravilno zgrajen in kakšno vrednost dobi pri konkretnem določilu.`,
+      rubric: ["tri natančne definicije", "primer izjave in neizjave", "pravilen in nepravilen izraz", "ista formula pri dveh določilih"],
       difficulty: "lahko",
       source: "IzjavniRacun.pdf, str. 1–7",
       tags: ["definicije", "sintaksa"]
@@ -1542,10 +1701,10 @@
     {
       id: "oq-mp-01",
       topic: "mnozice-preslikave",
-      prompt: "Definiraj vsebovanost in enakost množic ter opiši standardni dokaz enakosti z dvojno vsebovanostjo.",
-      answer: "\\(A\\subseteq B\\) pomeni \\(\\forall x(x\\in A\\Rightarrow x\\in B)\\). Množici sta enaki, če imata iste elemente, oziroma če veljata obe vsebovanosti. V prvem delu vzamemo poljuben \\(x\\in A\\) in izpeljemo \\(x\\in B\\); v drugem zamenjamo vlogi. Šele oba dela dovolita sklep \\(A=B\\).",
-      hint: "Enakost množic je ekvivalenca pogojev za pripadnost.",
-      rubric: ["formalna definicija vsebovanosti", "ekstenzionalnost", "prva smer", "druga smer"],
+      prompt: H`Definiraj pripadnost, podmnožico, pravo podmnožico in enakost množic ter razloži vlogo prazne in univerzalne množice. Na konkretnem primeru razmeji \(\in\) od \(\subseteq\), \(\varnothing\) od \(\{\varnothing\}\), nato pa opiši popoln dokaz enakosti z dvojno vsebovanostjo.`,
+      answer: H`Zapis \(x\in A\) pomeni, da je \(x\) element \(A\). Vsebovanost je \(A\subseteq B\iff\forall x(x\in A\Rightarrow x\in B)\); prava vsebovanost \(A\subsetneq B\) zahteva še \(A\ne B\). Po načelu ekstenzionalnosti velja \(A=B\iff\forall x(x\in A\Leftrightarrow x\in B)\), ekvivalentno \(A\subseteq B\land B\subseteq A\). Prazna množica \(\varnothing\) nima elementov in je podmnožica vsake množice, univerzalna množica \(U\) pa je kontekstno izbrana množica vseh obravnavanih objektov. Za \(A=\{1,2\}\), \(B=\{1,2,3\}\) veljajo \(1\in A\), \(\{1\}\subseteq A\), \(\{1\}\notin A\) in \(A\subsetneq B\). Zapisa \(1\subseteq A\) ne smemo zamenjati z \(1\in A\): če števila obravnavamo kot osnovne objekte, ga ne uporabljamo; v von Neumannovi konstrukciji je smiseln, a tukaj napačen, ker je \(1=\{\varnothing\}\) in \(\varnothing\notin A\). \(\varnothing\ne\{\varnothing\}\), saj ima prva nič, druga en element. Za dokaz \(X=Y\) vzamemo najprej poljuben \(x\in X\) in iz definicij izpeljemo \(x\in Y\), nato ločeno vzamemo poljuben \(x\in Y\) in izpeljemo \(x\in X\). Šele obe vsebovanosti dovolita sklep \(X=Y\); slika Vennovega diagrama sama ni formalni dokaz.`,
+      hint: H`Pri vsakem simbolu povej, kakšne vrste objekt stojijo na levi in desni; pri enakosti napiši dva ločena univerzalna argumenta.`,
+      rubric: ["štiri formalne definicije", "prazna in univerzalna množica", "ločitev pripadnosti od vsebovanosti", "dvojna vsebovanost"],
       difficulty: "lahko",
       source: "MnozRel.pdf, razdelek 3.1",
       tags: ["dokaz", "vsebovanost"]
@@ -1868,10 +2027,10 @@
     {
       id: "oq-pr-09",
       topic: "predikatni-racun",
-      prompt: H`Razloži razliko med jezikom, interpretacijo, formulo in izjavo predikatnega računa. Zakaj ista formula v dveh interpretacijah nima nujno iste vrednosti?`,
-      answer: H`Jezik določi nelogične simbole: konstante, funkcijske simbole in predikate z njihovimi mestnostmi; logični simboli so vezniki, kvantifikatorji, spremenljivke in enakost. Formula je sintaktično pravilno zgrajen zapis v tem jeziku. Interpretacija izbere neprazno področje pogovora \(U\), vsaki konstanti priredi element \(U\), funkcijskemu simbolu ustrezno funkcijo in \(k\)-mestnemu predikatu relacijo na \(U^k\); prostim spremenljivkam mora prirediti še vrednosti. Zaprta formula brez prostih spremenljivk je v dani interpretaciji izjava in ima določeno resničnostno vrednost. Ista formula lahko spremeni vrednost, ker interpretacija spremeni pomen simbolov. Formula \(\forall x P(x)\) je na \(U=\mathbb N\) resnična, če \(P(x)\) pomeni \(x=x\), in napačna, če pomeni \(x<0\). Zato splošna veljavnost zahteva resničnost v vseh interpretacijah, ne le v enem izbranem modelu. Pogosta napaka je govoriti o resničnosti odprte formule, ne da bi podali vrednosti njenih prostih spremenljivk.`,
-      hint: H`Sintaksa pove zapis; interpretacija mu priredi matematični pomen.`,
-      rubric: ["jezik in formula", "vsi deli interpretacije", "zaprta proti odprti formuli", "dve interpretaciji iste formule"],
+      prompt: H`Razloži razliko med jezikom, termom, predikatskim simbolom, atomsko formulo, odprto in zaprto formulo ter interpretacijo. Sestavi lasten pravilen in napačen zapis, nato pa isto zaprto formulo interpretiraj enkrat kot resnično in enkrat kot neresnično.`,
+      answer: H`Jezik določi konstante, funkcijske simbole in predikatske simbole z njihovimi mestnostmi; logični del vsebuje veznike, kvantifikatorja, spremenljivke in navadno enakost. <strong>Term</strong> poimenuje objekt: \(x\), \(c\) in \(f(x,c)\) so termi v ustreznem jeziku. \(k\)-mestni predikatski simbol iz \(k\) termov sestavi <strong>atomsko formulo</strong>, na primer \(R(f(x),c)\); iz atomov z vezniki in kvantifikatorji gradimo formule. Zapis \(R(x,c)\land P(f(x))\) je pravilen, če sta \(R\) dvomesten in \(P\) enomesten, \(R(x)\) pa je napačen zaradi napačne mestnosti. Formula je odprta, če ima prosto spremenljivko, in zaprta, če so vse pojavitve vezane; šele zaprta formula dobi v dani interpretaciji vrednost brez dodatne prireditve spremenljivkam. Interpretacija izbere neprazen univerzum \(U\), konstantam priredi elemente, funkcijskim simbolom funkcije in predikatom relacije ustreznih mestnosti. Za \(F=\forall xP(x)\) dobimo resnično interpretacijo na \(U=\mathbb N\), če \(P(x)\) pomeni \(x=x\), ter neresnično, če pomeni \(x<0\); protiprimer je \(x=0\). Isti sintaktični zapis torej nima stalne vrednosti, dokler ne določimo pomena nelogičnih simbolov. Pogosti napaki sta zamenjava predikatskega simbola z njegovo interpretacijo ter presojanje odprte formule brez prireditve prostim spremenljivkam.`,
+      hint: H`Najprej razvrsti zapise na »poimenuje objekt« in »trdi nekaj o objektih«, nato loči sintakso od izbranega pomena simbolov.`,
+      rubric: ["jezik, term, predikat in atom", "odprta ter zaprta formula", "pravilen in nepravilen zapis", "popolni nasprotni interpretaciji"],
       difficulty: "srednje",
       source: "ADM-Predikati.pdf, razdelka 2.1–2.2",
       tags: ["jezik", "interpretacija", "semantika"]
@@ -2053,6 +2212,179 @@
       difficulty: "težko",
       source: "MnozRel.pdf, Trditev 4.4",
       tags: ["ekvivalenčni razred", "karakterizacija", "dokaz"]
+    },
+    {
+      id: "oq-ir-15",
+      topic: "izjavni-racun",
+      prompt: H`Za izjavni spremenljivki \(p,q\) besedno in formalno opredeli negacijo, konjunkcijo, disjunkcijo, implikacijo in ekvivalenco. Nato sestavi popolno resničnostno tabelo formule \(F=(p\Rightarrow q)\Leftrightarrow(\neg q\Rightarrow\neg p)\), jo razvrsti ter s konkretnim določilom pojasni razliko med vključujočim in izključujočim »ali«.`,
+      answer: H`Negacija \(\neg p\) obrne vrednost \(p\). Konjunkcija \(p\land q\) je resnična natanko pri \(p=q=1\); vključujoča disjunkcija \(p\lor q\) je resnična, ko je resničen vsaj eden, tudi oba; implikacija \(p\Rightarrow q\) je napačna samo pri \(p=1,q=0\); ekvivalenca \(p\Leftrightarrow q\) pa je resnična pri enakih vrednostih. Zahtevana tabela je
+      \[
+      \begin{array}{c|c|c|c|c}
+      p&q&p\Rightarrow q&\neg q\Rightarrow\neg p&F\\\hline
+      0&0&1&1&1\\
+      0&1&1&1&1\\
+      1&0&0&0&1\\
+      1&1&1&1&1
+      \end{array}
+      \]
+      Končna stolpca obeh implikacij se ujemata, zato je \(F\) tavtologija; to je zakon kontrapozicije \(p\Rightarrow q\equiv\neg q\Rightarrow\neg p\). Izraz je torej tudi izpolnljiv, ni pa kontingenten ali protisloven. Vključujoči »ali« in ekskluzivni »ali« loči določilo \(p=q=1\): tedaj je \(p\lor q=1\), medtem ko je \(p\mathbin{\veebar}q=0\). Pogosta napaka je razglasiti implikacijo z napačno premiso za napačno; v prvih dveh vrsticah je \(p\Rightarrow q\) resnična prav zato, ker je \(p=0\).`,
+      hint: H`Najprej izračunaj oba stolpca implikacij; ekvivalenca nato samo preveri, ali sta vrednosti enaki.`,
+      rubric: ["pet pravilnih pomenskih definicij", "vse štiri vrstice tabele", "pravilna klasifikacija in kontrapozicija", "določilo, ki loči obe disjunkciji"],
+      difficulty: "srednje",
+      source: "IzjavniRacun.pdf, razdelki 1.2–1.4",
+      tags: ["resničnostna tabela", "vezniki", "kontrapozicija"]
+    },
+    {
+      id: "oq-ir-16",
+      topic: "izjavni-racun",
+      prompt: H`Razvrsti osnovne logične enakovrednosti v smiselne skupine in z njimi brez resničnostne tabele dokaži \(\neg(p\Rightarrow q)\lor(p\land q)\equiv p\). Nato presodi trditev, da iz \(p\lor q\equiv p\lor r\) vedno sledi \(q\equiv r\), in svojo presojo utemelji s formalnim protiprimerom.`,
+      answer: H`Med osnovne skupine sodijo: dvojna negacija; komutativnost in asociativnost \(\land,\lor\); idempotentnost \(p\land p\equiv p\), \(p\lor p\equiv p\); distributivnost obeh operacij; absorpciji \(p\lor(p\land q)\equiv p\) in \(p\land(p\lor q)\equiv p\); De Morganova zakona; izključena tretja možnost \(p\lor\neg p\equiv1\) in protislovnost \(p\land\neg p\equiv0\); nevtralna in dominantna pravila z \(0,1\); ter pravili za odpravo
+      \[
+      p\Rightarrow q\equiv\neg p\lor q,\qquad
+      p\Leftrightarrow q\equiv(p\Rightarrow q)\land(q\Rightarrow p).
+      \]
+      Zahtevani račun je
+      \[
+      \begin{aligned}
+      \neg(p\Rightarrow q)\lor(p\land q)
+      &\equiv\neg(\neg p\lor q)\lor(p\land q)\\
+      &\equiv(p\land\neg q)\lor(p\land q)\\
+      &\equiv p\land(\neg q\lor q)\\
+      &\equiv p\land1\equiv p.
+      \end{aligned}
+      \]
+      Uporabljeni so odprava implikacije, De Morgan in dvojna negacija, distributivnost, zakon izključene tretje možnosti ter nevtralnost enice. Predlagano krajšanje pri disjunkciji ni veljaven zakon. Vzemi formuli \(q:=0\) in \(r:=p\). Tedaj sta \(p\lor0\equiv p\) in \(p\lor p\equiv p\), zato sta levi strani enakovredni, toda \(0\not\equiv p\), saj pri \(p=1\) dobita različni vrednosti. Logične operacije torej na splošno nimajo aritmetičnega zakona krajšanja.`,
+      hint: H`Implikacijo najprej odpravi, negacijo potisni navznoter in izpostavi skupni faktor \(p\). Za protiprimer izberi dva različna izraza, ki ju disjunkcija s \(p\) »prekrije«.`,
+      rubric: ["smiselno urejen seznam zakonov", "popolna veriga z imeni zakonov", "jasna zavrnitev krajšanja", "določilo, ki pokaže neenakovrednost q in r"],
+      difficulty: "težko",
+      source: "IzjavniRacun.pdf, razdelek 1.4",
+      tags: ["logični zakoni", "dokaz enakovrednosti", "protiprimer"]
+    },
+    {
+      id: "oq-pr-16",
+      topic: "predikatni-racun",
+      prompt: H`Naj \(S(x)\) pomeni »\(x\) je študent«, \(M(y)\) »\(y\) je mentor« in \(H(x,y)\) »\(y\) mentorira \(x\)«. Formaliziraj izjavi »vsak študent ima natanko enega mentorja« in »obstaja natanko en mentor, ki mentorira vse študente«. Nato zgradi popolno končno interpretacijo, v kateri je prva izjava resnična, druga pa neresnična, in razloži razliko med njunima kvantifikatorskima zgradbama.`,
+      answer: H`Prvo izjavo lahko zapišemo
+      \[
+      \forall x\Bigl(S(x)\Rightarrow
+      \exists y\bigl(M(y)\land H(x,y)\land
+      \forall z((M(z)\land H(x,z))\Rightarrow z=y)\bigr)\Bigr).
+      \]
+      Eksistenčni del zagotovi mentorja za izbranega študenta, zadnji univerzalni pogoj pa njegovo enoličnost. Druga izjava je
+      \[
+      \exists y\Bigl(M(y)\land
+      \forall x(S(x)\Rightarrow H(x,y))\land
+      \forall z\bigl((M(z)\land\forall x(S(x)\Rightarrow H(x,z)))\Rightarrow z=y\bigr)\Bigr).
+      \]
+      Vzemimo \(U=\{\text{Ana},\text{Borut},\text{Maja},\text{Niko}\}\), \(S=\{\text{Ana},\text{Borut}\}\), \(M=\{\text{Maja},\text{Niko}\}\) in
+      \[
+      H=\{(\text{Ana},\text{Maja}),(\text{Borut},\text{Niko})\}.
+      \]
+      Ana ima natanko mentorico Majo, Borut natanko mentorja Nika, zato je prva formula resnična. Druga je napačna: Maja ne mentorira Boruta, Niko ne mentorira Ane, druga kandidata pa po interpretaciji nista mentorja. Pri prvi formuli je priča \(y\) izbrana znotraj dosega posameznega \(x\) in sme biti od njega odvisna; pri drugi moramo najprej izbrati en sam \(y\), ki deluje za vse študente. »Natanko eden« vedno pomeni obstoj in enoličnost; zgolj \(\exists y\) ne prepreči dveh mentorjev.`,
+      hint: H`»Natanko eden« razdeli na obstoj priče in pogoj, da je vsak drug ustrezen kandidat enak tej priči.`,
+      rubric: ["pravilna formula za individualno enoličnost", "pravilna formula za skupnega enoličnega mentorja", "vsi deli interpretacije", "ločena presoja obeh formul"],
+      difficulty: "težko",
+      source: "ADM-Predikati.pdf, razdelki 2.2–2.4",
+      tags: ["enolični obstoj", "formalizacija", "interpretacija"]
+    },
+    {
+      id: "oq-pr-17",
+      topic: "predikatni-racun",
+      prompt: H`Presodi sklep \(\forall x(P(x)\Rightarrow Q(x)),\ \exists x(P(x)\land R(x)),\ \forall x(R(x)\Rightarrow S(x))\models\exists x(Q(x)\land S(x))\). Dokaži ali ovrzi ga neposredno iz semantike, negiraj zaključek do atomov in nato preveri, ali sklep ostane veljaven, če srednjo premiso zamenjamo z \((\exists xP(x))\land(\exists xR(x))\).`,
+      answer: H`Prvotni sklep je veljaven. V poljubni interpretaciji, kjer so vse premise resnične, druga premisa da eno in isto pričo \(c\) s \(P(c)\land R(c)\). Iz prve univerzalne premise pri \(c\) dobimo \(P(c)\Rightarrow Q(c)\), zato \(Q(c)\). Iz tretje analogno dobimo \(S(c)\). Torej velja \(Q(c)\land S(c)\), zato je \(c\) priča za \(\exists x(Q(x)\land S(x))\). Negacija zaključka je
+      \[
+      \neg\exists x(Q(x)\land S(x))
+      \equiv\forall x\neg(Q(x)\land S(x))
+      \equiv\forall x(\neg Q(x)\lor\neg S(x)).
+      \]
+      Po zamenjavi srednje premise sklep ni več veljaven, ker eksistenci smeta imeti različni priči. Protimodel: \(U=\{a,b\}\), \(P=\{a\}\), \(Q=\{a\}\), \(R=\{b\}\), \(S=\{b\}\). Implikaciji \(P\Rightarrow Q\) in \(R\Rightarrow S\) veljata za vsak element, \(\exists xP(x)\) ima pričo \(a\), \(\exists xR(x)\) pričo \(b\), toda nihče ni hkrati v \(Q\) in \(S\). Zato je zaključek napačen. Napaka bi bila dve ločeni eksistenčni priči brez razloga poimenovati z istim elementom.`,
+      hint: H`V prvem sklepu ohrani pričo iz konjunkcije; po zamenjavi namenoma izberi različni priči za \(P\) in \(R\).`,
+      rubric: ["semantični dokaz z isto pričo", "pravilna negacija zaključka", "popoln dvodelni protimodel", "razlaga napake z različnima pričama"],
+      difficulty: "težko",
+      source: "ADM-Predikati.pdf, razdelki 2.3–2.5",
+      tags: ["logična posledica", "priča", "protimodel"]
+    },
+    {
+      id: "oq-mp-15",
+      topic: "mnozice-preslikave",
+      prompt: H`Naj bodo \(U=\{1,2,3,4,5,6\}\), \(A=\{1,2,4\}\) in \(B=\{2,3,4,5\}\). Besedno in formalno definiraj unijo, presek, razliko, komplement glede na \(U\) ter simetrično razliko; vseh pet operacij dejansko izračunaj. Nato preveri en De Morganov zakon in ovrzi trditvi \(A\cup B=A\triangle B\) ter \(A\setminus B=B\setminus A\).`,
+      answer: H`Definicije in rezultati so:
+      \[
+      \begin{aligned}
+      A\cup B&=\{x:x\in A\lor x\in B\}=\{1,2,3,4,5\},\\
+      A\cap B&=\{x:x\in A\land x\in B\}=\{2,4\},\\
+      A\setminus B&=\{x:x\in A\land x\notin B\}=\{1\},\\
+      B\setminus A&=\{3,5\},\\
+      A^c&=U\setminus A=\{3,5,6\},\qquad
+      B^c=U\setminus B=\{1,6\},\\
+      A\triangle B&=(A\setminus B)\cup(B\setminus A)=\{1,3,5\}.
+      \end{aligned}
+      \]
+      Unija vsebuje elemente vsaj ene množice, presek skupne elemente, razlika elemente prve brez elementov druge, komplement vse elemente izbranega univerzuma zunaj množice, simetrična razlika pa elemente natanko ene množice. De Morganov zakon se na primeru preveri kot
+      \[
+      (A\cup B)^c=\{6\}=A^c\cap B^c.
+      \]
+      Splošni dokaz izhaja iz \(\neg(x\in A\lor x\in B)\iff x\notin A\land x\notin B\). Prva napačna trditev odpove zaradi skupnih elementov: \(2,4\in A\cup B\), vendar \(2,4\notin A\triangle B\). Druga odpove, ker sta izračuna \(\{1\}\) in \(\{3,5\}\) različna; razlika ni komutativna. Simetrična razlika je tudi \((A\cup B)\setminus(A\cap B)\). Komplement brez navedbe \(U\) ni določen, saj bi večji univerzum dodal nove elemente komplementu.`,
+      hint: H`Za vsak element univerzuma preveri dva pogoja pripadnosti; pri simetrični razliki obdrži natanko eno resnično pripadnost.`,
+      rubric: ["pet besednih in formalnih definicij", "vsi pravilni izračuni", "preverjen De Morgan", "dva konkretna protiprimera"],
+      difficulty: "srednje",
+      source: "MnozRel.pdf, razdelka 3.1–3.2",
+      tags: ["operacije množic", "De Morgan", "protiprimer"]
+    },
+    {
+      id: "oq-mp-16",
+      topic: "mnozice-preslikave",
+      prompt: H`Za \(A=\{a,b\}\) in \(B=\{0,1,2\}\) izpiši \(\mathcal P(A)\) in \(A\times B\) ter utemelji njuni moči. Nato relacijo \(f=\{(a,0),(b,0)\}\subseteq A\times B\) obravnavaj kot kandidatko za preslikavo \(A\to B\): določi domeno, kodomeno, sliko, \(f[\{b\}]\), \(f^{-1}[\{0,2\}]\), injektivnost, surjektivnost in obstoj inverza. Nazadnje pojasni, zakaj \(R=\{(a,0),(a,1),(b,2)\}\) ni graf take preslikave.`,
+      answer: H`Potenčna množica vsebuje vse podmnožice:
+      \[
+      \mathcal P(A)=\{\varnothing,\{a\},\{b\},\{a,b\}\},\qquad
+      |\mathcal P(A)|=2^{|A|}=2^2=4.
+      \]
+      Kartezični produkt vsebuje urejene pare:
+      \[
+      A\times B=\{(a,0),(a,1),(a,2),(b,0),(b,1),(b,2)\},\qquad
+      |A\times B|=|A||B|=2\cdot3=6.
+      \]
+      Relacija \(f\) je graf preslikave \(A\to B\), ker se vsak element \(A\) pojavi kot prva komponenta natanko enkrat. Domena je \(A\), podana kodomena je \(B\), slika pa \(\operatorname{Im}f=\{0\}\). Veljata \(f[\{b\}]=\{0\}\) in \(f^{-1}[\{0,2\}]=\{a,b\}\), saj se oba elementa preslikata v 0, nihče pa v 2. Preslikava ni injektivna, ker \(a\ne b\), vendar \(f(a)=f(b)\); ni surjektivna, ker 1 in 2 nimata predslike; zato ni bijektivna in inverzna preslikava \(B\to A\) ne obstaja. Predslika množice kljub temu obstaja pri vsaki preslikavi in je ne smemo zamenjati z inverzno funkcijo. \(R\) ni graf preslikave \(A\to B\), ker ima \(a\) dve različni sliki, 0 in 1; pogoj »natanko ena slika za vsak vhod« je kršen. Element \(a\in A\) tudi ni isto kot podmnožica \(\{a\}\in\mathcal P(A)\), produkt pa ni potenčna množica, saj so njegovi elementi urejeni pari.`,
+      hint: H`Pri grafu preslikave preglej prve komponente: vsak element domene se mora pojaviti, vendar z natanko eno drugo komponento.`,
+      rubric: ["popolna potenčna množica in produkt", "domena, kodomena, slika ter obe množični sliki", "tri pravilne lastnosti preslikave", "natančen razlog, zakaj R ni graf"],
+      difficulty: "srednje",
+      source: "MnozRel.pdf, razdelki 3.5–3.7",
+      tags: ["potenčna množica", "kartezični produkt", "preslikava"]
+    },
+    {
+      id: "oq-ru-17",
+      topic: "relacije-urejenosti",
+      prompt: H`Na \(A=\{1,2,3\}\) obravnavaj relacije \(S=\{(1,2),(2,1)\}\), \(T=\{(1,2),(2,3),(1,3)\}\) in \(I_A=\{(1,1),(2,2),(3,3)\}\). Najprej formalno razloči simetričnost, asimetričnost in antisimetričnost, nato vsako od treh relacij razvrsti glede na te lastnosti. Na podlagi razvrstitve presodi trditev »simetrična relacija je asimetrična« in natančno pojasni, kdaj je relacija lahko hkrati simetrična in asimetrična.`,
+      answer: H`Definicije so
+      \[
+      \begin{aligned}
+      R\text{ simetrična}&\iff\forall x,y\;(xRy\Rightarrow yRx),\\
+      R\text{ asimetrična}&\iff\forall x,y\;(xRy\Rightarrow\neg yRx),\\
+      R\text{ antisimetrična}&\iff\forall x,y\;((xRy\land yRx)\Rightarrow x=y).
+      \end{aligned}
+      \]
+      \(S\) je simetrična, ker sta prisotni obe smeri edine povezave. Ni asimetrična in ni antisimetrična, saj \(1S2\) in \(2S1\), čeprav \(1\ne2\). \(T\) je asimetrična: nobena puščica nima obrata; zato je tudi antisimetrična. Ni simetrična, ker \(1T2\), vendar ne \(2T1\). Relacija \(I_A\) je simetrična, ker obrat zanke ostane ista zanka, in antisimetrična, ker se obojestranska zveza pojavi le pri enakih elementih. Ni asimetrična, saj že \(1I_A1\) zahteva po asimetričnosti \(\neg(1I_A1)\). Trditev, da simetričnost implicira asimetričnost, je torej napačna; protiprimera sta \(S\) in \(I_A\). Če je \(R\) hkrati simetrična in asimetrična ter bi veljal kak par \(xRy\), bi simetričnost dala \(yRx\), asimetričnost pa \(\neg yRx\), kar je protislovje. Zato mora biti \(R=\varnothing\). Obratno je prazna relacija vakuozno simetrična in asimetrična, na praznem ali nepraznem univerzumu. Antisimetričnost ni »nasprotje simetričnosti«: identiteta kaže, da lahko veljata obe.`,
+      hint: H`Pri vsakem obstoječem paru vprašaj: ali je obrat zahtevan, prepovedan ali dovoljen samo na diagonali?`,
+      rubric: ["tri formalne definicije", "popolna klasifikacija S, T in identitete", "konkreten protiprimer implikaciji", "dokaz karakterizacije prazne relacije"],
+      difficulty: "težko",
+      source: "MnozRel.pdf, razdelek 4.1; teoreticni_izpiti/teorijski roki, lastnosti relacij",
+      tags: ["simetričnost", "asimetričnost", "antisimetričnost"]
+    },
+    {
+      id: "oq-ru-18",
+      topic: "relacije-urejenosti",
+      prompt: H`Na \(A=\{1,2,3,6\}\) definiraj \(xRy\iff x\mid y\). Izpiši vse pare relacije in jo klasificiraj glede na refleksivnost, irefleksivnost, simetričnost, asimetričnost, antisimetričnost, tranzitivnost, sovisnost in strogo sovisnost. Za vsako negativno presojo navedi konkreten protiprimer, nato določi, ali gre za delno ali linearno urejenost, ter poišči najmanjši, največji, minimalne in maksimalne elemente.`,
+      answer: H`Relacija je
+      \[
+      R=\{(1,1),(1,2),(1,3),(1,6),(2,2),(2,6),(3,3),(3,6),(6,6)\}.
+      \]
+      Je refleksivna, ker vsako pozitivno celo število deli samo sebe, zato ni irefleksivna; protiprimer irefleksivnosti je \(2R2\). Ni simetrična, saj \(1R2\), ne pa \(2R1\). Ni asimetrična, ker vsebuje zanke, na primer \(1R1\). Je antisimetrična: če \(x\mid y\) in \(y\mid x\) za pozitivna \(x,y\), potem \(x=y\). Je tranzitivna, ker iz \(x\mid y\) in \(y\mid z\) sledi \(x\mid z\). Ni sovisna, saj različna 2 in 3 nista primerljiva: niti \(2\mid3\) niti \(3\mid2\). Zato tudi ni strogo sovisna; isti par je protiprimer, če stroga sovisnost zahteva \(xRy\lor yRx\) za vse \(x,y\). Refleksivnost, antisimetričnost in tranzitivnost pomenijo, da je \(R\) delna urejenost; zaradi neprimerljivosti 2 in 3 ni linearna. Element 1 je najmanjši, ker deli vse elemente \(A\), 6 je največji, ker ga vsi elementi \(A\) delijo. Zato je edini minimalni element 1 in edini maksimalni element 6. V Hassejevem diagramu so pokritja \(1\prec2\), \(1\prec3\), \(2\prec6\) in \(3\prec6\); povezava \(1\prec6\) se izpusti zaradi tranzitivnosti. Pogosta napaka je iz nesimetričnosti sklepati asimetričnost: zanke tukaj asimetričnost takoj preprečijo.`,
+      hint: H`Najprej naštej deliteljske pare; nato pri vsaki lastnosti uporabi definicijo in za napačno poišči najkrajši nasprotni vzorec.`,
+      rubric: ["vseh devet parov", "vseh osem pravilnih klasifikacij", "delna proti linearni urejenosti", "ekstremni elementi in utemeljitev"],
+      difficulty: "težko",
+      source: "MnozRel.pdf, razdelka 4.1 in 4.4",
+      tags: ["klasifikacija relacije", "deljivost", "delna urejenost"]
     }
   ];
 
