@@ -1,0 +1,19 @@
+# Ta repozitorij objavlja samo spletno aplikacijo.
+# PDF-ji, vaje, izvlečki, slike in druge lokalne datoteke ostanejo na računalniku.
+*
+!.gitignore
+!.github/
+!.github/**
+!adm-izpitna-priprava/
+!adm-izpitna-priprava/**
+
+# Za prikaz formul potrebujemo le minificirani KaTeX, samodejni izris,
+# licenco in pisave, na katere se produkcijski CSS neposredno sklicuje.
+adm-izpitna-priprava/vendor/katex/**
+!adm-izpitna-priprava/vendor/katex/LICENSE
+!adm-izpitna-priprava/vendor/katex/katex.min.css
+!adm-izpitna-priprava/vendor/katex/katex.min.js
+!adm-izpitna-priprava/vendor/katex/contrib/
+!adm-izpitna-priprava/vendor/katex/contrib/auto-render.min.js
+!adm-izpitna-priprava/vendor/katex/fonts/
+!adm-izpitna-priprava/vendor/katex/fonts/**

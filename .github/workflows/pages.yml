@@ -1,0 +1,40 @@
+name: Objavi spletno pripravo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prevzemi repozitorij
+        uses: actions/checkout@v7
+
+      - name: Preveri vsebino in matematične formule
+        run: node adm-izpitna-priprava/validate.cjs
+
+      - name: Nastavi GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Zapakiraj samo spletno aplikacijo
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: adm-izpitna-priprava
+
+      - name: Objavi stran
+        id: deployment
+        uses: actions/deploy-pages@v5
