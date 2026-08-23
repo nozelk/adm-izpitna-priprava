@@ -1814,7 +1814,7 @@
     {
       id: "oq-ir-06",
       topic: "izjavni-racun",
-      prompt: "Vprašanje iz teorijskega izpita: kdaj je sklep \\(A_1,\\ldots,A_k\\models B\\) veljaven? Navedi veljaven in neveljaven zgled ter oba popolnoma utemelji.",
+      prompt: "Kdaj je sklep \\(A_1,\\ldots,A_k\\models B\\) veljaven? Navedi veljaven in neveljaven zgled ter oba popolnoma utemelji.",
       answer: "Sklep je veljaven natanko tedaj, ko je \\((A_1\\land\\cdots\\land A_k)\\Rightarrow B\\) tavtologija; ekvivalentno ne obstaja določilo, pri katerem so vse premise resnične, zaključek pa napačen. Veljaven zgled je \\(p,p\\Rightarrow q\\models q\\): pri resničnih premisah modus ponens prisili \\(q=1\\). Neveljaven zgled je \\(p\\Rightarrow q,q\\models p\\). Določilo \\(p=0,q=1\\) naredi obe premisi resnični, zaključek \\(p\\) pa napačen, zato je to popoln protiprimer.",
       hint: "Definicija zahteva kvantifikacijo čez vsa določila; neveljavnost dokaže ena sama prava vrstica.",
       rubric: ["pripadajoča implikacija", "semantična razlaga", "veljaven zgled z razlogom", "neveljaven zgled s konkretnim določilom"],
@@ -1825,7 +1825,7 @@
     {
       id: "oq-ir-07",
       topic: "izjavni-racun",
-      prompt: "Vprašanje iz teorijskega izpita: presodi tavtološkost formul \\((p\\land q)\\Rightarrow(p\\lor q)\\), \\(\\neg(p\\Rightarrow q)\\Leftrightarrow(\\neg p\\Rightarrow\\neg q)\\) in \\((p\\land(p\\Rightarrow q))\\Leftrightarrow q\\).",
+      prompt: "Presodi tavtološkost formul \\((p\\land q)\\Rightarrow(p\\lor q)\\), \\(\\neg(p\\Rightarrow q)\\Leftrightarrow(\\neg p\\Rightarrow\\neg q)\\) in \\((p\\land(p\\Rightarrow q))\\Leftrightarrow q\\). Vsako presojo dokaži ali ovrzi s konkretnim določilom.",
       answer: "Prva formula je tavtologija: resničnost \\(p\\land q\\) že zagotovi \\(p\\lor q\\), pri napačnem antecedentu pa je implikacija resnična. Druga ni tavtologija: pri \\(p=0,q=0\\) ima leva stran ekvivalence vrednost 0, desna 1. Tretja ni tavtologija: pri \\(p=0,q=1\\) je \\(p\\land(p\\Rightarrow q)=0\\), medtem ko je \\(q=1\\).",
       hint: "Za netavtologijo zadostuje eno določilo z vrednostjo 0.",
       rubric: ["prva formula pravilno označena", "splošni dokaz prve", "pravilen protiprimer druge", "pravilen protiprimer tretje"],
@@ -1848,7 +1848,7 @@
     {
       id: "oq-pr-06",
       topic: "predikatni-racun",
-      prompt: "Vprašanje iz teorijskega izpita: na premicah v ravnini naj \\(P(x,y)\\) pomeni pravokotnost, \\(Q(x,y)\\) vzporednost. Zapiši štiri zahtevane trditve.",
+      prompt: "Naj bo področje pogovora množica vseh premic v ravnini. \\(P(x,y)\\) naj pomeni »premica \\(x\\) je pravokotna na premico \\(y\\)«, \\(Q(x,y)\\) pa »premica \\(x\\) je vzporedna premici \\(y\\)«. S kvantifikatorji formaliziraj vse štiri izjave: vsaka premica je vzporedna sama sebi; nobena premica ni pravokotna sama nase; vsaka premica ima vsaj eno pravokotnico; če je neka premica pravokotna na dve premici, sta ti dve premici vzporedni.",
       answer: "Vsaka premica je vzporedna sama sebi: \\(\\forall xQ(x,x)\\). Nobena ni pravokotna sama nase: \\(\\forall x\\neg P(x,x)\\). Vsaka premica ima pravokotnico: \\(\\forall x\\exists yP(x,y)\\). Če je neka premica pravokotna na drugi dve, sta slednji vzporedni: \\(\\forall x\\forall y\\forall z((P(x,y)\\land P(x,z))\\Rightarrow Q(y,z))\\).",
       hint: "V zadnji izjavi je \\(x\\) skupna pravokotnica, \\(y,z\\) sta primerjani premici.",
       rubric: ["refleksivnost Q", "irefleksivnost P", "pravilen vrstni red za obstoj pravokotnice", "tri univerzalni kvantifikatorji in implikacija"],
@@ -1859,8 +1859,8 @@
     {
       id: "oq-pr-07",
       topic: "predikatni-racun",
-      prompt: "Zbirka zahteva resnično in neresnično interpretacijo formule \\(\\forall x\\exists y(P(y,x)\\Rightarrow P(x,y))\\). Ali je zahteva za zapisano formulo izvedljiva?",
-      answer: "Ne. Formula je splošno veljavna na vsakem nepraznem področju pogovora. Za poljuben \\(x\\) izberemo \\(y=x\\); jedro postane \\(P(x,x)\\Rightarrow P(x,x)\\), ki je vedno resnično. Zato resnično interpretacijo lahko navedemo poljubno, neresnična pa ne obstaja. Natisnjeno vprašanje mora vsebovati tipkarsko napako ali manjkajoči pogoj, na primer \\(y\\ne x\\).",
+      prompt: "Naj bo \\(P\\) poljuben dvomestni predikat na nepraznem področju pogovora. Presodi, ali obstajata resnična in neresnična interpretacija formule \\(\\forall x\\exists y(P(y,x)\\Rightarrow P(x,y))\\). Če katera ne obstaja, to dokaži; sicer podaj popoln model.",
+      answer: "Ne. Formula je splošno veljavna na vsakem nepraznem področju pogovora. Za poljuben \\(x\\) izberemo \\(y=x\\); jedro postane \\(P(x,x)\\Rightarrow P(x,x)\\), ki je vedno resnično. Zato lahko navedemo poljubno resnično interpretacijo, neresnična pa ne obstaja. Da bi bila zahteva po obeh vrstah interpretacij smiselna, bi morali dodati nov pogoj, na primer \\(y\\ne x\\).",
       hint: "Poskusi za eksistenčno pričo izbrati kar prvo spremenljivko.",
       rubric: ["ugotovitev splošne veljavnosti", "izbira y=x", "tavtološko jedro", "jasna ugotovitev o natisnjeni zahtevi"],
       difficulty: "težko",
@@ -1882,10 +1882,22 @@
     {
       id: "oq-mp-06",
       topic: "mnozice-preslikave",
-      prompt: "Naštej vse zakone operacij z množicami iz razdelka 3.2 in pojasni splošno metodo njihovega dokazovanja.",
-      answer: "Unija in presek sta komutativna, asociativna, idempotentna in distributivna drug glede na drugega. Veljata De Morganova zakona, absorpciji \\(A\\cap(A\\cup B)=A\\), \\(A\\cup(A\\cap B)=A\\), ter \\(A\\cap\\varnothing=\\varnothing\\), \\(A\\cup\\varnothing=A\\). Dokazujemo elementno: vzamemo poljuben \\(x\\), pripadnost obema stranema prevedemo v logični formuli in uporabimo ustrezno logično enakovrednost; ker sta pogoja enakovredna za vsak \\(x\\), sta množici enaki.",
+      prompt: "Naj bodo \\(A,B,C\\subseteq U\\). Natančno zapiši komutativnost, asociativnost in idempotentnost unije in preseka; zakone z \\(\\varnothing\\) in \\(U\\); obe absorpciji in obe distributivnosti; zakone komplementa in oba De Morganova zakona; ter zvezi za razliko in simetrično razliko. Nato na enem izbranem zakonu pokaži elementno metodo dokazovanja enakosti množic in s protiprimerom pojasni, zakaj iz \\(A\\cup B=A\\cup C\\) ne smemo sklepati \\(B=C\\).",
+      answer: H`Za \(A,B,C\subseteq U\) veljajo:
+      <p><strong>Komutativnost:</strong> \(A\cup B=B\cup A\), \(A\cap B=B\cap A\).</p>
+      <p><strong>Asociativnost:</strong> \((A\cup B)\cup C=A\cup(B\cup C)\), \((A\cap B)\cap C=A\cap(B\cap C)\).</p>
+      <p><strong>Idempotentnost:</strong> \(A\cup A=A\), \(A\cap A=A\).</p>
+      <p><strong>Zakoni z \(\varnothing\) in \(U\):</strong> \(A\cup\varnothing=A\), \(A\cap U=A\), \(A\cap\varnothing=\varnothing\), \(A\cup U=U\).</p>
+      <p><strong>Absorpcija:</strong> \(A\cup(A\cap B)=A\), \(A\cap(A\cup B)=A\).</p>
+      <p><strong>Distributivnost:</strong> \(A\cap(B\cup C)=(A\cap B)\cup(A\cap C)\), \(A\cup(B\cap C)=(A\cup B)\cap(A\cup C)\).</p>
+      <p><strong>Komplement:</strong> \(A\cup A^c=U\), \(A\cap A^c=\varnothing\), \((A^c)^c=A\), \(U^c=\varnothing\), \(\varnothing^c=U\).</p>
+      <p><strong>De Morgan:</strong> \((A\cup B)^c=A^c\cap B^c\), \((A\cap B)^c=A^c\cup B^c\).</p>
+      <p><strong>Razliki:</strong> \(A\setminus B=A\cap B^c\), \(A\triangle B=(A\cup B)\setminus(A\cap B)\).</p>
+      <p>Enakost množic dokazujemo elementno. Na primer za prvi De Morganov zakon in poljuben \(x\in U\):</p>
+      \[x\in(A\cup B)^c\iff x\notin A\cup B\iff(x\notin A\land x\notin B)\iff x\in A^c\cap B^c.\]
+      <p>Ker enakovrednost velja za vsak \(x\), sta množici enaki. Krajšanje pri uniji ni dovoljeno: za \(A=\{1,2\}\), \(B=\{1\}\), \(C=\{2\}\) velja \(A\cup B=A=A\cup C\), vendar \(B\ne C\).</p>`,
       hint: "Skupine zakonov: K-A-D, De Morgan, absorpcija, idempotentnost, prazna množica.",
-      rubric: ["komutativnost in asociativnost", "obe distributivnosti", "De Morgan in absorpcija", "idempotentnost, prazna množica in metoda dokaza"],
+      rubric: ["komutativnost, asociativnost in idempotentnost", "zakoni z ∅ in U ter absorpciji", "obe distributivnosti", "komplement in oba De Morganova zakona", "razlika in simetrična razlika", "elementni dokaz in protiprimer krajšanju"],
       difficulty: "težko",
       source: "MnozRel.pdf, razdelek 3.2",
       tags: ["zakoni množic", "elementni dokaz"]
@@ -1915,7 +1927,7 @@
     {
       id: "oq-mp-09",
       topic: "mnozice-preslikave",
-      prompt: "Utemelji tri identitete iz zapiskov: \\(\\bigcap_{n\\ge1}[0,1/n)=\\{0\\}\\), \\(\\bigcap_{n\\ge1}(0,1/n]=\\varnothing\\) in \\(\\bigcup_{n\\ge1}[1/n,1]=(0,1]\\).",
+      prompt: "Dokaži naslednje tri identitete: \\(\\bigcap_{n\\ge1}[0,1/n)=\\{0\\}\\), \\(\\bigcap_{n\\ge1}(0,1/n]=\\varnothing\\) in \\(\\bigcup_{n\\ge1}[1/n,1]=(0,1]\\). Pri vsaki utemelji obe vsebovanosti oziroma pojasni, zakaj noben kandidat ne more ostati v preseku.",
       answer: "V prvem preseku je 0 v vsakem členu; vsak \\(x>0\\) pa pri dovolj velikem \\(n\\) preseže \\(1/n\\), negativni x pa niso v intervalih. V drugem preseku 0 ni dovoljen, vsak pozitiven kandidat pa spet odpove za dovolj velik n, zato je prazen. Pri uniji je vsak člen v \\((0,1]\\). Če je \\(0<x\\le1\\), izberemo \\(n\\ge1/x\\), tedaj \\(1/n\\le x\\), zato x leži v nekem členu. To dokaže enakost v obe smeri.",
       hint: "Uporabi dejstvo, da lahko 1/n naredimo manjši od poljubnega pozitivnega x.",
       rubric: ["prvi presek", "drugi presek", "obe vsebovanosti pri uniji", "pravilen argument z dovolj velikim n"],
@@ -1927,7 +1939,7 @@
     {
       id: "oq-ru-06",
       topic: "relacije-urejenosti",
-      prompt: "Vprašanje iz teorijskega izpita: definiraj irefleksivnost in asimetričnost ter dokaži, da je vsaka asimetrična relacija irefleksivna.",
+      prompt: "Definiraj irefleksivnost in asimetričnost ter dokaži, da je vsaka asimetrična relacija irefleksivna.",
       answer: "Irefleksivnost pomeni \\(\\forall x\\in A\\,\\neg xRx\\). Asimetričnost pomeni \\(\\forall x,y\\in A(xRy\\Rightarrow\\neg yRx)\\). Naj bo R asimetrična in x poljuben. Če bi veljalo xRx, bi asimetričnost pri y=x dala iz xRx tudi \\(\\neg xRx\\), protislovje. Zato xRx ne velja za noben x in R je irefleksivna.",
       hint: "V definicijo asimetričnosti vstavi y=x.",
       rubric: ["definicija irefleksivnosti", "definicija asimetričnosti", "izbira y=x", "protislovje in univerzalni sklep"],
@@ -1938,7 +1950,7 @@
     {
       id: "oq-ru-07",
       topic: "relacije-urejenosti",
-      prompt: "Formalno definiraj vseh osem lastnosti relacij iz MnozRel.pdf in za vsako povej, kako se vidi v usmerjenem grafu.",
+      prompt: "Naj bo \\(R\\subseteq A\\times A\\). Formalno definiraj refleksivnost, irefleksivnost, simetričnost, asimetričnost, antisimetričnost, tranzitivnost, sovisnost in strogo sovisnost. Za vsako lastnost nato povej, kako jo prepoznamo v usmerjenem grafu relacije.",
       answer: "Refleksivna: \\(\\forall x xRx\\), zanka povsod. Irefleksivna: \\(\\forall x\\neg xRx\\), brez zank. Simetrična: \\(xRy\\Rightarrow yRx\\), vsak lok ima obratnega. Asimetrična: \\(xRy\\Rightarrow\\neg yRx\\), noben lok nima obratnega in ni zank. Antisimetrična: \\(xRy\\land yRx\\Rightarrow x=y\\), med različnima ni dvosmernega para. Tranzitivna: \\(xRy\\land yRz\\Rightarrow xRz\\), vsak dvokorak ima bližnjico. Sovisna: za \\(x\\ne y\\) velja \\(xRy\\lor yRx\\). Strogo sovisna: za vse x,y velja isti pogoj, zato so tudi vse zanke.",
       hint: "Osem pojmov razdeli na zanke, obračanje lokov, bližnjice in primerljivost.",
       rubric: ["refleksivna/irefleksivna", "tri simetrije", "tranzitivna", "obe sovisnosti", "grafični pomeni"],
@@ -1960,7 +1972,7 @@
     {
       id: "oq-ru-09",
       topic: "relacije-urejenosti",
-      prompt: "Dokaži Trditev 4.6 in iz nje izpelji zvezi med linearnimi in delnimi urejenostmi.",
+      prompt: "Dokaži, da je vsaka strogo sovisna relacija refleksivna. Nato iz tega izpelji, da je vsaka linearna urejenost tudi delna urejenost in da je vsaka stroga linearna urejenost tudi stroga delna urejenost.",
       answer: "Če je R strogo sovisna, za vsaka x,y velja xRy ali yRx. Pri y=x dobimo xRx ali xRx, torej xRx; R je refleksivna. Linearna urejenost je po definiciji tranzitivna, antisimetrična in strogo sovisna; zadnja lastnost da refleksivnost, zato izpolni definicijo delne urejenosti. Stroga linearna urejenost je tranzitivna, asimetrična in sovisna, zato z opustitvijo dodatne sovisnosti ostane stroga delna urejenost.",
       hint: "Za refleksivnost v strogo sovisnost vstavi enaka elementa.",
       rubric: ["izbira y=x", "refleksivnost", "linearna ⇒ delna", "stroga linearna ⇒ stroga delna"],
@@ -2206,7 +2218,7 @@
     {
       id: "oq-ru-14",
       topic: "relacije-urejenosti",
-      prompt: H`Na primeru kongruence modulo \(m\) določi ekvivalenčne razrede in faktorsko množico ter preveri temeljni izrek o razbitju.`,
+      prompt: H`Naj bo \(m\ge2\) in na \(\mathbb Z\) definiraj \(aRb\) natanko tedaj, ko je \(a\equiv b\pmod m\). Dokaži, da je \(R\) ekvivalenčna relacija, določi vse njene ekvivalenčne razrede in faktorsko množico \(\mathbb Z/R\). Nato dokaži, da so razredi neprazni, paroma disjunktni in da je njihova unija enaka \(\mathbb Z\).`,
       answer: H`Na \(\mathbb Z\) definiramo \(a\equiv b\pmod m\) natanko tedaj, ko \(m\mid(a-b)\), kjer je \(m\ge2\). Relacija je refleksivna, ker \(m\mid0\); simetrična, ker iz \(m\mid(a-b)\) sledi \(m\mid(b-a)\); in tranzitivna, ker iz deljivosti \(a-b\) ter \(b-c\) sledi deljivost njune vsote \(a-c\). Razred \([r]\) je množica vseh celih števil z ostankom \(r\): \([r]=\{r+km:k\in\mathbb Z\}\). Različnih razredov je natanko \(m\), zato je \(\mathbb Z/{\equiv_m}=\{[0],[1],\ldots,[m-1]\}\). Vsako celo število ima po deljenju z ostankom natanko en ostanek med 0 in \(m-1\), zato unija razredov pokrije \(\mathbb Z\), vsak je neprazen, različna razreda pa sta disjunktna. Če bi se \([r]\) in \([s]\) sekala, bi za skupni element po tranzitivnosti dobili \(r\equiv s\pmod m\), pri izbranih ostankih pa to prisili \(r=s\). Past: element faktorske množice je cel razred, ne posamezno celo število.`,
       hint: H`Uporabi izrek o deljenju z ostankom in kriterij, da neprazen presek razredov pomeni enakost.`,
       rubric: ["tri lastnosti ekvivalence", "formula razreda", "faktorska množica", "nepraznost, pokritje in disjunktnost"],

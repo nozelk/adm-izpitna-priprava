@@ -682,7 +682,7 @@
       .pdf-question:last-child{page-break-after:auto}.pdf-page-inner{max-height:254mm;overflow:hidden}
       .pdf-header{display:flex;justify-content:space-between;padding-bottom:4mm;border-bottom:.45mm solid #172019;color:#4b5b50;font-size:calc(8.5pt * var(--pdf-scale));font-weight:800;letter-spacing:.08em}
       .pdf-meta{display:flex;flex-wrap:wrap;gap:2mm;margin:7mm 0 4mm}.pdf-meta span{padding:1.5mm 2.5mm;border:.25mm solid #cbd2cc;border-radius:99px;color:#445249;font-size:calc(8.5pt * var(--pdf-scale));font-weight:700}
-      h1{margin:0 0 8mm;font-family:Georgia,'Times New Roman',serif;font-size:calc(23pt * var(--pdf-scale));line-height:1.25;letter-spacing:-.015em}h1 p{margin:0}
+      h1{margin:0 0 8mm;font-family:Georgia,'Times New Roman',serif;font-size:calc(23pt * var(--pdf-scale));font-weight:400!important;line-height:1.25;letter-spacing:-.015em}h1 p{margin:0}h1 *{font-weight:400!important}
       .katex{font-size:1em}.katex-display{margin:3mm 0;overflow:hidden}.pdf-question footer{position:absolute;right:18mm;bottom:8mm;left:18mm;display:flex;justify-content:space-between;gap:6mm;padding-top:2.5mm;border-top:.2mm solid #d3d8d4;color:#657168;font-size:7.5pt}.pdf-question footer span:last-child{text-align:right}
       @media print{html,body{width:210mm;margin:0!important;background:#fff}.print-help{display:none!important}.pdf-question{width:210mm;height:295mm;margin:0!important;box-shadow:none}}
     </style></head><body><div class="print-help" data-testid="pdf-save-help"><strong>PDF je pripravljen.</strong><span>V tiskalnem oknu izberi <b>Shrani kot PDF</b>. Vsako vprašanje je na svoji strani.</span><button type="button" onclick="window.print()">Odpri tiskanje</button></div>${pages}</body></html>`);

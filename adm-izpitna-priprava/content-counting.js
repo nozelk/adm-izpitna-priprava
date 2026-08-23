@@ -616,7 +616,7 @@ porazdelitev. Za \(n=4,k=3,r=2\) je razločljivih porazdelitev \(\binom32\,2!S(4
     {
       id: "cc-o40",
       topic: "izbori-binomi",
-      prompt: H`Naj bo \(p\) praštevilo in \(0<r<p\). Dokaži, da \(p\mid\binom pr\). Natančno označi mesto, kjer uporabiš praštevilskost in Evklidovo lemo; nato obravnavaj robova \(r=0,p\), dodaj sestavljeni protiprimer ter izpelji kongruenco \((a+b)^p\equiv a^p+b^p\pmod p\).`,
+      prompt: H`Naj bo \(p\) praštevilo in \(0\lt r\lt p\). Dokaži, da \(p\mid\binom pr\). Natančno označi mesto, kjer uporabiš praštevilskost in Evklidovo lemo; nato obravnavaj robova \(r=0,p\), dodaj sestavljeni protiprimer ter izpelji kongruenco \((a+b)^p\equiv a^p+b^p\pmod p\).`,
       answer: H`Ker je
       \[
       \binom pr\,r!(p-r)!=p!,
