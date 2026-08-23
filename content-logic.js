@@ -750,6 +750,29 @@
           <p>Zato Cantorjev izrek za \\(X=\\mathbb N_0\\) res da \\(|\\mathbb N_0|<|\\mathbb R|\\): realna števila so neštevna.</p>`
         },
         {
+          id: "mp-cantor-realna-diagonala",
+          kind: "proof",
+          label: "Neposredni diagonalni dokaz",
+          title: "Zakaj realnih števil ne moremo našteti",
+          html: H`
+            <p><strong>Izrek.</strong> Interval \((0,1)\), zato pa tudi \(\mathbb R\), ni števna množica.</p>
+            <p><strong>Dokaz.</strong> Predpostavimo nasprotno: da neka preslikava \(f:\mathbb N\to(0,1)\) našteje vsa števila tega intervala. Vsako število zapišimo v njegovem <strong>kanoničnem decimalnem zapisu</strong>, ki se ne konča z neskončnim repom devetic:</p>
+            <div class="formula-panel">\[
+              f(1)=0,a_{11}a_{12}a_{13}\ldots,\quad
+              f(2)=0,a_{21}a_{22}a_{23}\ldots,\quad\ldots
+            \]</div>
+            <p>Sestavimo novo število \(y=0,b_1b_2b_3\ldots\), kjer izberemo</p>
+            <div class="formula-panel">\[
+              b_n=\begin{cases}
+                1,&a_{nn}\ne1,\\
+                2,&a_{nn}=1.
+              \end{cases}
+            \]</div>
+            <p>Število \(y\) leži v \((0,1)\), njegov zapis uporablja samo števki 1 in 2, pri \(n\)-ti decimalki pa se razlikuje od \(f(n)\). Zato \(y\ne f(n)\) za vsak \(n\), kar nasprotuje surjektivnosti \(f\). Torej \((0,1)\) ni števno; ker je podmnožica \(\mathbb R\), tudi \(\mathbb R\) ne more biti števna.</p>
+            <p><strong>Zakaj potrebujemo kanonične zapise?</strong> Brez dogovora bi isto število lahko imelo zapisa \(0,25000\ldots=0,24999\ldots\), zato zgolj razlika v eni zapisani decimalki ne bi nujno pomenila različnih števil. Izbrani zapis in števki 1, 2 to past odpravijo.</p>
+            <p><strong>Povezava s splošnim Cantorjevim izrekom.</strong> Tu diagonalno spremenimo \(n\)-to števko \(n\)-tega člena. Pri dokazu \(|X|<|\mathcal P(X)|\) pa diagonalno množico sestavimo tako, da za vsak \(x\) obrnemo odločitev \(x\in f(x)\). Ideja je ista: domnevni seznam premagamo z objektom, ki se od njegovega \(n\)-tega člena razlikuje na \(n\)-tem mestu.</p>`
+        },
+        {
           id: "mp-interval-unija",
           kind: "example",
           label: "Primer iz zapiskov",
@@ -2351,6 +2374,104 @@
       difficulty: "srednje",
       source: "MnozRel.pdf, razdelki 3.5–3.7",
       tags: ["potenčna množica", "kartezični produkt", "preslikava"]
+    },
+    {
+      id: "oq-ir-17",
+      topic: "izjavni-racun",
+      prompt: H`Dokaži oba absorpcijska zakona brez resničnostne tabele in pri vsakem koraku poimenuj uporabljeni zakon. Nato prvi zakon preveri še s popolno resničnostno tabelo ter pojasni, zakaj absorpcija ni pravilo krajšanja.`,
+      answer: H`Dokazujemo
+      \[
+      p\lor(p\land q)\equiv p,\qquad p\land(p\lor q)\equiv p.
+      \]
+      Za prvi zakon velja
+      \[
+      \begin{aligned}
+      p\lor(p\land q)
+      &\equiv(p\land1)\lor(p\land q)&&\text{(nevtralnost za konjunkcijo)}\\
+      &\equiv p\land(1\lor q)&&\text{(distributivnost)}\\
+      &\equiv p\land1&&\text{(dominantnost za disjunkcijo)}\\
+      &\equiv p&&\text{(nevtralnost).}
+      \end{aligned}
+      \]
+      Dualno za drugi zakon:
+      \[
+      \begin{aligned}
+      p\land(p\lor q)
+      &\equiv(p\lor0)\land(p\lor q)&&\text{(nevtralnost za disjunkcijo)}\\
+      &\equiv p\lor(0\land q)&&\text{(distributivnost)}\\
+      &\equiv p\lor0&&\text{(dominantnost za konjunkcijo)}\\
+      &\equiv p&&\text{(nevtralnost).}
+      \end{aligned}
+      \]
+      Pri prvem zakonu tabela potrdi, da sta zadnja stolpca enaka:
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p\land q\)</th><th>\(p\lor(p\land q)\)</th><th>\(p\)</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+        </tbody>
+      </table>
+      Absorpcija pove, da zunanji \(p\) že odloči izraz, zato notranji člen s \(q\) ne doda ničesar. Ni pa splošno krajšanje skupnega člena: iz \(p\lor q\equiv p\lor r\) ne smemo sklepati \(q\equiv r\). Če vzamemo \(p\equiv1\), \(q\equiv0\), \(r\equiv1\), sta levi formuli obe enakovredni 1, \(q\) in \(r\) pa nista enakovredna.`,
+      hint: H`Za prvi zakon napiši \(p\equiv p\land1\), nato izpostavi \(p\); drugi dokaz je dualen.`,
+      rubric: ["oba pravilno zapisana zakona", "algebrska dokaza z imenovanimi zakoni", "popolna tabela za en zakon", "razlaga absorpcije in protiprimer krajšanju"],
+      difficulty: "srednje",
+      source: "IzjavniRacun.pdf; uporabnikov artefakt »ADM — teorija za izpit«, vprašanje 95",
+      tags: ["absorpcija", "logične enakovrednosti", "dokaz", "resničnostna tabela"]
+    },
+    {
+      id: "oq-pr-18",
+      topic: "predikatni-racun",
+      prompt: H`Zapiši De Morganova zakona za kvantifikatorje. Nato pri dogovoru \(\mathbb N=\{1,2,\ldots\}\) negiraj izjavo
+      \[
+      (\forall x\in\mathbb R)(\exists n\in\mathbb N)\;n>x
+      \]
+      tako, da negacija ostane samo pred atomsko formulo, in utemeljeno presodi resničnost prvotne izjave ter njene negacije.`,
+      answer: H`De Morganova zakona sta
+      \[
+      \neg\forall x\,P(x)\equiv\exists x\,\neg P(x),\qquad
+      \neg\exists x\,P(x)\equiv\forall x\,\neg P(x).
+      \]
+      Omejeni kvantifikaciji sta okrajšavi
+      \[
+      \forall x\in A\,P(x)\equiv\forall x(x\in A\Rightarrow P(x)),\qquad
+      \exists x\in A\,P(x)\equiv\exists x(x\in A\land P(x)).
+      \]
+      Kvantifikatorja pri negiranju zamenjamo, relacijo \(>\) pa negiramo v \(\le\):
+      \[
+      \neg(\forall x\in\mathbb R)(\exists n\in\mathbb N)\;n>x
+      \equiv
+      (\exists x\in\mathbb R)(\forall n\in\mathbb N)\;n\le x.
+      \]
+      Prvotna izjava je resnična. Za poljuben \(x\in\mathbb R\) lahko izberemo
+      \[
+      n=\max\{1,\lfloor x\rfloor+1\}\in\mathbb N.
+      \]
+      Če je \(\lfloor x\rfloor+1\ge1\), je ta vrednost strogo večja od \(x\); sicer je \(x<1\) in deluje \(n=1\). Zato za vsak realni \(x\) obstaja zahtevana priča. Negacija je napačna: trdila bi, da obstaja realna zgornja meja vseh naravnih števil, pravkar podana konstrukcija pa za vsakega kandidata najde večje naravno število.
+      <p><strong>Past iz artefakta.</strong> Sam zapis \(n=\lfloor x\rfloor+1\) pri zelo negativnem \(x\) ni nujno naravno število po izbranem dogovoru; člen \(\max\{1,\cdot\}\) odpravi ta robni primer.</p>`,
+      hint: H`Vsak prehod čez negacijo zamenja \(\forall\leftrightarrow\exists\); na koncu uporabi \(\neg(n>x)\equiv n\le x\).`,
+      rubric: ["oba De Morganova zakona", "pravilna negacija obeh kvantifikatorjev", "atomska negacija n≤x", "veljavna priča za vsak realni x in presoja obeh izjav"],
+      difficulty: "srednje",
+      source: "ADM-Predikati.pdf; uporabnikov artefakt »ADM — teoretični izpit za vajo«, pola D",
+      tags: ["kvantifikatorji", "negacija", "Arhimedova lastnost", "resničnost"]
+    },
+    {
+      id: "oq-mp-17",
+      topic: "mnozice-preslikave",
+      prompt: H`Definiraj injektivno, surjektivno in bijektivno preslikavo ter enako moč množic. Nato s Cantorjevim decimalnim diagonalnim postopkom dokaži, da \((0,1)\) ni števno. V dokazu posebej odpravi težavo dvojnih decimalnih zapisov in pojasni, zakaj od tod sledi neštevnost \(\mathbb R\).`,
+      answer: H`Preslikava \(f:A\to B\) je injektivna, če \(f(x)=f(y)\Rightarrow x=y\); surjektivna, če za vsak \(b\in B\) obstaja \(a\in A\) s \(f(a)=b\); bijektivna, če ima obe lastnosti. Množici sta enako močni, kadar med njima obstaja bijekcija. Množica je števno neskončna, kadar je enako močna z \(\mathbb N\).
+      <p>Predpostavimo, da je \(f:\mathbb N\to(0,1)\) surjektivna, in vse njene vrednosti zapišimo s kanoničnimi decimalnimi zapisi, ki nimajo neskončnega repa devetic:</p>
+      \[
+      f(n)=0,a_{n1}a_{n2}a_{n3}\ldots
+      \]
+      <p>Definirajmo \(y=0,b_1b_2\ldots\), kjer je \(b_n=1\), če \(a_{nn}\ne1\), in \(b_n=2\), če \(a_{nn}=1\). Tedaj \(y\in(0,1)\), vendar se od \(f(n)\) razlikuje v \(n\)-ti decimalki, zato \(y\ne f(n)\) za vsak \(n\). Ker zapis \(y\) uporablja samo 1 in 2, ni dvoumni zapis z repom devetic; tudi vse vrednosti seznama smo zapisali kanonično. Različna kanonična zapisa zato predstavljata različni števili.</p>
+      <p>Dobili smo element intervala, ki ga domnevno surjektivni seznam ne zadene — protislovje. Torej ni surjekcije \(\mathbb N\to(0,1)\), s tem pa tudi ne bijekcije. Interval je nešteven. Ker \((0,1)\subseteq\mathbb R\), bi števnost \(\mathbb R\) implicirala števnost njegove podmnožice \((0,1)\); zato je tudi \(\mathbb R\) neštevna.</p>`,
+      hint: H`\(n\)-to števko izberi drugače od \(n\)-te števke \(n\)-tega člena; uporabljaj le števki 1 in 2.`,
+      rubric: ["štiri definicije", "predpostavljeno naštevanje in kanonični zapisi", "pravilna diagonalna konstrukcija", "protislovje s surjektivnostjo ter sklep za realna števila"],
+      difficulty: "težko",
+      source: "MnozRel.pdf; uporabnikov artefakt »ADM — rešitve teoretičnih pol«, pola I",
+      tags: ["Cantor", "diagonalni dokaz", "neštevnost", "decimalni zapis"]
     },
     {
       id: "oq-ru-17",
