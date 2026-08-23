@@ -47,6 +47,26 @@
   }
   const questions = canonicalQuestions;
 
+  // Najkrajši še smiseln prvi krog za pripravo: vseh 15 dejanskih formulacij
+  // iz teorijskih izpitov ter temeljne definicije in izreki vseh 13 tem.
+  // Vrstni red sledi učnemu toku po poglavjih, ne oceni verjetnosti na izpitu.
+  const essentialQuestionIds = Object.freeze([
+    "oq-ir-06", "oq-ir-07", "oq-ir-16",
+    "oq-pr-06", "oq-pr-07", "oq-pr-18",
+    "oq-mp-01", "oq-mp-15", "oq-mp-06", "oq-mp-16",
+    "oq-ru-06", "oq-ru-03", "oq-ru-18",
+    "cc-o03", "cc-o04", "cc-o05", "cc-o06", "cc-o09",
+    "aa-o02", "aa-o05", "aa-o06", "aa-o07", "aa-o08", "aa-o09", "aa-o27",
+    "gr-o01", "gr-o34", "gr-o36", "gr-o50",
+    "gr-o25", "gr-o26", "gr-o08",
+    "gr-o11", "gr-o15", "gr-o31"
+  ]);
+  const essentialIdSet = new Set(essentialQuestionIds);
+  if (essentialIdSet.size !== essentialQuestionIds.length) throw new Error("Podvojeni ID-ji v zbirki Nujnih 35.");
+  for (const id of essentialQuestionIds) {
+    if (!questionById.has(id)) throw new Error(`Neznano vprašanje v zbirki Nujnih 35: ${id}.`);
+  }
+
   // Stran je namenoma samo za teorijo. Tudi če bi vsebinski modul pomotoma
   // izvozil vaje, jih podatkovna plast ne naloži.
   const exercises = [];
@@ -85,6 +105,7 @@
     flashcards,
     quiz,
     questions,
+    essentialQuestionIds,
     exercises,
     sources
   };

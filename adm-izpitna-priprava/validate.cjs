@@ -123,6 +123,9 @@ assert(data.topics.length === 13, `Pričakovanih je 13 tem, najdenih ${data.topi
 assert(data.exercises.length === 0, `Theory-only stran ne sme vsebovati vaj; najdenih ${data.exercises.length}.`);
 assert(data.questions.length >= 185,
   `Celovita teorijska zbirka mora imeti najmanj 185 odprtih vprašanj; najdenih ${data.questions.length}.`);
+assert(Array.isArray(data.essentialQuestionIds), "ADM_DATA nima zbirke essentialQuestionIds.");
+assert(data.essentialQuestionIds.length === 35,
+  `Zbirka Nujnih 35 mora imeti natanko 35 vprašanj; najdenih ${data.essentialQuestionIds.length}.`);
 assert(data.sources.length === expectedSources.size,
   `Pričakovanih je natanko ${expectedSources.size} dovoljenih virov, najdenih ${data.sources.length}.`);
 
@@ -402,6 +405,19 @@ for (const sourceId of theoryExamIds) {
     `Teorijski izpit ${sourceId} ni povezan z nobeno uradno formulacijo.`);
 }
 
+const essentialQuestionIdSet = new Set(data.essentialQuestionIds);
+assert(essentialQuestionIdSet.size === data.essentialQuestionIds.length,
+  "Zbirka Nujnih 35 vsebuje podvojene ID-je.");
+assert(data.essentialQuestionIds.every(id => idsByCollection.get("questions").includes(id)),
+  "Zbirka Nujnih 35 vsebuje ID, ki ne pripada kanoničnemu teorijskemu vprašanju.");
+const essentialQuestions = data.essentialQuestionIds.map(id => data.questions.find(question => question.id === id));
+assert(new Set(essentialQuestions.map(question => question.topic)).size === data.topics.length,
+  "Zbirka Nujnih 35 mora pokriti vseh 13 teorijskih tem.");
+assert(officialQuestionEntries.every(entry => essentialQuestionIdSet.has(entry.parentId)),
+  "Zbirka Nujnih 35 mora vsebovati vse kanonične kartice z uradnimi formulacijami.");
+assert(officialQuestionEntries.filter(entry => essentialQuestionIdSet.has(entry.parentId)).length === officialQuestionEntries.length,
+  "Zbirka Nujnih 35 ne ohrani vseh uradnih teorijskih formulacij.");
+
 const strings = [];
 const collectStrings = (value, trail = "data") => {
   if (typeof value === "string") {
@@ -532,6 +548,11 @@ const requiredQuestionUiContracts = [
   'data-action="clear-question-selection"',
   'data-action="export-selected-pdf"',
   'data-action="export-topic-pdf"',
+  'data-testid="essential-question-collection"',
+  'data-action="show-essential-questions"',
+  'data-action="show-all-questions"',
+  'data-action="select-essential-questions"',
+  'data-action="export-essential-pdf"',
   'data-testid="topic-pdf-export"'
 ];
 for (const contract of requiredQuestionUiContracts) {
@@ -543,6 +564,8 @@ assert(appSource.includes("officialVariants"),
   "Uporabniški vmesnik ne podpira združenih uradnih formulacij vprašanj.");
 assert(stylesSource.includes(".question-card.selected") && stylesSource.includes(".answer-workspace"),
   "Manjkajo vizualna stanja izbrane kartice ali zaprtega prostora za odgovor.");
+assert(stylesSource.includes(".essential-collection") && stylesSource.includes(".question-meta .essential"),
+  "Manjka vizualno ločena zbirka Nujnih 35 ali njena oznaka na karticah.");
 assert(!appSource.includes("V popolnem odgovoru zajemi") && !appSource.includes('data-testid="question-answer-plan"'),
   "Izpitni prikaz ne sme vnaprej razkrivati rubrike ali načrta odgovora.");
 
@@ -566,6 +589,9 @@ assert((pdfFunctionSource.match(/page-break-after:always/gu) || []).length === 1
 assert(pdfFunctionSource.includes("font-weight:400!important") &&
   pdfFunctionSource.includes("h1 *{font-weight:400!important}"),
 "Besedilo vprašanja v PDF-ju mora biti izpisano z navadno, ne krepko pisavo.");
+assert(pdfFunctionSource.includes('data-testid="pdf-official-wording"') &&
+  pdfFunctionSource.includes("printableHtml(variant.prompt)"),
+"PDF-izvoz mora pri vprašanju ohraniti pripeto dejansko uradno formulacijo.");
 const pdfWithoutLegacyBreaks = pdfFunctionSource
   .replace(/page-break-(?:after|inside)/gu, "legacy-page-break");
 assert(!/\bbreak-(?:after|inside)\s*:/u.test(pdfWithoutLegacyBreaks),
@@ -574,9 +600,9 @@ for (const forbiddenPdfLayout of ["pdf-writing", "repeating-linear-gradient", "h
   assert(!pdfFunctionSource.includes(forbiddenPdfLayout),
     `PDF-izvoz vsebuje prepovedano črtasto ali nestabilno postavitev (${forbiddenPdfLayout}).`);
 }
-for (const forbiddenPdfContent of ["question.answer", "question.hint", "question.rubric", "officialVariants"]) {
+for (const forbiddenPdfContent of ["question.answer", "question.hint", "question.rubric"]) {
   assert(!pdfFunctionSource.includes(forbiddenPdfContent),
-    `PDF-izvoz ne sme vključiti rešitev, namigov, rubrik ali dodatnih formulacij (${forbiddenPdfContent}).`);
+    `PDF-izvoz ne sme vključiti rešitev, namigov ali rubrik (${forbiddenPdfContent}).`);
 }
 
 const counts = {

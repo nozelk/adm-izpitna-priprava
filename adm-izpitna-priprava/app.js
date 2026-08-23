@@ -22,6 +22,11 @@
   const flashcards = Array.isArray(DATA.flashcards) ? DATA.flashcards : [];
   const quizItems = Array.isArray(DATA.quiz) ? DATA.quiz : [];
   const questions = Array.isArray(DATA.questions) ? DATA.questions : [];
+  const questionById = new Map(questions.map(question => [question.id, question]));
+  const essentialQuestionIds = Array.isArray(DATA.essentialQuestionIds) ? DATA.essentialQuestionIds : [];
+  const essentialQuestions = essentialQuestionIds.map(id => questionById.get(id)).filter(Boolean);
+  const essentialQuestionSet = new Set(essentialQuestions.map(question => question.id));
+  const essentialRankById = new Map(essentialQuestions.map((question, index) => [question.id, index + 1]));
   const sources = Array.isArray(DATA.sources) ? DATA.sources : [];
   const topicById = new Map(topics.map(topic => [topic.id, topic]));
   const sourceById = new Map(sources.map(source => [source.id, source]));
@@ -94,6 +99,7 @@
     questionTopic: "all",
     questionStatus: "all",
     questionOrigin: "all",
+    questionCollection: essentialQuestions.length ? "essential" : "all",
     selectedQuestions: toSet(persisted.selectedQuestions),
     openQuestionHints: new Set(),
     openModelAnswers: new Set(),
@@ -567,7 +573,8 @@
   }
 
   function filteredQuestions() {
-    let result = questions.filter(question => state.questionTopic === "all" || question.topic === state.questionTopic);
+    const collection = state.questionCollection === "essential" ? essentialQuestions : questions;
+    let result = collection.filter(question => state.questionTopic === "all" || question.topic === state.questionTopic);
     if (state.questionOrigin === "official") result = result.filter(question => question.official);
     if (state.questionOrigin === "notes") result = result.filter(question => !question.official);
     if (state.questionStatus === "unrated") result = result.filter(question => !Number(state.selfRatings[question.id]));
@@ -585,12 +592,13 @@
     const selected = state.selectedQuestions.has(question.id);
     const source = sourceTitle(question.source);
     const officialVariants = Array.isArray(question.officialVariants) ? question.officialVariants.filter(variant => variant?.prompt) : [];
+    const essentialRank = essentialRankById.get(question.id);
     const headingId = `question-title-${question.id}`;
     return `<article class="question-card ${selected ? "selected" : ""}" id="question-${escapeHtml(question.id)}" data-question-card="${escapeHtml(question.id)}" data-testid="question-card" aria-labelledby="${escapeHtml(headingId)}">
       <header class="question-head">
         <div class="question-title-block">
           <div class="question-kicker"><span class="question-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><span>teorijsko vprašanje</span></div>
-          <div class="question-meta"><span class="tag">${escapeHtml(topic?.title || question.topic)}</span><span class="tag">zahtevnost ${escapeHtml(difficultyLabel(question.difficulty))}</span>${question.official || officialVariants.length ? '<span class="tag official">iz teorijskega izpita</span>' : ""}${question.source ? `<span class="tag">${escapeHtml(source)}</span>` : ""}</div>
+          <div class="question-meta">${essentialRank ? `<span class="tag essential">nujno ${String(essentialRank).padStart(2, "0")} / ${essentialQuestions.length}</span>` : ""}<span class="tag">${escapeHtml(topic?.title || question.topic)}</span><span class="tag">zahtevnost ${escapeHtml(difficultyLabel(question.difficulty))}</span>${question.official || officialVariants.length ? '<span class="tag official">iz teorijskega izpita</span>' : ""}${question.source ? `<span class="tag">${escapeHtml(source)}</span>` : ""}</div>
           <h3 id="${escapeHtml(headingId)}">${question.prompt || "Vprašanje"}</h3>
           ${officialVariants.length ? `<aside class="official-wording"><strong>Uradna formulacija</strong>${officialVariants.map(variant => `<div><p>${variant.prompt}</p>${variant.source ? `<small>${escapeHtml(sourceTitle(variant.source))}</small>` : ""}</div>`).join("")}</aside>` : ""}
         </div>
@@ -641,11 +649,11 @@
     return normalize(value).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 70) || "vprasanja";
   }
 
-  function exportQuestionsPdf(collection, scopeLabel = "Izbrana vprašanja") {
+  function exportQuestionsPdf(collection, scopeLabel = "Izbrana vprašanja", options = {}) {
     const order = new Map(questions.map((question, index) => [question.id, index]));
     const seen = new Set();
-    const items = collection.filter(question => question && !seen.has(question.id) && seen.add(question.id))
-      .sort((a, b) => (order.get(a.id) || 0) - (order.get(b.id) || 0));
+    const items = collection.filter(question => question && !seen.has(question.id) && seen.add(question.id));
+    if (!options.preserveOrder) items.sort((a, b) => (order.get(a.id) || 0) - (order.get(b.id) || 0));
     if (!items.length) {
       toast("Najprej izberi vsaj eno vprašanje.");
       return;
@@ -662,11 +670,16 @@
     const pages = items.map((question, index) => {
       const topic = topicById.get(question.topic);
       const renderedPrompt = printableHtml(question.prompt || "Vprašanje");
+      const officialVariants = Array.isArray(question.officialVariants)
+        ? question.officialVariants.filter(variant => variant?.prompt)
+        : [];
+      const renderedOfficialVariants = officialVariants.map(variant => `<div><p>${printableHtml(variant.prompt)}</p>${variant.source ? `<small>${escapeHtml(sourceTitle(variant.source))}</small>` : ""}</div>`).join("");
       return `<article class="pdf-question" data-testid="pdf-question-page">
         <div class="pdf-page-inner">
           <header class="pdf-header"><span>ADM · TEORIJSKA VPRAŠANJA</span><span>${index + 1} / ${items.length}</span></header>
-          <div class="pdf-meta"><span>${escapeHtml(topic ? `Tema ${topic.number} · ${topic.title}` : question.topic)}</span>${question.official ? "<span>vprašanje iz teorijskega izpita</span>" : ""}</div>
+          <div class="pdf-meta"><span>${escapeHtml(topic ? `Tema ${topic.number} · ${topic.title}` : question.topic)}</span>${question.official || officialVariants.length ? "<span>vprašanje iz teorijskega izpita</span>" : ""}</div>
           <h1>${renderedPrompt}</h1>
+          ${renderedOfficialVariants ? `<aside class="pdf-official" data-testid="pdf-official-wording"><strong>Uradna formulacija</strong>${renderedOfficialVariants}</aside>` : ""}
         </div>
         <footer><span>${escapeHtml(scopeLabel)}</span><span>${escapeHtml(sourceTitle(question.source))}</span></footer>
       </article>`;
@@ -683,6 +696,7 @@
       .pdf-header{display:flex;justify-content:space-between;padding-bottom:4mm;border-bottom:.45mm solid #172019;color:#4b5b50;font-size:calc(8.5pt * var(--pdf-scale));font-weight:800;letter-spacing:.08em}
       .pdf-meta{display:flex;flex-wrap:wrap;gap:2mm;margin:7mm 0 4mm}.pdf-meta span{padding:1.5mm 2.5mm;border:.25mm solid #cbd2cc;border-radius:99px;color:#445249;font-size:calc(8.5pt * var(--pdf-scale));font-weight:700}
       h1{margin:0 0 8mm;font-family:Georgia,'Times New Roman',serif;font-size:calc(23pt * var(--pdf-scale));font-weight:400!important;line-height:1.25;letter-spacing:-.015em}h1 p{margin:0}h1 *{font-weight:400!important}
+      .pdf-official{display:grid;gap:3mm;margin-top:9mm;padding:5mm 0 0 5mm;border-top:.25mm solid #e4b0a4;border-left:1mm solid #f58b74}.pdf-official>strong{color:#a94735;font-size:calc(8pt * var(--pdf-scale));letter-spacing:.1em;text-transform:uppercase}.pdf-official div{display:grid;gap:1.5mm}.pdf-official p{margin:0;color:#303a33;font-family:Arial,Helvetica,sans-serif;font-size:calc(11.5pt * var(--pdf-scale));font-weight:400;line-height:1.42}.pdf-official small{color:#68736b;font-size:calc(7.5pt * var(--pdf-scale))}
       .katex{font-size:1em}.katex-display{margin:3mm 0;overflow:hidden}.pdf-question footer{position:absolute;right:18mm;bottom:8mm;left:18mm;display:flex;justify-content:space-between;gap:6mm;padding-top:2.5mm;border-top:.2mm solid #d3d8d4;color:#657168;font-size:7.5pt}.pdf-question footer span:last-child{text-align:right}
       @media print{html,body{width:210mm;margin:0!important;background:#fff}.print-help{display:none!important}.pdf-question{width:210mm;height:295mm;margin:0!important;box-shadow:none}}
     </style></head><body><div class="print-help" data-testid="pdf-save-help"><strong>PDF je pripravljen.</strong><span>V tiskalnem oknu izberi <b>Shrani kot PDF</b>. Vsako vprašanje je na svoji strani.</span><button type="button" onclick="window.print()">Odpri tiskanje</button></div>${pages}</body></html>`);
@@ -721,6 +735,7 @@
     const requestedQuestion = params.get("question");
     const requestedItem = requestedQuestion ? questions.find(question => question.id === requestedQuestion) : null;
     if (requestedItem) {
+      if (state.questionCollection === "essential" && !essentialQuestionSet.has(requestedItem.id)) state.questionCollection = "all";
       if (state.questionTopic !== "all" && state.questionTopic !== requestedItem.topic) state.questionTopic = requestedItem.topic;
       if ((state.questionOrigin === "official" && !requestedItem.official) || (state.questionOrigin === "notes" && requestedItem.official)) state.questionOrigin = "all";
       const rating = Number(state.selfRatings[requestedItem.id]) || 0;
@@ -734,8 +749,34 @@
     const topicQuestions = state.questionTopic === "all" ? [] : questions.filter(question => question.topic === state.questionTopic);
     const selectedTopic = topicById.get(state.questionTopic);
     const rated = questions.filter(question => Number(state.selfRatings[question.id]) > 0).length;
+    const essentialActive = state.questionCollection === "essential";
+    const essentialOfficialCount = officialFormulationCount(essentialQuestions);
+    const essentialTopicCount = new Set(essentialQuestions.map(question => question.topic)).size;
+    const questionListTitle = selectedTopic
+      ? `${essentialActive ? "Nujnih 35 · " : ""}Tema ${escapeHtml(selectedTopic.number)} · ${selectedTopic.title}`
+      : essentialActive ? "Nujnih 35 · prvi učni krog" : "Celotna teorijska banka";
     setView(`
       <header class="page-head question-page-head"><span class="eyebrow">Piši, razloži, dokaži</span><h1 class="page-title">Teorijska vprašanja</h1><p class="page-lead">Vprašanja so prikazana v izpitni obliki, brez vnaprej razkritih namigov ali meril. Svoj odgovor, namig in vzorčni odgovor odpreš šele, ko jih želiš uporabiti.</p></header>
+      <section class="essential-collection ${essentialActive ? "active" : ""}" data-testid="essential-question-collection">
+        <div class="essential-copy">
+          <span class="essential-label">Najprej se nauči to</span>
+          <h2>Nujnih <em>${essentialQuestions.length}</em></h2>
+          <p>Najmanjši smiseln prvi krog iz celotne banke. Vključuje <strong>vseh ${essentialOfficialCount} dejanskih formulacij</strong> iz teorijskih izpitov ter ključne definicije, izreke, dokaze, primere in protiprimere iz vseh poglavij.</p>
+          <small>${essentialActive ? "Zbirka je trenutno prikazana spodaj. Vsaka kartica iz jedra ima zeleno oznako z zaporedno številko." : "Klikni »Prikaži nujnih 35«, da skriješ manj pomembna vprašanja in ohraniš samo jedro."}</small>
+        </div>
+        <div class="essential-stats" aria-label="Obseg zbirke">
+          <div><strong>${essentialQuestions.length}</strong><span>vprašanj</span></div>
+          <div><strong>${essentialOfficialCount}</strong><span>uradnih formulacij</span></div>
+          <div><strong>${essentialTopicCount}</strong><span>pokritih tem</span></div>
+        </div>
+        <div class="essential-actions">
+          <button class="button" type="button" data-action="export-essential-pdf" data-testid="export-essential-pdf">Prenesi PDF · ${essentialQuestions.length} strani</button>
+          ${essentialActive
+            ? `<button class="button secondary" type="button" data-action="show-all-questions" data-testid="show-all-questions">Pokaži vseh ${questions.length}</button>`
+            : `<button class="button secondary" type="button" data-action="show-essential-questions" data-testid="show-essential-questions">Prikaži nujnih ${essentialQuestions.length}</button>`}
+          <button class="button ghost" type="button" data-action="select-essential-questions" data-testid="select-essential-questions">Dodaj vseh ${essentialQuestions.length} v izbor</button>
+        </div>
+      </section>
       <section class="question-controls" data-testid="question-controls">
         <div class="question-filter-grid">
           <label><span>Tema</span><select id="question-topic" aria-label="Tema vprašanj" data-testid="question-topic-filter"><option value="all">Vse teme</option>${topicOptions.map(topic => `<option value="${escapeHtml(topic.id)}" ${state.questionTopic === topic.id ? "selected" : ""}>${topic.number} · ${topic.title}</option>`).join("")}</select></label>
@@ -755,10 +796,10 @@
             ${selectedTopic ? `<button class="button secondary" type="button" data-action="export-topic-pdf" data-topic="${escapeHtml(selectedTopic.id)}" data-testid="export-topic-pdf">PDF: vsa vprašanja teme</button>` : ""}
             <button class="button" type="button" data-action="export-selected-pdf" data-testid="export-selected-pdf" ${state.selectedQuestions.size ? "" : "disabled"}>PDF izbranih vprašanj</button>
           </div>
-          <p class="pdf-help">PDF vsebuje samo vprašanja in prostor za odgovor — brez namigov, meril ali rešitev. V A4-predogledu izberi <strong>Shrani kot PDF</strong>; vsako vprašanje je na svoji strani.</p>
+          <p class="pdf-help">PDF vsebuje samo vprašanja in pripete uradne formulacije — brez namigov, meril ali rešitev. V A4-predogledu izberi <strong>Shrani kot PDF</strong>; vsako vprašanje je na svoji strani.</p>
         </div>
       </section>
-      <div class="question-list-heading"><span>${selectedTopic ? `Tema ${escapeHtml(selectedTopic.number)} · ${selectedTopic.title}` : "Celotna teorijska banka"}</span><button class="button secondary small" type="button" data-action="random-question">Naključno vprašanje</button></div>
+      <div class="question-list-heading"><span>${questionListTitle}</span><button class="button secondary small" type="button" data-action="random-question">Naključno vprašanje</button></div>
       <section class="question-list" data-testid="question-list">${filtered.length ? filtered.map(questionCard).join("") : emptyState("Ni vprašanj", "Spremeni enega od filtrov in znova prikaži vprašanja.")}</section>`, requestedQuestion ? `question-${requestedQuestion}` : "");
     updateQuestionSelectionUi();
   }
@@ -1144,6 +1185,7 @@
     }
     state.questionTopic = "all";
     state.questionStatus = "all";
+    state.questionCollection = "all";
     const question = questions[Math.floor(Math.random() * questions.length)];
     const targetHash = `#/vprasanja?question=${encodeURIComponent(question.id)}`;
     if (location.hash === targetHash) renderQuestions(new URLSearchParams(`question=${encodeURIComponent(question.id)}`));
@@ -1236,6 +1278,35 @@
       toast(state.completedTopics.has(topicId) ? "Tema je označena kot opravljena." : "Tema je spet označena za ponovitev.");
       return;
     }
+    if (action === "show-essential-questions") {
+      state.questionCollection = "essential";
+      state.questionTopic = "all";
+      state.questionOrigin = "all";
+      state.questionStatus = "all";
+      renderQuestions();
+      toast(`Prikazanih je samo ${essentialQuestions.length} najpomembnejših vprašanj.`);
+      return;
+    }
+    if (action === "show-all-questions") {
+      state.questionCollection = "all";
+      state.questionTopic = "all";
+      state.questionOrigin = "all";
+      state.questionStatus = "all";
+      renderQuestions();
+      toast(`Spet je prikazanih vseh ${questions.length} teorijskih vprašanj.`);
+      return;
+    }
+    if (action === "select-essential-questions") {
+      essentialQuestions.forEach(question => state.selectedQuestions.add(question.id));
+      persist(false);
+      updateQuestionSelectionUi();
+      toast(`Vseh ${essentialQuestions.length} nujnih vprašanj je dodanih v izbor za PDF.`);
+      return;
+    }
+    if (action === "export-essential-pdf") {
+      exportQuestionsPdf(essentialQuestions, `Nujnih ${essentialQuestions.length} — teorija`, { preserveOrder: true });
+      return;
+    }
     if (action === "select-visible-questions") {
       filteredQuestions().forEach(question => state.selectedQuestions.add(question.id));
       persist(false);
@@ -1303,9 +1374,8 @@
       return;
     }
     if (action === "random-question") {
-      const pool = questions.filter(question => state.questionTopic === "all" || question.topic === state.questionTopic);
+      const pool = filteredQuestions();
       if (!pool.length) return;
-      state.questionStatus = "all";
       const question = pool[Math.floor(Math.random() * pool.length)];
       renderQuestions(new URLSearchParams(`question=${encodeURIComponent(question.id)}`));
       return;
