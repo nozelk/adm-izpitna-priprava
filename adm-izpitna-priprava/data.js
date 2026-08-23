@@ -47,24 +47,28 @@
   }
   const questions = canonicalQuestions;
 
-  // Najkrajši še smiseln prvi krog za pripravo: vseh 15 dejanskih formulacij
-  // iz teorijskih izpitov ter temeljne definicije in izreki vseh 13 tem.
-  // Vrstni red sledi učnemu toku po poglavjih, ne oceni verjetnosti na izpitu.
+  // Celovito izpitno jedro: vseh 15 dejanskih formulacij iz teorijskih izpitov
+  // ter definicije, izreki, dokazi in ločevalni primeri, brez katerih ostanejo
+  // temeljne vrzeli. Vrstni red sledi učnemu toku po vseh 13 poglavjih.
   const essentialQuestionIds = Object.freeze([
-    "oq-ir-06", "oq-ir-07", "oq-ir-16",
-    "oq-pr-06", "oq-pr-07", "oq-pr-18",
-    "oq-mp-01", "oq-mp-15", "oq-mp-06", "oq-mp-16",
-    "oq-ru-06", "oq-ru-03", "oq-ru-18",
-    "cc-o03", "cc-o04", "cc-o05", "cc-o06", "cc-o09",
-    "aa-o02", "aa-o05", "aa-o06", "aa-o07", "aa-o08", "aa-o09", "aa-o27",
-    "gr-o01", "gr-o34", "gr-o36", "gr-o50",
-    "gr-o25", "gr-o26", "gr-o08",
-    "gr-o11", "gr-o15", "gr-o31"
+    "oq-ir-01", "oq-ir-15", "oq-ir-11", "oq-ir-07", "oq-ir-16", "oq-ir-05", "oq-ir-06", "oq-ir-13",
+    "oq-pr-09", "oq-pr-10", "oq-pr-03", "oq-pr-05", "oq-pr-06", "oq-pr-07", "oq-pr-18",
+    "oq-mp-01", "oq-mp-15", "oq-mp-06", "oq-mp-03", "oq-mp-16", "oq-mp-05",
+    "oq-ru-11", "oq-ru-07", "oq-ru-17", "oq-ru-06", "oq-ru-03", "oq-ru-14", "oq-ru-04", "oq-ru-18",
+    "cc-o01", "cc-o02", "cc-o03", "cc-o04", "cc-o13", "cc-o05",
+    "cc-o06", "cc-o08", "cc-o09",
+    "aa-o01", "aa-o32", "aa-o02", "aa-o04",
+    "aa-o18", "aa-o20", "aa-o05", "aa-o06", "aa-o07", "aa-o24",
+    "aa-o26", "aa-o08", "aa-o09", "aa-o27", "aa-o10", "aa-o30",
+    "gr-o01", "gr-o33", "gr-o34", "gr-o36", "gr-o50",
+    "gr-o25", "gr-o26", "gr-o08", "gr-o39",
+    "gr-o13", "gr-o11", "gr-o29", "gr-o15",
+    "gr-o31"
   ]);
   const essentialIdSet = new Set(essentialQuestionIds);
-  if (essentialIdSet.size !== essentialQuestionIds.length) throw new Error("Podvojeni ID-ji v zbirki Nujnih 35.");
+  if (essentialIdSet.size !== essentialQuestionIds.length) throw new Error("Podvojeni ID-ji v nujni zbirki.");
   for (const id of essentialQuestionIds) {
-    if (!questionById.has(id)) throw new Error(`Neznano vprašanje v zbirki Nujnih 35: ${id}.`);
+    if (!questionById.has(id)) throw new Error(`Neznano vprašanje v nujni zbirki: ${id}.`);
   }
 
   // Stran je namenoma samo za teorijo. Tudi če bi vsebinski modul pomotoma

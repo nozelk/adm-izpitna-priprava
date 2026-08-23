@@ -34,7 +34,7 @@ Neposredno odpiranje `index.html` večinoma deluje, lokalni strežnik pa je zane
 - kartice in kvize z razlagami;
 - pregledne, oštevilčene kartice teorijskih vprašanj z zložljivim prostorom za lasten odgovor ter ločeno skritima namigom in vzorčnim odgovorom;
 - najmanj 15 uradnih formulacij iz treh starih teorijskih izpitov; podvojene formulacije so združene z vsebinsko celovitim vprašanjem;
-- kurirano jedro **Nujnih 35**, ki pokrije vseh 13 tem in vključuje vseh 15 dejanskih izpitnih formulacij, s preklopom nazaj na celotno banko 185 vprašanj;
+- kurirano jedro **Nujnih 68**, ki brez temeljnih vrzeli pokrije vseh 13 tem in vključuje vseh 15 dejanskih izpitnih formulacij, s preklopom nazaj na celotno banko 185 vprašanj;
 - trajen izbor posameznih, prikazanih, tematskih ali vseh vprašanj ter čist A4-izvoz za ukaz »Shrani kot PDF«, vedno z enim vprašanjem na belem listu, pripeto uradno formulacijo in brez črt, namigov, rubrik ali rešitev;
 - generator poskusnega teorijskega izpita;
 - lokalno shranjevanje napredka v brskalniku pod ključem `admTheoryAtlasStateV1`.

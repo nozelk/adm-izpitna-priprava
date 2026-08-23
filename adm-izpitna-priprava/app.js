@@ -753,16 +753,16 @@
     const essentialOfficialCount = officialFormulationCount(essentialQuestions);
     const essentialTopicCount = new Set(essentialQuestions.map(question => question.topic)).size;
     const questionListTitle = selectedTopic
-      ? `${essentialActive ? "Nujnih 35 · " : ""}Tema ${escapeHtml(selectedTopic.number)} · ${selectedTopic.title}`
-      : essentialActive ? "Nujnih 35 · prvi učni krog" : "Celotna teorijska banka";
+      ? `${essentialActive ? `Nujnih ${essentialQuestions.length} · ` : ""}Tema ${escapeHtml(selectedTopic.number)} · ${selectedTopic.title}`
+      : essentialActive ? `Nujnih ${essentialQuestions.length} · celovito izpitno jedro` : "Celotna teorijska banka";
     setView(`
       <header class="page-head question-page-head"><span class="eyebrow">Piši, razloži, dokaži</span><h1 class="page-title">Teorijska vprašanja</h1><p class="page-lead">Vprašanja so prikazana v izpitni obliki, brez vnaprej razkritih namigov ali meril. Svoj odgovor, namig in vzorčni odgovor odpreš šele, ko jih želiš uporabiti.</p></header>
-      <section class="essential-collection ${essentialActive ? "active" : ""}" data-testid="essential-question-collection">
+      <section class="essential-collection ${essentialActive ? "active" : ""}" data-core-size="${essentialQuestions.length}" data-testid="essential-question-collection">
         <div class="essential-copy">
           <span class="essential-label">Najprej se nauči to</span>
           <h2>Nujnih <em>${essentialQuestions.length}</em></h2>
-          <p>Najmanjši smiseln prvi krog iz celotne banke. Vključuje <strong>vseh ${essentialOfficialCount} dejanskih formulacij</strong> iz teorijskih izpitov ter ključne definicije, izreke, dokaze, primere in protiprimere iz vseh poglavij.</p>
-          <small>${essentialActive ? "Zbirka je trenutno prikazana spodaj. Vsaka kartica iz jedra ima zeleno oznako z zaporedno številko." : "Klikni »Prikaži nujnih 35«, da skriješ manj pomembna vprašanja in ohraniš samo jedro."}</small>
+          <p>Celovito izpitno jedro brez temeljnih vrzeli. Vključuje <strong>vseh ${essentialOfficialCount} dejanskih formulacij</strong> iz teorijskih izpitov ter nujne definicije, izreke, dokaze, primere in protiprimere iz vseh poglavij.</p>
+          <small>${essentialActive ? "Zbirka je trenutno prikazana spodaj. Vsaka kartica iz jedra ima zeleno oznako z zaporedno številko." : `Klikni »Prikaži nujnih ${essentialQuestions.length}«, da skriješ vprašanja za drugi krog in ohraniš samo jedro.`}</small>
         </div>
         <div class="essential-stats" aria-label="Obseg zbirke">
           <div><strong>${essentialQuestions.length}</strong><span>vprašanj</span></div>

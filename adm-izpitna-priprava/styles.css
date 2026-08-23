@@ -368,7 +368,7 @@ kbd { padding: 2px 6px; border: 1px solid var(--line); border-radius: 6px; backg
     #17211a;
   box-shadow: 0 24px 65px rgba(0, 0, 0, .24);
 }
-.essential-collection::after { content: "35"; position: absolute; z-index: 0; right: -22px; top: -58px; color: rgba(200, 243, 106, .035); font-family: var(--serif); font-size: 210px; font-weight: 900; line-height: 1; pointer-events: none; }
+.essential-collection::after { content: attr(data-core-size); position: absolute; z-index: 0; right: -22px; top: -58px; color: rgba(200, 243, 106, .035); font-family: var(--serif); font-size: 210px; font-weight: 900; line-height: 1; pointer-events: none; }
 .essential-collection.active { border-color: rgba(200, 243, 106, .48); box-shadow: 0 24px 70px rgba(0, 0, 0, .28), inset 0 0 0 1px rgba(200, 243, 106, .05); }
 .essential-copy, .essential-stats, .essential-actions { position: relative; z-index: 1; }
 .essential-label { display: block; margin-bottom: 7px; color: var(--lime); font-family: var(--mono); font-size: 9px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }

@@ -4,6 +4,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
+const expectedEssentialQuestionCount = 68;
+
 const katexVendorRoot = path.resolve(__dirname, "vendor", "katex");
 const pathIsInside = (root, candidate) => {
   const relative = path.relative(root, candidate);
@@ -124,8 +126,8 @@ assert(data.exercises.length === 0, `Theory-only stran ne sme vsebovati vaj; naj
 assert(data.questions.length >= 185,
   `Celovita teorijska zbirka mora imeti najmanj 185 odprtih vprašanj; najdenih ${data.questions.length}.`);
 assert(Array.isArray(data.essentialQuestionIds), "ADM_DATA nima zbirke essentialQuestionIds.");
-assert(data.essentialQuestionIds.length === 35,
-  `Zbirka Nujnih 35 mora imeti natanko 35 vprašanj; najdenih ${data.essentialQuestionIds.length}.`);
+assert(data.essentialQuestionIds.length === expectedEssentialQuestionCount,
+  `Nujna zbirka mora imeti natanko ${expectedEssentialQuestionCount} vprašanj; najdenih ${data.essentialQuestionIds.length}.`);
 assert(data.sources.length === expectedSources.size,
   `Pričakovanih je natanko ${expectedSources.size} dovoljenih virov, najdenih ${data.sources.length}.`);
 
@@ -407,16 +409,20 @@ for (const sourceId of theoryExamIds) {
 
 const essentialQuestionIdSet = new Set(data.essentialQuestionIds);
 assert(essentialQuestionIdSet.size === data.essentialQuestionIds.length,
-  "Zbirka Nujnih 35 vsebuje podvojene ID-je.");
+  "Nujna zbirka vsebuje podvojene ID-je.");
 assert(data.essentialQuestionIds.every(id => idsByCollection.get("questions").includes(id)),
-  "Zbirka Nujnih 35 vsebuje ID, ki ne pripada kanoničnemu teorijskemu vprašanju.");
+  "Nujna zbirka vsebuje ID, ki ne pripada kanoničnemu teorijskemu vprašanju.");
 const essentialQuestions = data.essentialQuestionIds.map(id => data.questions.find(question => question.id === id));
 assert(new Set(essentialQuestions.map(question => question.topic)).size === data.topics.length,
-  "Zbirka Nujnih 35 mora pokriti vseh 13 teorijskih tem.");
+  "Nujna zbirka mora pokriti vseh 13 teorijskih tem.");
 assert(officialQuestionEntries.every(entry => essentialQuestionIdSet.has(entry.parentId)),
-  "Zbirka Nujnih 35 mora vsebovati vse kanonične kartice z uradnimi formulacijami.");
+  "Nujna zbirka mora vsebovati vse kanonične kartice z uradnimi formulacijami.");
 assert(officialQuestionEntries.filter(entry => essentialQuestionIdSet.has(entry.parentId)).length === officialQuestionEntries.length,
-  "Zbirka Nujnih 35 ne ohrani vseh uradnih teorijskih formulacij.");
+  "Nujna zbirka ne ohrani vseh uradnih teorijskih formulacij.");
+for (const requiredId of ["oq-ru-11", "oq-ru-07", "oq-ru-17", "oq-ru-04"]) {
+  assert(essentialQuestionIdSet.has(requiredId),
+    `Nujna zbirka mora vsebovati temeljno vprašanje o relacijah in urejenostih ${requiredId}.`);
+}
 
 const strings = [];
 const collectStrings = (value, trail = "data") => {
@@ -565,7 +571,12 @@ assert(appSource.includes("officialVariants"),
 assert(stylesSource.includes(".question-card.selected") && stylesSource.includes(".answer-workspace"),
   "Manjkajo vizualna stanja izbrane kartice ali zaprtega prostora za odgovor.");
 assert(stylesSource.includes(".essential-collection") && stylesSource.includes(".question-meta .essential"),
-  "Manjka vizualno ločena zbirka Nujnih 35 ali njena oznaka na karticah.");
+  "Manjka vizualno ločena nujna zbirka ali njena oznaka na karticah.");
+assert(appSource.includes('data-core-size="${essentialQuestions.length}"') &&
+  stylesSource.includes("content: attr(data-core-size)"),
+  "Velika številka nujne zbirke mora biti vezana na dejansko število vprašanj.");
+assert(!appSource.includes("Nujnih 35") && !stylesSource.includes('content: "35"'),
+  "V vmesniku je ostal zastarel trdo zapisan obseg Nujnih 35.");
 assert(!appSource.includes("V popolnem odgovoru zajemi") && !appSource.includes('data-testid="question-answer-plan"'),
   "Izpitni prikaz ne sme vnaprej razkrivati rubrike ali načrta odgovora.");
 
@@ -611,6 +622,9 @@ const counts = {
   flashcards: data.flashcards.length,
   quiz: data.quiz.length,
   questions: data.questions.length,
+  essentialQuestions: data.essentialQuestionIds.length,
+  essentialTopics: new Set(essentialQuestions.map(question => question.topic)).size,
+  essentialOfficialQuestions: officialQuestionEntries.filter(entry => essentialQuestionIdSet.has(entry.parentId)).length,
   officialQuestions: officialQuestionEntries.length,
   exercises: data.exercises.length,
   sources: data.sources.length,
