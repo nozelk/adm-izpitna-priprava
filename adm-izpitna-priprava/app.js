@@ -667,7 +667,6 @@
           <header class="pdf-header"><span>ADM · TEORIJSKA VPRAŠANJA</span><span>${index + 1} / ${items.length}</span></header>
           <div class="pdf-meta"><span>${escapeHtml(topic ? `Tema ${topic.number} · ${topic.title}` : question.topic)}</span>${question.official ? "<span>vprašanje iz teorijskega izpita</span>" : ""}</div>
           <h1>${renderedPrompt}</h1>
-          <section class="pdf-writing" aria-label="Prostor za odgovor"></section>
         </div>
         <footer><span>${escapeHtml(scopeLabel)}</span><span>${escapeHtml(sourceTitle(question.source))}</span></footer>
       </article>`;
@@ -679,14 +678,13 @@
       *{box-sizing:border-box}html,body{margin:0;background:#e7e7e3;color:#172019;font-family:Arial,Helvetica,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
       .print-help{position:sticky;z-index:20;top:0;display:flex;align-items:center;justify-content:center;gap:18px;padding:13px 18px;background:#172019;color:#fff;box-shadow:0 8px 25px #0003;font-size:14px}
       .print-help strong{color:#c8f36a}.print-help button{padding:9px 14px;border:0;border-radius:7px;background:#c8f36a;color:#172019;font-weight:800;cursor:pointer}
-      .pdf-question{--pdf-scale:1;position:relative;width:210mm;height:297mm;margin:12mm auto;padding:17mm 18mm 15mm;overflow:hidden;page-break-after:always;break-after:page;background:#fff;box-shadow:0 8px 32px #0002}
-      .pdf-question:last-child{page-break-after:auto;break-after:auto}.pdf-page-inner{max-height:254mm;overflow:hidden}
+      .pdf-question{--pdf-scale:1;position:relative;width:210mm;height:295mm;margin:12mm auto;padding:17mm 18mm 15mm;overflow:hidden;page-break-inside:avoid;page-break-after:always;background:#fff;box-shadow:0 8px 32px #0002}
+      .pdf-question:last-child{page-break-after:auto}.pdf-page-inner{max-height:254mm;overflow:hidden}
       .pdf-header{display:flex;justify-content:space-between;padding-bottom:4mm;border-bottom:.45mm solid #172019;color:#4b5b50;font-size:calc(8.5pt * var(--pdf-scale));font-weight:800;letter-spacing:.08em}
       .pdf-meta{display:flex;flex-wrap:wrap;gap:2mm;margin:7mm 0 4mm}.pdf-meta span{padding:1.5mm 2.5mm;border:.25mm solid #cbd2cc;border-radius:99px;color:#445249;font-size:calc(8.5pt * var(--pdf-scale));font-weight:700}
       h1{margin:0 0 8mm;font-family:Georgia,'Times New Roman',serif;font-size:calc(23pt * var(--pdf-scale));line-height:1.25;letter-spacing:-.015em}h1 p{margin:0}
-      .pdf-writing{height:190mm;margin-top:9mm;background:repeating-linear-gradient(to bottom,transparent 0,transparent 10mm,#d8ddd8 10.2mm,#d8ddd8 10.45mm)}
       .katex{font-size:1em}.katex-display{margin:3mm 0;overflow:hidden}.pdf-question footer{position:absolute;right:18mm;bottom:8mm;left:18mm;display:flex;justify-content:space-between;gap:6mm;padding-top:2.5mm;border-top:.2mm solid #d3d8d4;color:#657168;font-size:7.5pt}.pdf-question footer span:last-child{text-align:right}
-      @media print{html,body{background:#fff}.print-help{display:none!important}.pdf-question{margin:0;box-shadow:none}}
+      @media print{html,body{width:210mm;margin:0!important;background:#fff}.print-help{display:none!important}.pdf-question{width:210mm;height:295mm;margin:0!important;box-shadow:none}}
     </style></head><body><div class="print-help" data-testid="pdf-save-help"><strong>PDF je pripravljen.</strong><span>V tiskalnem oknu izberi <b>Shrani kot PDF</b>. Vsako vprašanje je na svoji strani.</span><button type="button" onclick="window.print()">Odpri tiskanje</button></div>${pages}</body></html>`);
     printWindow.document.close();
     printWindow.opener = null;
@@ -700,11 +698,6 @@
           while (inner && inner.scrollHeight > inner.clientHeight && scale > 0.68) {
             scale = Math.max(0.68, scale - 0.04);
             page.style.setProperty("--pdf-scale", scale.toFixed(2));
-          }
-          if (inner && inner.scrollHeight > inner.clientHeight) {
-            const writingSpace = inner.querySelector(".pdf-writing");
-            const overflow = inner.scrollHeight - inner.clientHeight;
-            if (writingSpace) writingSpace.style.height = `${Math.max(90, writingSpace.offsetHeight - overflow - 8)}px`;
           }
         });
         printWindow.focus();

@@ -18,6 +18,8 @@
       examNote: "Teorijsko jedro je povzeto iz 11. poglavja ADM-Grafi.pdf. Naučiti se moraš natančne definicije in pogoje, ne le prepoznati risbe.",
       outcomes: [
         "natančno definirati enostavni graf, multigraf in usmerjeni graf",
+        "uporabiti sosednost, incidenco, sosedstvo, red in velikost grafa",
+        "definirati komplement in izomorfizem ter uporabiti grafne invariante",
         "izračunati stopnje ter uporabiti lemo o rokovanju in njeno paritetno posledico",
         "ločiti podgraf, inducirani podgraf in vpeti podgraf",
         "prepoznati sprehod, sled, pot, obhod in cikel",
@@ -34,13 +36,36 @@
           title: "Graf, multigraf in usmerjeni graf",
           html: H`
             <p><strong>Enostavni neusmerjeni graf</strong> je par \(G=(V,E)\), kjer je \(V\) neprazna množica vozlišč, \(E\subseteq\binom V2\) pa množica neurejenih parov različnih vozlišč. Povezavo \(\{u,v\}\) pišemo tudi \(uv\); tedaj sta \(u,v\) sosednji vozlišči.</p>
-            <p><strong>Multigraf</strong> lahko vsebuje vzporedne povezave in zanke. Zanka k stopnji svojega krajišča prispeva 2. <strong>Usmerjeni graf</strong> ima urejene povezave \((u,v)\); pri vozlišču ločimo vhodno in izhodno stopnjo.</p>
+            <p><strong>Multigraf</strong> formalno zapišemo \(G=(V,E,\partial)\), kjer \(\partial:E\to\operatorname{MSet}_2(V)\) vsaki posamezni povezavi priredi neurejeno multimnožico dveh krajišč. Zato imata lahko različni povezavi ista krajišča, pri zanki pa se isto krajišče pojavi dvakrat in k njegovi stopnji prispeva 2. <strong>Enostavni usmerjeni graf</strong> je \(D=(V,A)\) z \(A\subseteq V\times V\); pri loku \((u,v)\) razlikujemo rep \(u\), glavo \(v\) ter vhodno in izhodno stopnjo.</p>
             <div class="comparison-grid">
               <div class="mini-card"><strong>Enostavni graf</strong><p>Brez zank in brez vzporednih povezav.</p></div>
               <div class="mini-card"><strong>Multigraf</strong><p>Zanke in vzporedne povezave so dovoljene, če naloga tako pove.</p></div>
               <div class="mini-card"><strong>Usmerjeni graf</strong><p>\((u,v)\) in \((v,u)\) sta različni povezavi.</p></div>
             </div>
-            <blockquote>Risba ni graf: isti abstraktni graf lahko narišemo na mnogo načinov. Graf določata množici \(V\) in \(E\).</blockquote>`
+            <blockquote>Risba ni graf: isti abstraktni graf lahko narišemo na mnogo načinov. Enostavni graf določata \(V,E\), multigraf pa poleg \(V,E\) še preslikava krajišč \(\partial\).</blockquote>`
+        },
+        {
+          id: "go-sosednost-incidenca",
+          kind: "definition",
+          label: "Osnovni jezik",
+          title: "Sosednost, incidenca, red, velikost in sosedstvo",
+          html: H`
+            <p>V enostavnem grafu iz \(uv\in E(G)\) sledi, da sta \(u\) in \(v\) <strong>sosednji vozlišči</strong>, povezava \(uv\) pa je <strong>incidentna</strong> z obema krajiščema. V multigrafu je povezava \(e\) incidentna z vsakim krajiščem, ki nastopa v \(\partial(e)\), vozlišči \(u,v\) pa sta sosednji, če ima kaka povezava prav ti krajišči. <strong>Odprto sosedstvo</strong> vozlišča vsebuje različna sosednja vozlišča; v enostavnem grafu je \(N_G(v)=\{u\in V(G):uv\in E(G)\}\), zaprto pa \(N_G[v]=N_G(v)\cup\{v\}\).</p>
+            <p><strong>Red</strong> grafa je \(|V(G)|\), njegova <strong>velikost</strong> pa \(|E(G)|\). V enostavnem grafu je \(\deg_G(v)=|N_G(v)|\); v multigrafu ta enačba zaradi vzporednih povezav in zank na splošno ne velja, zato stopnjo štejemo z incidencami.</p>
+            <p><strong>Primer.</strong> V poti \(P_4=v_1v_2v_3v_4\) je \(N(v_2)=\{v_1,v_3\}\), red je 4, velikost 3 in \(\deg(v_2)=2\). Izolirano vozlišče ima prazno odprto sosedstvo.</p>`
+        },
+        {
+          id: "go-komplement-izomorfizem",
+          kind: "definition",
+          label: "Graf ni njegova risba",
+          title: "Komplement in izomorfizem grafov",
+          html: H`
+            <p>Za enostaven graf \(G\) je <strong>komplement</strong> \(\overline G\) graf na isti množici vozlišč, v katerem sta različni vozlišči povezani natanko tedaj, ko v \(G\) nista povezani:</p>
+            <div class="formula-panel">\[uv\in E(\overline G)\iff u\ne v\land uv\notin E(G).\]</div>
+            <p>Grafa \(G\) in \(H\) sta <strong>izomorfna</strong>, če obstaja bijekcija \(\varphi:V(G)\to V(H)\), ki ohranja sosednost v obe smeri:</p>
+            <div class="formula-panel">\[uv\in E(G)\iff \varphi(u)\varphi(v)\in E(H).\]</div>
+            <p>Izomorfizem ohrani red, velikost, zaporedje stopenj, število komponent, dolžine ciklov, dvodelnost in kromatično število. Zato različna vrednost kateregakoli invarianta dokaže neizomorfnost. Enakost samo nekaterih invariantov še ne zadošča: \(C_6\) in \(C_3\mathbin{\dot\cup}C_3\) imata šest vozlišč, šest povezav in same stopnje 2, vendar je prvi povezan, drugi pa ne. Primer torej pokaže natančno to, da red, velikost in zaporedje stopenj skupaj niso zadosten test.</p>
+            <p>Če je \(\varphi:G\to H\) izomorfizem, ista bijekcija izomorfno preslika tudi \(\overline G\) na \(\overline H\). Zapis \(G\cong H\) pomeni enakost strukture, ne dobesedne enakosti množic vozlišč.</p>`
         },
         {
           id: "go-stopnje",
@@ -169,6 +194,7 @@
       checklist: [
         "Znam iz množice povezav izračunati vse stopnje in preveriti lemo o rokovanju.",
         "Ločim graf, multigraf in usmerjeni graf.",
+        "Znam definirati sosedstvo, red, velikost, komplement in izomorfizem.",
         "Ločim podgraf, inducirani podgraf in vpeti podgraf.",
         "Ločim sprehod, sled, pot, obhod in cikel.",
         "Znam določiti komponente, razdalje, premer in notranji obseg.",
@@ -189,6 +215,7 @@
       examNote: "Teorijsko jedro je celotno 12. poglavje ADM-Grafi.pdf: pet ekvivalentnih opisov drevesa, listi, vpeta drevesa, brisanje–krčenje, Laplacova matrika, Kirchhoff in Cayley.",
       outcomes: [
         "navesti in uporabljati ekvivalentne karakterizacije drevesa",
+        "definirati gozd in most ter dokazati formulo \(|E|=|V|-k\)",
         "dokazati obstoj listov in opisati drevesa z natanko dvema listoma",
         "prepoznati vpeto drevo in kriterij povezanosti",
         "uporabiti rekurzijo brisanje–krčenje",
@@ -205,6 +232,18 @@
             <p>V ADM-Grafi.pdf je <strong>drevo</strong> definirano kot graf, v katerem med poljubnima vozliščema obstaja natanko ena pot. Iz tega takoj sledi povezanost; ekvivalentno je drevo povezan graf brez ciklov.</p>
             <p><strong>List</strong> je vozlišče stopnje 1. Posebej: \(K_1\) je drevo, toda njegovo edino vozlišče ima stopnjo 0 in po tej definiciji ni list.</p>
             <blockquote>Ne zamenjaj dveh pomenov besede list: pri tukajšnjih neusmerjenih grafih pomeni stopnjo 1. Drugačne konvencije za ukoreninjena drevesa niso del tega PDF-ja.</blockquote>`
+        },
+        {
+          id: "dv-gozd-most",
+          kind: "theorem",
+          label: "Osnovni pojmi in posledici",
+          title: "Gozd, most in povezave brez cikla",
+          html: H`
+            <p><strong>Gozd</strong> je graf brez ciklov; njegove povezane komponente so drevesa. Če ima gozd \(n\) vozlišč in \(k\) komponent, potem</p>
+            <div class="formula-panel">\[|E|=n-k.\]</div>
+            <p><strong>Dokaz.</strong> Če ima \(i\)-ta komponenta \(n_i\) vozlišč, je drevo in ima \(n_i-1\) povezav. Seštevanje da \(\sum_i(n_i-1)=n-k\). Posebej je drevo natanko povezan gozd in ima \(n-1\) povezav.</p>
+            <p>Povezava \(e\) je <strong>most</strong>, če ima \(G-e\) več komponent kot \(G\). Povezava je most natanko tedaj, ko ne leži na nobenem ciklu: povezava na ciklu ima obvoz po preostanku cikla, če pa obstaja obvoz med njenima krajiščema, obvoz skupaj z njo tvori cikel.</p>
+            <p>Zato je v drevesu vsaka povezava most. Izbris ene povezave drevesa ustvari natanko dve komponenti; dodajanje nove povezave med dvema njegovima vozliščema pa ustvari natanko en cikel.</p>`
         },
         {
           id: "dv-ekvivalence",
@@ -345,6 +384,7 @@
       ],
       checklist: [
         "Znam navesti vsaj pet ekvivalentnih karakterizacij drevesa.",
+        "Znam definirati gozd in most ter dokazati kriterij z lego na ciklu.",
         "Vem, zakaj enačba n−1 povezav sama ni dovolj.",
         "Znam dokazati obstoj dveh listov.",
         "Znam iz stopenj izračunati število listov.",
@@ -549,6 +589,7 @@
         "dokazati požrešno mejo \\(\\chi\\le\\Delta+1\\)",
         "natančno navesti Brooksov izrek z obema izjemama",
         "iz spodnje in zgornje meje določiti kromatično število Petersenovega grafa",
+        "definirati ravninskost in ločiti graf od njegove konkretne vložitve",
         "pravilno umestiti izrek štirih barv"
       ],
       sections: [
@@ -624,6 +665,16 @@
             <p>Risba z barvami brez razlage dokazuje le zgornjo mejo. Trikotnik brez podanega barvanja dokazuje le spodnjo mejo 3.</p>`
         },
         {
+          id: "bi-ravninskost",
+          kind: "definition",
+          label: "Predpostavka izreka",
+          title: "Ravninski graf in ravninska vložitev",
+          html: H`
+            <p>Graf je <strong>ravninski</strong>, če ga lahko narišemo v ravnini tako, da se notranjosti različnih povezav ne sekajo; stik je dovoljen le v skupnem krajišču. Konkretni risbi brez križanj pravimo <strong>ravninska vložitev</strong>. Ravninskost je lastnost abstraktnega grafa, ne prve risbe, ki jo vidimo.</p>
+            <p><strong>Primer.</strong> \(K_4\) je ravninski, čeprav ga lahko narišemo s križanjem. Grafa \(K_5\) in \(K_{3,3}\) nista ravninska. To sta standardna protiprimera napačni trditvi, da lahko vsako križanje odpravimo s premikanjem vozlišč.</p>
+            <p>Izrek štirih barv uporablja samo predpostavko ravninskosti in govori o barvanju vozlišč. Ne govori o barvanju povezav, ne zagotavlja optimalnega barvanja in ne trdi, da vsak ravninski graf potrebuje štiri barve.</p>`
+        },
+        {
           id: "bi-stiri-barve",
           kind: "theorem",
           label: "Izrek 14.2",
@@ -671,6 +722,7 @@
         "Znam dokazati požrešno mejo χ≤Δ+1.",
         "Brooksov izrek navedem s povezanostjo in obema izjemama.",
         "Znam po postopku iz PDF-ja dokazati χ(Pet)=3.",
+        "Znam definirati ravninski graf in pojasniti, zakaj križanje na eni risbi ni dokaz neravninskosti.",
         "Izrek štirih barv navedem kot zgornjo mejo χ≤4."
       ]
     }
@@ -748,25 +800,31 @@
   const questions = [
     {
       id: "gr-o01", topic: "grafi-osnove", difficulty: 1, source: "ADM-Grafi.pdf, §11.1",
-      prompt: H`Definiraj enostaven graf, multigraf in usmerjeni graf. Kako zanka prispeva k stopnji vozlišča?`,
-      answer: H`Enostaven graf je par \(G=(V,E)\), kjer je vsaka povezava neurejen par različnih vozlišč; nima zank niti vzporednih povezav. Multigraf lahko dopušča vzporedne povezave in, po uporabljeni konvenciji, zanke. Usmerjeni graf ima loke \((u,v)\); ločimo vhodno in izhodno stopnjo. Zanka v neusmerjenem grafu prispeva 2 k stopnji, ker ima pri vozlišču dva kraja.`,
-      hint: H`Povej, kaj sta \(V\) in \(E\), nato naštej dovoljene vrste povezav.`,
-      rubric: ["pravilne tri definicije", "jasna razlika med povezavo in lokom", "zanka šteje 2"], tags: ["definicije", "stopnja"]
+      prompt: H`Sestavi popoln uvodni odgovor o grafih: formalno definiraj enostaven graf, multigraf in usmerjeni graf; nato pojasni sosednost, incidenco, odprto sosedstvo, red, velikost ter stopnjo. Posebej obravnavaj zanko in vzporedne povezave ter povej, katera enakost za sosedstvo velja le v enostavnem grafu.`,
+      answer: H`Enostaven neusmerjeni graf je par \(G=(V,E)\), kjer je \(V\ne\varnothing\) množica vozlišč in \(E\subseteq\binom V2\) množica neurejenih parov različnih vozlišč. Multigraf formalno opišemo z \(G=(V,E,\partial)\), kjer je \(E\) množica posameznih povezav in \(\partial:E\to\operatorname{MSet}_2(V)\) vsaki povezavi priredi neurejeno multimnožico dveh krajišč. Zapis \(\partial(e)=\{\!\{u,u\}\!\}\) opisuje zanko, različni povezavi \(e\ne f\) pa smeta imeti isto multimnožico krajišč in sta tedaj vzporedni. Enostaven usmerjeni graf je par \(D=(V,A)\) z \(A\subseteq V\times V\); lok \((u,v)\) ima rep \(u\) in glavo \(v\). V enostavnem grafu iz \(uv\in E\) sledi, da sta \(u,v\) sosednji in je povezava \(uv\) incidentna z obema. V multigrafu je \(e\) incidentna z vsakim krajiščem v \(\partial(e)\), vozlišči pa sta sosednji, če obstaja povezava s tema krajiščema. Odprto sosedstvo vsebuje različne sosede; v enostavnem grafu je \(N_G(v)=\{u:uv\in E\}\), zaprto pa \(N_G[v]=N_G(v)\cup\{v\}\). Red grafa je \(|V|\), velikost \(|E|\), stopnja pa število incidentnih krajev povezav. Zato zanka prispeva 2 k neusmerjeni stopnji, vsaka vzporedna povezava pa se šteje posebej. V enostavnem grafu velja \(\deg(v)=|N(v)|\); v multigrafu lahko zaradi večkratnosti in zank ta enačba odpove. Pri usmerjenem grafu ločimo vhodno in izhodno stopnjo ter velja \(\sum_v\deg^-(v)=\sum_v\deg^+(v)=|A|\).`,
+      hint: H`Od para \(G=(V,E)\) preidi k lokalnim pojmom pri vozlišču in na koncu posebej opozori na multigrafe.`,
+      rubric: ["formalne tri definicije", "sosednost, incidenca in obe sosedstvi", "red, velikost in stopnja", "zanka, vzporedne povezave ter omejitev deg(v)=|N(v)|"], tags: ["definicije", "sosednost", "incidenca", "stopnja"]
     },
 
     {
       id: "gr-o08", topic: "drevesa-vpeta", difficulty: 2, source: "ADM-Grafi.pdf, Trditev 12.3",
-      prompt: H`Kdaj graf vsebuje vpeto drevo? Dokaži obe smeri Trditve 12.3.`,
+      prompt: H`Najprej definiraj vpeto drevo. Nato formuliraj in dokaži kriterij za njegov obstoj v obe smeri ter pojasni, zakaj zaporedno brisanje povezav na ciklih res konča in ohrani vsa vozlišča.`,
       answer: H`Graf vsebuje vpeto drevo natanko tedaj, ko je povezan. Če vsebuje vpeto drevo, je med poljubnima vozliščema pot že v tem drevesu, zato je povezan tudi celotni graf. Obratno: če je povezan graf že drevo, smo končali. Sicer vsebuje povezavo na ciklu, ki jo lahko izbrišemo, ne da bi izgubili povezanost. Postopek ponavljamo; ker je povezav končno mnogo, dobimo povezan vpet podgraf brez ciklov, torej vpeto drevo.`,
       hint: H`V povezani smeri zaporedoma briši povezave ciklov, ki niso potrebne za povezanost.`,
-      rubric: ["definicija vpetega drevesa", "smer vpeto drevo ⇒ povezanost", "smer povezanost ⇒ vpeto drevo"], tags: ["vpeto drevo", "povezanost", "dokaz"]
+      rubric: ["definicija vpetega drevesa", "smer vpeto drevo ⇒ povezanost", "smer povezanost ⇒ vpeto drevo", "ohranitev vozlišč, povezanosti in dokaz končanja"], tags: ["vpeto drevo", "povezanost", "dokaz"]
     },
     {
-      id: "gr-o10", topic: "drevesa-vpeta", difficulty: 3, source: "ADM-Grafi.pdf, Definicija 12.5 ter Trditev 12.6",
-      prompt: H`Definiraj Laplacovo matriko in formuliraj Kirchhoffov ter Cayleyjev izrek. Kako z njima izračunaš \(\tau(K_n)\)?`,
-      answer: H`Laplacian je \(L=D-A\): na diagonali so stopnje, zunaj diagonale pa negativno število povezav med vozliščema. Kirchhoff pravi, da po odstranitvi poljubne vrstice \(i\) in poljubnega stolpca \(j\) velja \(\tau(G)=|\det L_{ij}|\); pri istem indeksu dobimo glavni minor brez absolutnega predznaka. Cayley pravi \(\tau(K_n)=n^{n-2}\). Za \(K_n\) je glavni minor \(nI_{n-1}-J_{n-1}\); njegove lastne vrednosti so \(1\) enkrat in \(n\) z večkratnostjo \(n-2\), zato je determinant \(n^{n-2}\).`,
-      hint: H`Ne računaj \(\det L\), ker je ta 0; odstrani vrstico in pripadajoči stolpec.`,
-      rubric: ["L=D−A", "pravilna formulacija Kirchhoffa", "Cayley in povezava s K_n"], tags: ["Laplacian", "Kirchhoff", "Cayley"]
+      id: "gr-o10", topic: "drevesa-vpeta", difficulty: 3, source: "ADM-Grafi.pdf, posledice §12.1–12.4",
+      prompt: H`Naj bo \(G\) končen povezan graf z natanko enim ciklom \(C_\ell\). Brez uporabe Kirchhoffovega izreka dokaži, da je \(\tau(G)=\ell\). Rezultat posploši na končen povezan graf, katerega vsi cikli so paroma robno disjunktni in imajo dolžine \(\ell_1,\ldots,\ell_t\). Formulo preveri na dveh trikotnikih s skupnim vozliščem, nato pa pojasni, zakaj odpove za dva trikotnika s skupno povezavo.`,
+      answer: H`Vpeto drevo mora vsebovati vse mostove: če bi most izpustili, bi ostalo nepovezano. V unicikličnem grafu so vse povezave zunaj edinega cikla mostovi. Iz cikla moramo izbrisati vsaj eno povezavo, da odstranimo cikel, in največ eno, da pri že obveznih zunanjih povezavah ne porušimo povezanosti. Vsaka od \(\ell\) izbir izbrisane ciklične povezave zato da drugo vpeto drevo in
+\[\tau(G)=\ell.\]
+Naj bodo zdaj vsi cikli končnega grafa paroma robno disjunktni. Povezava zunaj vseh ciklov je most in mora ostati v vsakem vpetem drevesu. Iz vsakega od \(t\) ciklov izberimo eno povezavo in jo izbrišimo. Izbrisi so neodvisni, ker cikli nimajo skupnih povezav. Povezanost se ohrani, saj ima vsaka izbrisana povezava obvoz po preostanku svojega cikla; ker smo pretrgali vse cikle, je rezultat acikličen in zato vpeto drevo. Če ima \(G\) \(n\) vozlišč in \(m\) povezav, ima ta konstrukcija \(m-t=n-1\) povezav, torej \(m-n+1=t\).
+
+Obratno mora poljubno vpeto drevo izbrisati natanko \(m-(n-1)=t\) povezav in vsaj eno iz vsakega od \(t\) ciklov. Zato izpusti natanko eno povezavo vsakega cikla. Dobili smo bijekcijo med vpetimi drevesi in neodvisnimi izbirami po ene povezave na cikel, zato
+\[\tau(G)=\prod_{i=1}^{t}\ell_i.\]
+Pri \(t=0\) je \(G\) drevo in prazen produkt ima vrednost 1, skladno z \(\tau(G)=1\). Za dva trikotnika, ki imata skupno samo vozlišče, dobimo \(3\cdot3=9\). Če pa si trikotnika \(abc\) in \(abd\) delita povezavo \(ab\), cikla nista robno disjunktna in izbiri izbrisov nista neodvisni. Graf ima pet povezav; med njegovimi desetimi tri-elementnimi podmnožicami sta natanko dva trikotnika nepovezana vpeta podgrafa z izoliranim četrtim vozliščem, preostalih osem pa je vpetih dreves. Zato je \(\tau(G)=8\ne9\).`,
+      hint: H`Najprej določi obvezne mostove; na vsakem robno disjunktnem ciklu nato izberi natanko eno povezavo, ki jo odstraniš.`,
+      rubric: ["uniciklični dokaz in vloga mostov", "natančen dokaz produktne formule", "primer dveh ciklov s skupnim vozliščem", "protiprimer s skupno povezavo in pravilen rezultat 8"], tags: ["vpeta drevesa", "uniciklični graf", "robno disjunktni cikli", "produktno pravilo"]
     },
 
     {
@@ -793,10 +851,10 @@
 
     {
       id: "gr-o20", topic: "barvanje-izomorfnost", difficulty: 1, source: "ADM-Grafi.pdf, Izrek 14.2",
-      prompt: H`Kaj pravi izrek štirih barv in česa ta izrek ne trdi?`,
-      answer: H`Za vsak ravninski graf \(G\) velja \(\chi(G)\le4\). Gre za zgornjo mejo: izrek ne trdi, da ima vsak ravninski graf kromatično število natanko 4. ADM-Grafi.pdf izrek navede brez dokaza.`,
-      hint: H`Uporabi znak ≤, ne enačaja.`,
-      rubric: ["predpostavka ravninskosti", "meja χ≤4", "razlika med največ in natanko"], tags: ["izrek štirih barv", "barvanje"]
+      prompt: H`Definiraj ravninski graf in loči abstraktni graf od ravninske vložitve. Nato natančno navedi izrek štirih barv, razloži njegov logični domet ter ga preveri na primerih \(K_4\), dvodelnega ravninskega grafa in grafa \(K_5\).`,
+      answer: H`Graf je ravninski, če obstaja njegova risba v ravnini, v kateri se notranjosti povezav ne sekajo; taka konkretna risba je ravninska vložitev. Križanje na eni slabi risbi zato še ne dokazuje neravninskosti. Izrek štirih barv pravi: za vsak ravninski graf \(G\) velja \(\chi(G)\le4\). Gre za zgornjo mejo, ne za trditev \(\chi(G)=4\) za vsak ravninski graf, in izrek ne govori o barvanju povezav. Graf \(K_4\) je ravninski in ima \(\chi=4\), zato je meja lahko dosežena. Dvodelen graf z vsaj eno povezavo ima \(\chi=2\); neprazen graf brez povezav, na primer \(K_1\), pa ima \(\chi=1\). \(K_5\) ni ravninski, zato izreka nanj ne smemo uporabiti; sicer ima \(\chi(K_5)=5\). ADM-Grafi.pdf izrek navede brez dokaza.`,
+      hint: H`Najprej razjasni eksistenco risbe brez križanj, nato uporabi znak ≤ in tri primere z različnim statusom.`,
+      rubric: ["definicija ravninskosti in vložitve", "natančna meja χ≤4", "česa izrek ne trdi", "pravilna analiza vseh treh primerov"], tags: ["ravninskost", "izrek štirih barv", "barvanje"]
     },
     {
       id: "gr-o23", topic: "grafi-osnove", difficulty: 3, source: "ADM-Grafi.pdf, §11.3",
@@ -962,6 +1020,80 @@
       answer: H`Pri barvanju vozlišč preslikava \(c:V\to\{1,\ldots,k\}\) zahteva različni barvi na krajiščih vsake povezave; minimum je \(\chi(G)\). Pri barvanju povezav preslikava \(c':E\to\{1,\ldots,k\}\) zahteva različni barvi za povezavi s skupnim krajiščem; minimum je \(\chi'(G)\). V vozlišču stopnje \(\Delta\) je \(\Delta\) paroma incidentnih povezav, zato morajo dobiti \(\Delta\) različnih barv in \(\chi'(G)\ge\Delta(G)\). Pot \(P_n\), \(n\ge3\), ima \(\Delta=2\), izmenično barvanje povezav z dvema barvama pa zadošča, zato je \(\chi'=2\); za \(P_2\) je \(\chi'=1\). Pri sodem ciklu izmenično barvanje sklene pravilno in \(\chi'=2\). Pri lihem ciklu dve barvi ob vrnitvi povzročita konflikt, tri pa zadoščajo, zato je \(\chi'=3\). Zanka ima skupno krajišče sama s seboj; dobesedni pogoj bi zahteval, da je njena barva različna od same sebe. Zato PDF barvanje povezav definira za multigrafe brez zank. Ne smemo zamenjati \(\chi\) in \(\chi'\): za zvezdo \(K_{1,n}\) je \(\chi=2\), toda \(\chi'=n\).`,
       hint: H`V vozlišču največje stopnje poglej vse incidentne povezave hkrati.`,
       rubric: ["obe definiciji", "dokaz spodnje meje", "poti in oba tipa ciklov", "zanka in zvezda kot ločitev χ od χ'"], tags: ["barvanje povezav", "kromatični indeks", "spodnja meja"]
+    },
+    {
+      id: "gr-o48", topic: "grafi-osnove", difficulty: 2, source: "ADM-Grafi.pdf, §11.1 in uporaba izomorfnosti pri standardnih družinah",
+      prompt: H`Definiraj izomorfizem dveh enostavnih grafov in komplement grafa. Dokaži, katere lastnosti izomorfizem nujno ohranja, pojasni zvezo med izomorfizmom in komplementom ter s protiprimerom pokaži, da enako zaporedje stopenj še ne zadošča za izomorfnost.`,
+      answer: H`Izomorfizem \(\varphi:G\to H\) je bijekcija \(V(G)\to V(H)\), za katero za vsa različna \(u,v\) velja \(uv\in E(G)\iff\varphi(u)\varphi(v)\in E(H)\). Ker bijekcija ohranja natanko vse sosednosti, ohrani red, velikost, stopnjo vsakega ustreznega vozlišča, število komponent, obstoj in dolžine ciklov, dvodelnost ter kromatično število. Komplement \(\overline G\) ima ista vozlišča, različni vozlišči pa sta v njem sosednji natanko tedaj, ko v \(G\) nista. Zato ista \(\varphi\) iz \(G\cong H\) da tudi \(\overline G\cong\overline H\). Enakost posameznega invarianta ali izbranega podseznama ni zadostna: \(C_6\) in \(C_3\mathbin{\dot\cup}C_3\) imata po šest vozlišč, šest povezav in vsa vozlišča stopnje 2, vendar je prvi graf povezan, drugi pa ima dve komponenti, zato nista izomorfna. Primer dokazuje nezadostnost prav teh treh skupnih podatkov, ne pa enakosti vseh prej naštetih invariantov.`,
+      hint: H`Izomorfizem mora ohranjati povezavo v obe smeri; za protiprimer primerjaj povezanost dveh 2-regularnih grafov.`,
+      rubric: ["formalna bijekcija z ekvivalenco sosednosti", "definicija komplementa", "vsaj štirje pravilni invarianti in zveza komplementov", "protiprimer zadostnosti stopenj"], tags: ["izomorfizem", "komplement", "invarianti", "protiprimer"]
+    },
+    {
+      id: "gr-o49", topic: "drevesa-vpeta", difficulty: 3, source: "ADM-Grafi.pdf, posledice §12.1–12.3",
+      prompt: H`Naj bo \(G\) povezan graf z \(n\) vozlišči in \(m\) povezavami. Dokaži \(m\ge n-1\) in karakteriziraj primer enakosti. Nato dokaži, da moramo za pridobitev poljubnega vpetega drevesa izbrisati natanko \(m-n+1\) povezav, ter s konkretnim grafom pokaži, da izbris poljubnih toliko povezav še ne zagotovi vpetega drevesa.`,
+      answer: H`Ker je \(G\) povezan, vsebuje vpeto drevo \(T\). Drevo na \(n\) vozliščih ima \(n-1\) povezav in \(E(T)\subseteq E(G)\), zato \(m\ge n-1\). Če je \(m=n-1\), ima \(G\) enako mnogo povezav kot njegovo vpeto drevo, zato je \(E(G)=E(T)\) in je \(G\) sam drevo. Obratno ima vsako drevo na \(n\) vozliščih natanko \(n-1\) povezav.
+
+Vsako vpeto drevo grafa \(G\) vsebuje natanko \(n-1\) od njegovih \(m\) povezav, zato ga dobimo z izbrisom natanko
+\[m-(n-1)=m-n+1\]
+povezav. Ta pogoj je nujen, ne pa zadosten: izbrisani robovi morajo hkrati prekiniti vse cikle in ohraniti povezanost. Naj bo \(G\) trikotnik \(abc\) z dodanim listom \(d\), povezanim samo z \(a\). Tedaj sta \(n=m=4\), zato moramo izbrisati eno povezavo. Če izbrišemo katerokoli povezavo trikotnika, dobimo vpeto drevo. Če pa izbrišemo most \(ad\), ostaneta trikotnik in izolirano vozlišče: podgraf ima pravilnih \(n-1=3\) povezav, vendar je nepovezan in cikličen. Sama enačba o številu povezav torej nikoli ne nadomesti preverjanja povezanosti ali acikličnosti.`,
+      hint: H`Najprej v \(G\) izberi vpeto drevo; za protiprimer uporabi graf, ki ima hkrati cikel in most.`,
+      rubric: ["dokaz spodnje meje prek vpetega drevesa", "obe smeri karakterizacije enakosti", "izpeljava m−n+1", "veljaven in neveljaven izbris na istem konkretnem grafu"], tags: ["povezan graf", "vpeto drevo", "presežek povezav", "protiprimer"]
+    },
+    {
+      id: "gr-o50", topic: "grafi-osnove", difficulty: 3, source: "ADM-Grafi.pdf, §11.1–11.2",
+      prompt: H`Definiraj dvodelni graf in dokaži karakterizacijo: končen enostaven graf je dvodelen natanko tedaj, ko ne vsebuje lihega cikla. Nato s kriterijem razvrsti cikle in gozdove ter navedi primer grafa, pri katerem dvodelnost odpove.`,
+      answer: H`Graf je dvodelen, če lahko \(V(G)\) razcepimo na disjunktni množici \(A\) in \(B\), tako da ima vsaka povezava eno krajišče v vsakem delu. Če je graf dvodelen, se deli vzdolž vsakega cikla izmenjujejo, zato se lahko vrnemo v začetno vozlišče šele po sodem številu korakov; lihega cikla ni. Obratno predpostavimo, da graf nima lihega cikla. V vsaki komponenti izberemo koren \(r\) ter v \(A\) damo vozlišča s sodo, v \(B\) pa vozlišča z liho razdaljo od \(r\). Če bi povezava \(uv\) imela obe krajišči v istem delu, vzamemo najkrajši poti od \(r\) do \(u\) in \(v\) ter njun zadnji skupni vrh. Preostanka poti skupaj z \(uv\) tvorita lih cikel, protislovje. Zato vse povezave potekajo med deloma in graf je dvodelen. Sledi, da je \(C_n\) dvodelen natanko za sodi \(n\). Vsak gozd je dvodelen, ker nima nobenega cikla; dele lahko dobimo tudi z izmeničnim barvanjem po nivojih dreves. Trikotnik \(K_3=C_3\) je najkrajši protiprimer dvodelnosti.`,
+      hint: H`Za obratno smer razdeli vsako komponento po pariteti razdalje od izbranega korena.`,
+      rubric: ["definicija dvodelnosti", "nujnost s pariteto cikla", "zadostnost z razdaljami", "pravilna razvrstitev in protiprimer"], tags: ["dvodelen graf", "lihi cikel", "karakterizacija", "dokaz"]
+    },
+    {
+      id: "gr-o51", topic: "grafi-osnove", difficulty: 2, source: "ADM-Grafi.pdf, §11.1–11.2",
+      prompt: H`Definiraj razdaljo, premer in notranji obseg povezanega enostavnega grafa. Dokaži, da ima graf z vsaj dvema vozliščema premer \(1\) natanko tedaj, ko je poln, ter da je notranji obseg \(3\) natanko tedaj, ko graf vsebuje trikotnik. Izračunaj obe količini za \(P_n\), \(C_n\) in \(K_n\), kjer sta definirani.`,
+      answer: H`Razdalja \(d_G(u,v)\) je dolžina najkrajše poti med \(u\) in \(v\), premer povezanega grafa pa \(\operatorname{diam}(G)=\max_{u,v}d_G(u,v)\). Notranji obseg oziroma ožina je dolžina najkrajšega cikla; za gozd takega cikla ni, zato vrednosti ne določimo oziroma po izbrani razširjeni konvenciji pišemo \(\infty\). Če je \(\operatorname{diam}(G)=1\), sta poljubni različni vozlišči na razdalji 1 in zato sosednji, torej je \(G\) poln. Obratno so v \(K_n\) vsa različna vozlišča sosednja, zato je premer 1 za \(n\ge2\). V enostavnem grafu ima vsak cikel dolžino vsaj 3, zato je notranji obseg 3 natanko tedaj, ko obstaja cikel dolžine 3, torej trikotnik. Za \(P_n\) je premer \(n-1\), notranjega obsega pa ni. Za \(C_n\), \(n\ge3\), sta \(\operatorname{diam}(C_n)=\lfloor n/2\rfloor\) in notranji obseg \(n\). Za \(K_n\), \(n\ge3\), sta premer 1 in notranji obseg 3; \(K_2\) ima premer 1, vendar nima cikla, \(K_1\) pa ima premer 0.`,
+      hint: H`Premer 1 pomeni, da je vsaka dvojica različnih vozlišč povezana neposredno; pri ciklu primerjaj obe smeri med vozliščema.`,
+      rubric: ["tri natančne definicije", "obe ekvivalenci", "izračun za poti in cikle", "polni grafi z robnimi primeri"], tags: ["razdalja", "premer", "notranji obseg", "standardni grafi"]
+    },
+    {
+      id: "gr-o52", topic: "drevesa-vpeta", difficulty: 3, source: "ADM-Grafi.pdf, §12.1–12.2",
+      prompt: H`Naj bo \(G\) povezan multigraf. Dokaži, da je povezava \(e\) vsebovana v vsakem vpetem drevesu grafa \(G\) natanko tedaj, ko je most. Poleg tega utemelji, da je vsaka povezava, ki ni zanka, vsebovana v vsaj enem vpetem drevesu, in vse trditve ponazori na ciklu z dodano zanko.`,
+      answer: H`Vpeto drevo je vpeti podgraf, ki je povezan in brez ciklov; most je povezava, katere izbris poveča število komponent. Če je \(e=uv\) most in bi ga vpeto drevo \(T\) izpustilo, bi enolična pot med \(u\) in \(v\) v \(T\) ležala v \(G-e\), zato izbris \(e\) ne bi ločil krajišč, protislovje. Če \(e\) ni most, je \(G-e\) še vedno povezan in ima vpeto drevo; to je tudi vpeto drevo grafa \(G\), ki povezave \(e\) ne vsebuje. S tem dobimo ekvivalenco. Naj bo zdaj \(e\) povezava, ki ni zanka. Začnemo z gozdom, ki vsebuje samo \(e\) in vsa vozlišča. Dokler ni povezan, dodamo povezavo med dvema njegovima komponentama; taka povezava obstaja zaradi povezanosti \(G\) in ne ustvari cikla. Končni podgraf je vpeto drevo, ki vsebuje \(e\). Zanka ne more pripadati nobenemu drevesu, ker je že sama cikel. V grafu \(C_n\) ni mostov: za vsako ciklično povezavo obstajajo vpeta drevesa, ki jo vsebujejo, in vpeto drevo, ki jo izpusti. Dodana zanka pa ni v nobenem vpetem drevesu.`,
+      hint: H`Za »ni most« uporabi vpeto drevo grafa \(G-e\); dano nezančno povezavo pa razširi iz gozda do maksimalnega gozda.`,
+      rubric: ["definiciji", "obe smeri karakterizacije mostu", "razširitev nezančne povezave", "pravilen primer z zanko"], tags: ["vpeto drevo", "most", "zanka", "karakterizacija"]
+    },
+    {
+      id: "gr-o53", topic: "drevesa-vpeta", difficulty: 3, source: "ADM-Grafi.pdf, posledice §12.1–12.2",
+      prompt: H`Naj bosta \(T_1\) in \(T_2\) vpeta drevesa istega povezanega grafa. Dokaži izmenjalno lastnost: za vsako \(e\in E(T_1)\setminus E(T_2)\) obstaja \(f\in E(T_2)\setminus E(T_1)\), da sta tudi \(T_1-e+f\) in \(T_2-f+e\) vpeti drevesi. Razloži dokaz s prerezom in fundamentalnim ciklom ter ga izvedi na konkretnem ciklu \(C_4\).`,
+      answer: H`Izbris \(e\) razdeli drevo \(T_1\) na komponenti z množicama vozlišč \(A\) in \(B\). Krajišči povezave \(e\) sta v različnih delih. Enolična pot med njima v \(T_2\) mora zato prečkati prerez med \(A\) in \(B\); izberimo na njej povezavo \(f\) z enim krajiščem v vsakem delu. Ker v \(T_1-e\) ni nobene povezave čez ta prerez, velja \(f\notin T_1\), medtem ko je \(f\in T_2\). Dodatek \(f\) znova poveže komponenti \(T_1-e\) brez cikla, zato je \(T_1-e+f\) vpeto drevo. Po drugi strani dodatek \(e\) drevesu \(T_2\) ustvari fundamentalni cikel, sestavljen iz \(e\) in omenjene poti v \(T_2\). Povezava \(f\) leži na tem ciklu, zato njen izbris cikel prekine, povezanost pa ostane; tudi \(T_2-f+e\) je vpeto drevo. Na \(C_4\) naj \(T_1=C_4-e_4\) in \(T_2=C_4-e_2\). Za \(e=e_2\) izberemo \(f=e_4\); izmenjava preprosto zamenja manjkajoči povezavi in obe dobljeni množici treh povezav sta poti skozi vsa štiri vozlišča. Zahteva, da sta podgrafa vpeti drevesi, je bistvena: pri poljubnih acikličnih podgrafih ni nujno niti enako število povezav niti skupna množica vozlišč.`,
+      hint: H`Po izbrisu \(e\) iz \(T_1\) poišči povezavo poti v \(T_2\), ki prečka nastali prerez.`,
+      rubric: ["prerez po izbrisu e", "pravilna izbira f", "dokaz za obe novi drevesi", "konkreten C4 in omejitev trditve"], tags: ["vpeta drevesa", "izmenjalna lastnost", "prerez", "fundamentalni cikel"]
+    },
+    {
+      id: "gr-o54", topic: "euler-hamilton", difficulty: 3, source: "ADM-Grafi.pdf, posledica Eulerjevega kriterija v §13.1",
+      prompt: H`Uporabi konvencijo, da sta v multigrafu zanka cikel dolžine 1, par vzporednih povezav pa cikel dolžine 2. Dokaži strukturno različico Eulerjevega kriterija: povezave končnega multigrafa lahko razdelimo na paroma robno disjunktne cikle natanko tedaj, ko ima vsako vozlišče sodo stopnjo. Pojasni povezavo z Eulerjevimi obhodi ter s protiprimerom pokaži, da pogoj »vsaka povezava leži na nekem ciklu« sam ne zadošča.`,
+      answer: H`Cikel tukaj razumemo po navedeni multigrafski konvenciji; zanka k stopnji svojega vozlišča prispeva dve incidenci. Če so povezave razdeljene na cikle, vsak cikel pri vsakem obiskanem vozlišču prispeva dve incidenci; vsota takih prispevkov je soda, zato so vse stopnje sode. Obrat dokažemo po številu povezav. Prazen graf ima prazen razcep. V neprazni komponenti samih sodih stopenj začnemo slediti povezavam brez ponavljanja. Zaradi paritete se ne moremo ustaviti drugje kot v začetnem vozlišču, zato dobimo sklenjeno sled; če se v njej ponavljajo notranja vozlišča, jo razcepimo na cikle. Odstranitev povezav teh ciklov zmanjša vsako stopnjo za sodo število, zato v preostanku vse stopnje ostanejo sode. Indukcija razcepi še preostale povezave. Če je graf povezan po vseh vozliščih pozitivne stopnje, lahko cikle z vrivanjem združimo v en Eulerjev obhod; pri več komponentah dobimo po en Eulerjev obhod v vsaki neprazni komponenti. Šibkejši pogoj ne zadošča: v grafu iz trikotnikov \(abc\) in \(abd\), ki si delita povezavo \(ab\), vsaka povezava leži na ciklu, vendar imata \(a\) in \(b\) stopnjo 3. Graf zato nima Eulerjevega obhoda in njegovih povezav ni mogoče razdeliti na cikle.`,
+      hint: H`Pri odstranitvi cikla se stopnja vsakega njegovega vozlišča zmanjša za dve; nato uporabi indukcijo.`,
+      rubric: ["dokaz nujnosti", "indukcijski dokaz zadostnosti", "zveza z Eulerjevim obhodom", "ustrezen protiprimer"], tags: ["Euler", "razcep na cikle", "sode stopnje", "protiprimer"]
+    },
+    {
+      id: "gr-o55", topic: "euler-hamilton", difficulty: 3, source: "ADM-Grafi.pdf, §13.2 in standardne družine",
+      prompt: H`Naj bo \(G\) graf z \(|V(G)|\ge2\), \(G^+\) pa graf, ki ga iz \(G\) dobimo z novim vozliščem, sosednjim z vsemi starimi vozlišči. Dokaži, da ima \(G\) Hamiltonovo pot natanko tedaj, ko ima \(G^+\) Hamiltonov cikel. Nato za \(m,n\ge1\) s tem ali neposrednim izmenjevanjem popolnoma razvrsti, kdaj ima \(K_{m,n}\) Hamiltonovo pot, in primerjaj pogoj s pogojem za Hamiltonov cikel.`,
+      answer: H`Hamiltonova pot vsebuje vsako vozlišče natanko enkrat, Hamiltonov cikel pa je cikel skozi vsa vozlišča. Ker ima \(G\) vsaj dve vozlišči, ima Hamiltonova pot vsaj eno povezavo. Če je \(v_1v_2\cdots v_k\) Hamiltonova pot v \(G\) in je \(x\) novo univerzalno vozlišče, je \(xv_1v_2\cdots v_kx\) Hamiltonov cikel dolžine vsaj 3 v \(G^+\). Obratno Hamiltonov cikel v \(G^+\) po odstranitvi \(x\) in njegovih dveh incidentnih povezav postane pot, ki vsebuje vsa vozlišča grafa \(G\). Omejitev je nujna: \(K_1\) ima Hamiltonovo pot dolžine 0, medtem ko \(K_1^+=K_2\) nima cikla. V \(K_{m,n}\) mora vsaka pot izmenjevati oba dela, zato se števili uporabljenih vozlišč iz delov lahko razlikujeta za največ 1. Hamiltonova pot je torej mogoča le, če \(|m-n|\le1\). Pogoj tudi zadošča: če je \(m=n\), vozlišča naštejemo \(a_1,b_1,a_2,b_2,\ldots,a_m,b_m\); če je \(m=n+1\), uporabimo \(a_1,b_1,\ldots,a_n,b_n,a_{n+1}\), drugi primer pa je simetričen. Hamiltonov cikel se mora tudi skleniti in zato uporabi enako število vozlišč iz obeh delov; za neprazna dela obstaja natanko pri \(m=n\ge2\). Tako ima na primer \(K_{2,3}\) Hamiltonovo pot, nima pa Hamiltonovega cikla, medtem ko \(K_{2,4}\) nima niti Hamiltonove poti.`,
+      hint: H`Na ciklu grafa \(G^+\) odstrani novo vozlišče; v dvodelnem grafu pa beleži zaporedje delov vzdolž poti.`,
+      rubric: ["dokaz obeh smeri transformacije", "nujnost za K_mn", "konstrukcija pri razliki največ 1", "primerjava s Hamiltonovim ciklom"], tags: ["Hamiltonova pot", "Hamiltonov cikel", "univerzalno vozlišče", "polni dvodelni graf"]
+    },
+    {
+      id: "gr-o56", topic: "barvanje-izomorfnost", difficulty: 3, source: "ADM-Grafi.pdf, §14.1 in monotonost barvanja",
+      prompt: H`Definiraj brisanje vozlišča in povezave ter dokaži oceni \(\chi(G-v)\le\chi(G)\le\chi(G-v)+1\) in \(\chi(G-e)\le\chi(G)\le\chi(G-e)+1\). Za vsako oceno podaj primer, kjer se kromatično število zmanjša za ena, in primer, kjer ostane nespremenjeno.`,
+      answer: H`Graf \(G-v\) dobimo z izbrisom vozlišča \(v\) in vseh njegovih incidentnih povezav, \(G-e\) pa z izbrisom same povezave \(e\). Oba sta podgrafa grafa \(G\), zato monotonost da spodnji oceni \(\chi(G-v)\le\chi(G)\) in \(\chi(G-e)\le\chi(G)\). Pravilno \(k\)-barvanje grafa \(G-v\) razširimo na \(G\) tako, da \(v\) dobi novo barvo, zato \(\chi(G)\le\chi(G-v)+1\). Pri \(e=uv\) vzamemo optimalno barvanje \(G-e\). Če sta \(u,v\) že različno obarvana, je veljavno tudi za \(G\); če imata isto barvo, enemu krajišču dodelimo novo barvo. Zato \(\chi(G)\le\chi(G-e)+1\). Pri brisanju vozlišča je razlika 1 za \(K_n\), saj \(K_n-v\cong K_{n-1}\); nespremenjena je na primer pri izbrisu krajišča iz \(C_4\), ker imata \(C_4\) in nastali \(P_3\) kromatično število 2. Pri povezavi je razlika 1, če iz \(K_3\) izbrišemo povezavo in dobimo \(P_3\); nespremenjena pa pri izbrisu povezave iz \(C_4\), ko dobimo \(P_4\), saj sta oba grafa dvodelna in neprazna. Oceni povesta, da ena lokalna odstranitev kromatičnega števila ne more zmanjšati za več kot ena.`,
+      hint: H`Za zgornjo mejo pri vozlišču dovoli eno novo barvo; pri povezavi jo potrebuješ le, če imata krajišči isto barvo.`,
+      rubric: ["obe definiciji", "dokaz obeh dvojnih ocen", "ostra primera", "primera nespremenjene vrednosti"], tags: ["kromatično število", "brisanje vozlišča", "brisanje povezave", "meje"]
+    },
+    {
+      id: "gr-o57", topic: "barvanje-izomorfnost", difficulty: 3, source: "ADM-Grafi.pdf, §11.1 in §14.1",
+      prompt: H`Za enostaven graf \(G\) na \(n\) vozliščih definiraj komplement in kromatično število ter dokaži neenakost \(\chi(G)\chi(\overline G)\ge n\). Izpelji spodnjo mejo za večje izmed obeh kromatičnih števil ter preveri ostrino na polnem in praznem grafu; s samokomplementarnim ciklom \(C_5\) pokaži, da enakost ni samoumevna.`,
+      answer: H`Komplement \(\overline G\) ima isto množico vozlišč, različni vozlišči pa sta v njem sosednji natanko tedaj, ko v \(G\) nista. Kromatično število je najmanjše število barv v pravilnem barvanju vozlišč. Naj bo \(a=\chi(G)\) in \(b=\chi(\overline G)\). Barvni razred v \(G\) je neodvisna množica v \(G\), barvni razred v \(\overline G\) pa je klika v \(G\). Presek enega razreda prvega in enega razreda drugega barvanja zato vsebuje največ eno vozlišče: dve različni vozlišči v preseku bi morali biti v \(G\) hkrati nesosednji in sosednji. Obstaja \(ab\) parov barvnih razredov in vsako od \(n\) vozlišč pripada natanko enemu paru, zato \(n\le ab=\chi(G)\chi(\overline G)\). Posledično je \(\max\{\chi(G),\chi(\overline G)\}\ge\lceil\sqrt n\rceil\), sicer bi bil produkt manjši od \(n\). Za \(G=K_n\) je \(\chi(G)=n\), \(\chi(\overline G)=1\), zato velja enakost; enako po zamenjavi vlog za prazen graf. Cikel \(C_5\) je izomorfen svojemu komplementu in ima kromatično število 3, zato je produkt \(9>5\). Primer pokaže, da spodnja meja ni vedno dosežena.`,
+      hint: H`Presek barvnega razreda v \(G\) in barvnega razreda v komplementu ne more vsebovati dveh vozlišč.`,
+      rubric: ["obe definiciji", "dokaz s pari barvnih razredov", "izpeljana korenska meja", "ostra primera in C5"], tags: ["komplement", "kromatično število", "produktna meja", "dokaz"]
     },
   ];
 

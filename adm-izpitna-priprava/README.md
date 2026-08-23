@@ -32,9 +32,9 @@ Neposredno odpiranje `index.html` večinoma deluje, lokalni strežnik pa je zane
 - podrobno teorijo po vseh 13 temah;
 - kazalo definicij, izrekov in dokazov;
 - kartice in kvize z razlagami;
-- pregledne, oštevilčene kartice teorijskih vprašanj z vedno vidnim načrtom popolnega odgovora, zložljivim prostorom za lasten odgovor in skritim vzorčnim odgovorom;
+- pregledne, oštevilčene kartice teorijskih vprašanj z zložljivim prostorom za lasten odgovor ter ločeno skritima namigom in vzorčnim odgovorom;
 - najmanj 15 uradnih formulacij iz treh starih teorijskih izpitov; podvojene formulacije so združene z vsebinsko celovitim vprašanjem;
-- trajen izbor posameznih, prikazanih, tematskih ali vseh vprašanj ter A4-izvoz za shranjevanje v PDF, vedno z enim vprašanjem na stran in brez rešitev;
+- trajen izbor posameznih, prikazanih, tematskih ali vseh vprašanj ter čist A4-izvoz za ukaz »Shrani kot PDF«, vedno z enim vprašanjem na belem listu in brez črt, namigov, rubrik ali rešitev;
 - generator poskusnega teorijskega izpita;
 - lokalno shranjevanje napredka v brskalniku pod ključem `admTheoryAtlasStateV1`.
 

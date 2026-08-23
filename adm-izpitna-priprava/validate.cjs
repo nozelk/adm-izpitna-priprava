@@ -121,6 +121,8 @@ for (const key of collections) {
 
 assert(data.topics.length === 13, `Pričakovanih je 13 tem, najdenih ${data.topics.length}.`);
 assert(data.exercises.length === 0, `Theory-only stran ne sme vsebovati vaj; najdenih ${data.exercises.length}.`);
+assert(data.questions.length >= 175,
+  `Celovita teorijska zbirka mora imeti najmanj 175 odprtih vprašanj; najdenih ${data.questions.length}.`);
 assert(data.sources.length === expectedSources.size,
   `Pričakovanih je natanko ${expectedSources.size} dovoljenih virov, najdenih ${data.sources.length}.`);
 
@@ -204,6 +206,75 @@ const everyRuntimeId = [...contentIds, ...idsByCollection.get("sources"), ...all
 assert(new Set(everyRuntimeId).size === everyRuntimeId.length,
   "Vsi ID-ji tem, razdelkov, učnih elementov in virov morajo biti globalno enolični.");
 
+// Preverjamo končno besedilo vseh razdelkov teme, ne posameznega naslova ali ID-ja.
+// Tako se lahko vsebina preuredi, validator pa še vedno varuje pokritje osnovnih pojmov.
+const normalizeCoverageText = value => String(value)
+  .replace(/<[^>]*>/gu, " ")
+  .replace(/&(?:nbsp|ensp|emsp);/giu, " ")
+  .replace(/&(?:amp|lt|gt|quot|apos);/giu, " ")
+  .normalize("NFD")
+  .replace(/\p{M}/gu, "")
+  .toLocaleLowerCase("sl")
+  .replace(/\s+/gu, " ")
+  .trim();
+
+const topicSectionCorpus = topicId => {
+  const topic = data.topics.find(candidate => candidate.id === topicId);
+  assert(topic, `Vsebinski pregled ne najde teme ${topicId}.`);
+  return normalizeCoverageText(topic.sections
+    .flatMap(section => [section.label, section.title, section.html])
+    .filter(nonEmpty)
+    .join(" "));
+};
+
+const assertTopicConceptCoverage = (topicId, concepts) => {
+  const corpus = topicSectionCorpus(topicId);
+  for (const [concept, alternatives] of Object.entries(concepts)) {
+    assert(alternatives.some(pattern => pattern.test(corpus)),
+      `Tema ${topicId} v končnem besedilu razdelkov ne pokrije osnovnega pojma: ${concept}.`);
+  }
+};
+
+assertTopicConceptCoverage("mnozice-preslikave", {
+  "unija": [/\bunij\w*/u, /\\cup/u],
+  "presek": [/\bpresek\w*/u, /\\cap/u],
+  "razlika množic": [/\brazlik(?:a|e|i|o|ama|ah)\b/u, /\\setminus/u],
+  "komplement": [/\bkomplement\w*/u],
+  "univerzalna množica": [/\buniverzaln\w*\s+mnozic\w*/u],
+  "simetrična razlika": [/\bsimetricn\w*\s+razlik\w*/u, /\\triangle/u, /\\oplus/u],
+  "potenčna množica": [/\bpotencn\w*\s+mnozic\w*/u, /\\mathcal\s*\{?p/u],
+  "kartezični produkt": [/\bkartezi\w*\s+produkt\w*/u, /\\times/u],
+  "podmnožica": [/\bpodmnozic\w*/u, /\\subset(?:eq)?/u]
+});
+
+assertTopicConceptCoverage("grafi-osnove", {
+  "graf, vozlišča in povezave": [/\bvozlis\w*/u, /\bpovezav\w*/u],
+  "sosednost": [/\bsosedn\w*/u],
+  "incidenca": [/\bincidentn\w*/u, /\bincidenc\w*/u],
+  "red in velikost grafa": [/\bred\b/u, /\bvelikost\w*/u],
+  "sosedstvo": [/\bsosedstv\w*/u],
+  "stopnja vozlišča": [/\bstopnj\w*/u, /\\deg/u],
+  "multigraf, zanke in vzporedne povezave": [/\bmultigraf\w*/u, /\bzank\w*/u, /\bvzporedn\w*/u],
+  "usmerjeni graf": [/\busmerjen\w*\s+graf\w*/u, /\bdigraf\w*/u],
+  "lema o rokovanju": [/\brokovanj\w*/u],
+  "podgraf": [/\bpodgraf\w*/u],
+  "sprehod, pot in cikel": [/\bsprehod\w*/u, /\bpot\w*/u, /\bcikel\w*/u],
+  "povezanost in komponente": [/\bpovezan\w*/u, /\bkomponent\w*/u],
+  "dvodelnost": [/\bdvodeln\w*/u],
+  "komplement grafa": [/\bkomplement\w*/u],
+  "izomorfizem": [/\bizomorf\w*/u]
+});
+
+assertTopicConceptCoverage("drevesa-vpeta", {
+  "gozd": [/\bgozd\w*/u],
+  "most": [/\bmost(?:u|a|ovi|ovih|om)?\b/u]
+});
+
+assertTopicConceptCoverage("barvanje-izomorfnost", {
+  "ravninskost": [/\bravninsk\w*/u, /\bplanarn\w*/u],
+  "ravninska vložitev": [/\bvlozit\w*/u, /\bvlozen\w*/u]
+});
+
 for (const key of ["flashcards", "quiz", "questions"]) {
   for (const item of data[key]) {
     assert(topicIds.has(item.topic), `${key}/${item.id} kaže na neznano temo ${item.topic}.`);
@@ -268,7 +339,7 @@ for (const topic of data.topics) {
     `Tema ${id} ima premalo kartic.`);
   assert(data.quiz.filter(item => item.topic === id).length >= 4,
     `Tema ${id} ima premalo kviz vprašanj.`);
-  assert(data.questions.filter(item => item.topic === id).length >= 3,
+  assert(data.questions.filter(item => item.topic === id).length >= 7,
     `Tema ${id} ima premalo odprtih vprašanj.`);
 }
 
@@ -478,9 +549,25 @@ assert(pdfFunctionStart >= 0 && pdfFunctionEnd > pdfFunctionStart,
   "Funkcije za PDF-izvoz vprašanj ni mogoče najti.");
 const pdfFunctionSource = appSource.slice(pdfFunctionStart, pdfFunctionEnd);
 assert(pdfFunctionSource.includes('class="pdf-question"') &&
+  pdfFunctionSource.includes("width:210mm") &&
+  pdfFunctionSource.includes("height:295mm") &&
+  pdfFunctionSource.includes("overflow:hidden") &&
+  pdfFunctionSource.includes("page-break-inside:avoid") &&
   pdfFunctionSource.includes("page-break-after:always") &&
-  pdfFunctionSource.includes("height:297mm"),
-"PDF-izvoz ne zagotavlja ene A4-strani za vsako vprašanje.");
+  pdfFunctionSource.includes(".pdf-question:last-child{page-break-after:auto}") &&
+  pdfFunctionSource.includes("@page{size:A4 portrait;margin:0}") &&
+  pdfFunctionSource.includes("html,body{width:210mm;margin:0!important;background:#fff}"),
+"PDF-izvoz ne zagotavlja varne ene A4-strani za vsako vprašanje.");
+assert((pdfFunctionSource.match(/page-break-after:always/gu) || []).length === 1,
+  "PDF-izvoz mora imeti natanko eno pravilo za prelom med vprašanji.");
+const pdfWithoutLegacyBreaks = pdfFunctionSource
+  .replace(/page-break-(?:after|inside)/gu, "legacy-page-break");
+assert(!/\bbreak-(?:after|inside)\s*:/u.test(pdfWithoutLegacyBreaks),
+  "PDF-izvoz ne sme kombinirati WebKit-občutljivih modernih in starejših pravil za prelom strani.");
+for (const forbiddenPdfLayout of ["pdf-writing", "repeating-linear-gradient", "height:297mm"]) {
+  assert(!pdfFunctionSource.includes(forbiddenPdfLayout),
+    `PDF-izvoz vsebuje prepovedano črtasto ali nestabilno postavitev (${forbiddenPdfLayout}).`);
+}
 for (const forbiddenPdfContent of ["question.answer", "question.hint", "question.rubric", "officialVariants"]) {
   assert(!pdfFunctionSource.includes(forbiddenPdfContent),
     `PDF-izvoz ne sme vključiti rešitev, namigov, rubrik ali dodatnih formulacij (${forbiddenPdfContent}).`);
