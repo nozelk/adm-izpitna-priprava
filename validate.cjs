@@ -295,9 +295,12 @@ for (const item of data.quiz) {
   assert(nonEmpty(item.explanation), `Kviz ${item.id} nima razlage pravilnega odgovora.`);
 }
 
+const externalPromptReferencePattern = /(?:iz|v)\s+(?:razdelk|poglavj|zapisk|gradiv)\w*|\bpdf(?:-ja)?\b|\b(?:trditev|lema|lemo|izrek)\s+\d+(?:\.\d+)*\b|\bzbirka zahteva\b|\bvprašanje iz teorijskega izpita\b/iu;
 for (const item of data.questions) {
   assert(nonEmpty(item.prompt) && nonEmpty(item.answer),
     `Odprto vprašanje ${item.id} nima vprašanja ali odgovora.`);
+  assert(!externalPromptReferencePattern.test(item.prompt),
+    `Odprto vprašanje ${item.id} se sklicuje na zunanji razdelek ali gradivo namesto na samostojno formulacijo.`);
   assert(Array.isArray(item.rubric) && item.rubric.length >= 2 && item.rubric.every(nonEmpty),
     `Odprto vprašanje ${item.id} nima uporabne rubrike.`);
   if (typeof item.source === "string") {
@@ -560,6 +563,9 @@ assert(pdfFunctionSource.includes('class="pdf-question"') &&
 "PDF-izvoz ne zagotavlja varne ene A4-strani za vsako vprašanje.");
 assert((pdfFunctionSource.match(/page-break-after:always/gu) || []).length === 1,
   "PDF-izvoz mora imeti natanko eno pravilo za prelom med vprašanji.");
+assert(pdfFunctionSource.includes("font-weight:400!important") &&
+  pdfFunctionSource.includes("h1 *{font-weight:400!important}"),
+"Besedilo vprašanja v PDF-ju mora biti izpisano z navadno, ne krepko pisavo.");
 const pdfWithoutLegacyBreaks = pdfFunctionSource
   .replace(/page-break-(?:after|inside)/gu, "legacy-page-break");
 assert(!/\bbreak-(?:after|inside)\s*:/u.test(pdfWithoutLegacyBreaks),
